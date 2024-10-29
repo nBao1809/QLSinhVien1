@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">QLSinhVien</string>
+    <string name="QLSV">Quản Lý Sinh Viên</string>
+    <string name="Login">Đăng nhập</string>
+    <string name="ForgotPassword">Quên mật khẩu?</string>
+    <string name="LoginName">Tên đăng nhập</string>
+    <string name="Password">Mật khẩu</string>
+    <string name="SignOut">Đăng xuất</string>
 </resources>

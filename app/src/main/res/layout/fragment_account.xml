@@ -18,6 +18,8 @@
         app:menu="@menu/menuaccount"
         app:popupTheme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         app:title="@string/Account"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/settingicon"
         app:titleTextColor="@color/white" />
 
     <LinearLayout

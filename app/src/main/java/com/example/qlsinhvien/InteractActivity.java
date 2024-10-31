@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class InteractActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -59,7 +61,8 @@ public class InteractActivity extends AppCompatActivity {
 }
 
 
-public void replaceFragment(Fragment fragment) {
+
+    public void replaceFragment(Fragment fragment) {
     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
     fragmentTransaction.replace(R.id.frameLayout, fragment);
     fragmentTransaction.commit();

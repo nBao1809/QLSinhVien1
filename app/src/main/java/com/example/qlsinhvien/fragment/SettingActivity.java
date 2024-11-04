@@ -16,10 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.qlsinhvien.LoginActivity;
 import com.example.qlsinhvien.R;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class SettingActivity extends AppCompatActivity {
     Button buttonsignout, buttonpasschange;
-    Toolbar toolbar;
+    MaterialToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +32,19 @@ public class SettingActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        buttonpasschange=findViewById(R.id.buttonpasschange);
-        buttonsignout = findViewById(R.id.buttonsignout);
-        buttonsignout.setOnClickListener(new View.OnClickListener() {
+        toolbar = findViewById(R.id.toolbarsetting);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myinIntent = new Intent(SettingActivity.this,LoginActivity.class);
-                startActivity(myinIntent);
                 finish();
             }
-
+        });
+        buttonpasschange = findViewById(R.id.buttonpasschange);
+        buttonsignout = findViewById(R.id.buttonsignout);
+        buttonsignout.setOnClickListener(v -> {
+            Intent myinIntent = new Intent(SettingActivity.this, LoginActivity.class);
+            startActivity(myinIntent);
+            finish();
         });
     }
 }

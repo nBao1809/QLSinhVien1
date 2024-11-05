@@ -1,6 +1,8 @@
 package com.example.qlsinhvien;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class SplashActivity extends AppCompatActivity {
+Handler handler = new Handler();
+Runnable runnable ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +25,21 @@ public class SplashActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                Intent myIntent = new Intent(SplashActivity.this,LoginActivity.class);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.enter_left_to_right,R.anim.exit_right_to_left);
+                finish();
+            };
+            };
+        handler.postDelayed(runnable,2070);
+        }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
     }
 }

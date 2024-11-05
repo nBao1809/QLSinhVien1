@@ -37,19 +37,6 @@
 
         <Button
             android:layout_margin="35dp"
-            android:id="@+id/buttonsignout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/SignOut"
-            android:textAlignment="textStart"
-            android:drawableEnd="@drawable/signouticon"
-            android:background="@drawable/settingshape"
-            app:backgroundTint="@null"/>
-
-        <Button
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="35dp"
             android:id="@+id/buttonpasschange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,6 +44,32 @@
             android:textAlignment="textStart"
             android:drawableEnd="@drawable/continueicon"
             android:background="@drawable/settingshape"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/buttonsignout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/exiticon"
+            android:text="@string/SignOut"
+            android:textAlignment="textStart"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/buttonexit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/signouticon"
+            android:text="@string/exit"
+            android:textAlignment="textStart"
             app:backgroundTint="@null" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

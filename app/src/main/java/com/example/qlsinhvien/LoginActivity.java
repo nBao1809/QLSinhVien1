@@ -41,6 +41,7 @@ String password="123456";
                 String edtLoginString=edtLogin.getText().toString();
 if(edtLoginString.isEmpty() && edtPasswordString.isEmpty()){
     Toast.makeText(LoginActivity.this,"Vui lòng nhập tài khoản và mật khẩu để đăng nhập", Toast.LENGTH_SHORT).show();
+    edtLogin.requestFocus();
 }
 else if(!edtLoginString.isEmpty() && edtPasswordString.isEmpty()){
     edtPassword.requestFocus();

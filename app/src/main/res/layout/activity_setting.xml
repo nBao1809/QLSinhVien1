@@ -36,14 +36,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:layout_margin="35dp"
             android:id="@+id/buttonpasschange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="35dp"
+            android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/continueicon"
             android:text="@string/changepassword"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/continueicon"
-            android:background="@drawable/settingshape"
             app:backgroundTint="@null" />
 
         <Button

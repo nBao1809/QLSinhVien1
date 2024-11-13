@@ -29,5 +29,12 @@
     <string name="ManageStat">Thống kê quản lý</string>
     <string name="TeachingResult">Thống kê kết quả giảng dạy của giảng viên</string>
     <string name="User">Người dùng</string>
-
+    <string name="major">Ngành: </string>
+    <string name="Subject">Môn học: </string>
+    <string name="Teacher">Giảng viên: </string>
+    <string name="Class">Lớp: </string>
+    <string name="NameUser">Tên </string>
+    <string name="Birthday">Ngày sinh </string>
+    <string name="Phone">Số điện thoại </string>
+    <string name="Email">Email </string>
 </resources>

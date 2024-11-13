@@ -26,8 +26,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="7dp"
         android:text="@string/manage"
+        android:textColor="@color/black"
         android:textSize="18sp"
-
         android:textStyle="bold" />
 
     <LinearLayout
@@ -47,10 +47,10 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/usermanageicon"
             android:text="@string/UserManagement"
             android:textAlignment="textStart"
-            app:backgroundTint="@null"
-            android:drawableEnd="@drawable/usermanageicon"/>
+            app:backgroundTint="@null" />
 
         <Button
             android:id="@+id/button3"
@@ -59,9 +59,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/whiteschoolicon"
             android:text="@string/StudentScoreManagement"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/whiteschoolicon"
             app:backgroundTint="@null" />
 
         <Button
@@ -71,9 +71,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/listicon"
             android:text="@string/StudentListManagement"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/listicon"
             app:backgroundTint="@null" />
 
         <Button
@@ -83,9 +83,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/bookicon"
             android:text="@string/ClassManagement"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/bookicon"
             app:backgroundTint="@null" />
     </LinearLayout>
 
@@ -98,6 +98,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="7dp"
         android:text="@string/User"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:backgroundTint="@null" />
@@ -121,9 +122,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/passrecoveryicon"
             android:text="@string/ListForgetPassword"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/passrecoveryicon"
             app:backgroundTint="@null" />
 
         <Button
@@ -133,9 +134,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/registericon"
             android:text="@string/UserRegister"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/registericon"
             app:backgroundTint="@null" />
 
         <Button
@@ -145,8 +146,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
-            android:text="@string/changepassword"
             android:drawableEnd="@drawable/updateicon"
+            android:text="@string/changepassword"
             android:textAlignment="textStart"
             app:backgroundTint="@null" />
     </LinearLayout>

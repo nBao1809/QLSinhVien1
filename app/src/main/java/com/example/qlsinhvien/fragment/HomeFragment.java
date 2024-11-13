@@ -3,12 +3,19 @@ package com.example.qlsinhvien.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.qlsinhvien.ClassAdapter;
+import com.example.qlsinhvien.LopHocPhan;
 import com.example.qlsinhvien.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +64,28 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    RecyclerView recycleHocPhan;
+    ClassAdapter classAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        recycleHocPhan = view.findViewById(R.id.recycleHocPhan);
+        classAdapter = new ClassAdapter(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recycleHocPhan.setLayoutManager(linearLayoutManager);
+        classAdapter.setData(getListHocPhan());
+        recycleHocPhan.setAdapter(classAdapter);
+        return view;
+    }
+
+    private List<LopHocPhan> getListHocPhan() {
+        List<LopHocPhan> listHocPhan = new ArrayList<>();
+        for (int i = 0; i <= 20; i++) {
+            listHocPhan.add(new LopHocPhan("Khoa học máy tính", "OOP", "CS02","Dương Hữu Thành"));
+        }
+        return listHocPhan;
     }
 }

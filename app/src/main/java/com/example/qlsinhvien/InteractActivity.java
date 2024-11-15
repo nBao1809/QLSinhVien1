@@ -25,12 +25,14 @@ import com.example.qlsinhvien.fragment.AccountFragment;
 import com.example.qlsinhvien.fragment.HomeFragment;
 import com.example.qlsinhvien.fragment.StatisticFragment;
 import com.example.qlsinhvien.fragment.UtilityFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+    MaterialToolbar toolbar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

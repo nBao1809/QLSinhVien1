@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/bottomnav"
-        app:menu="@menu/menustat"
         app:popupTheme="@style/Theme.AppCompat.Light"
         app:title="@string/Statistic"
         app:titleTextColor="@color/white" />

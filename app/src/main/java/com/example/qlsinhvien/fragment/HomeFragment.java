@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -115,40 +116,44 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        requireActivity().addMenuProvider(new MenuProvider() {
+        toolbar.inflateMenu(R.menu.menutoolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.menutoolbar, menu);
-                MenuItem searchItem = menu.findItem(R.id.search);
-                searchView = (SearchView) searchItem.getActionView();
-                SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.search) {
+                    searchView = (SearchView) item.getActionView();
+                    SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
-                assert searchView != null;
-                searchView.setQueryHint("Tìm theo tên môn học");
+                    assert searchView != null;
+                    searchView.setQueryHint("Tìm theo tên môn học");
 
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        classAdapter.getFilter().filter(query);
-                        return false;
-                    }
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            classAdapter.getFilter().filter(query);
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        classAdapter.getFilter().filter(newText);
-                        return false;
-                    }
-                });
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            classAdapter.getFilter().filter(newText);
+                            return false;
+                        }
+                    });
+                    return true;
+                }
+                if (id == R.id.notification) {
+                    Toast.makeText(requireActivity(), "Chưa có chức năng", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
                 return false;
             }
+
         });
+        Menu menu = toolbar.getMenu();
+
         return view;
     }
 

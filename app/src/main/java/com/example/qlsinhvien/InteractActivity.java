@@ -32,7 +32,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-    MaterialToolbar toolbar ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +71,16 @@ public class InteractActivity extends AppCompatActivity {
                 } else if (id == R.id.account) {
                     replaceFragment(new AccountFragment());
                 }
-                    return true;
-        }
-    });
-}
+                return true;
+            }
+        });
+    }
 
     public void replaceFragment(Fragment fragment) {
-    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-    fragmentTransaction.setCustomAnimations(R.anim.enter_right_to_left,R.anim.exit_right_to_left,R.anim.enter_left_to_right,R.anim.exit_left_to_right);
-    fragmentTransaction.replace(R.id.frameLayout, fragment);
-    fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left, R.anim.enter_left_to_right, R.anim.exit_left_to_right);
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
 
-}
+    }
 }

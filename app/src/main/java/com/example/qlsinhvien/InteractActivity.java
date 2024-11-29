@@ -1,6 +1,7 @@
 package com.example.qlsinhvien;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,12 +25,14 @@ import com.example.qlsinhvien.fragment.AccountFragment;
 import com.example.qlsinhvien.fragment.HomeFragment;
 import com.example.qlsinhvien.fragment.StatisticFragment;
 import com.example.qlsinhvien.fragment.UtilityFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,18 @@ public class InteractActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                new AlertDialog.Builder(InteractActivity.this)
+                        .setTitle("Xác nhận").setIcon(R.drawable.checkicon)
+                        .setMessage("Bạn có muốn đăng xuất không?")
+                        .setPositiveButton("Có", (dialog, which) -> finish())
+                        .setNegativeButton("Không", null)
+                        .show();
+            }
+        });
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -55,17 +71,16 @@ public class InteractActivity extends AppCompatActivity {
                 } else if (id == R.id.account) {
                     replaceFragment(new AccountFragment());
                 }
-                    return true;
-        }
-    });
-}
-
-
+                return true;
+            }
+        });
+    }
 
     public void replaceFragment(Fragment fragment) {
-    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-    fragmentTransaction.replace(R.id.frameLayout, fragment);
-    fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left, R.anim.enter_left_to_right, R.anim.exit_left_to_right);
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
 
-}
+    }
 }

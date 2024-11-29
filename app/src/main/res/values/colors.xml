@@ -6,4 +6,6 @@
     <color name="gray">#5CD7D7D7</color>
     <color name="red">#5CFA0B0B</color>
     <color name="orange">#FF945A</color>
+
+    <color name="bettergray">#D9D9D9</color>
 </resources>

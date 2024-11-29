@@ -22,5 +22,24 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">Cài đặt</string>
     <string name="changepassword">Đổi mật khẩu</string>
-
+    <string name="exit">Thoát </string>
+    <string name="manage">Quản lý </string>
+    <string name="UserManagement">Quản lý user</string>
+    <string name="StudentScoreManagement">Quản lý điểm sinh viên</string>
+    <string name="StudentListManagement">Quản lý danh sách sinh viên</string>
+    <string name="ClassManagement">Quản lý lớp học phần</string>
+    <string name="ListForgetPassword">Danh sách cấp lại mật khẩu</string>
+    <string name="UserRegister">Đăng ký thành viên</string>
+    <string name="AverageScoreStat">Thống kê điểm trung bình của sinh viên theo môn học</string>
+    <string name="ManageStat">Thống kê quản lý</string>
+    <string name="TeachingResult">Thống kê kết quả giảng dạy của giảng viên</string>
+    <string name="User">Người dùng</string>
+    <string name="major">Ngành: </string>
+    <string name="Subject">Môn học: </string>
+    <string name="Teacher">Giảng viên: </string>
+    <string name="Class">Lớp: </string>
+    <string name="NameUser">Tên </string>
+    <string name="Birthday">Ngày sinh </string>
+    <string name="Phone">Số điện thoại </string>
+    <string name="Email">Email </string>
 </resources>

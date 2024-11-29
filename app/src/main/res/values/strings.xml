@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">QLSinhVien</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="register">Đăng kí</string>
+    <string name="password">Mật khẩu</string>
+    <string name="username">Tên tài khoản</string>
+    <string name="txtreturn">Quay lại</string>
     <string name="QLSV">Quản Lý Sinh Viên</string>
     <string name="Login">Đăng nhập</string>
     <string name="ForgotPassword">Quên mật khẩu?</string>

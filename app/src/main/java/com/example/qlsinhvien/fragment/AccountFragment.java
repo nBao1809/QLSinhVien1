@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,18 +63,33 @@ public class AccountFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-   MaterialToolbar toolbar;
+
+    MaterialToolbar toolbar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view= inflater.inflate(R.layout.fragment_account, container, false);
-       toolbar=view.findViewById(R.id.toolbar);
-       toolbar.setNavigationOnClickListener(v -> {
-               Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
-               startActivity(myIntent);
-       });
-       return view;
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menuaccount);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.notification) {
+                    Toast.makeText(requireActivity(), "Chưa có chức năng", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+        Menu menu = toolbar.getMenu();
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
+            startActivity(myIntent);
+        });
+        return view;
     }
 
 }

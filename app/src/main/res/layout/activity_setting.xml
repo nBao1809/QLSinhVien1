@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menusetting"
         app:navigationIcon="@drawable/backicon"
         app:title="@string/settings"
         app:titleCentered="true"
@@ -36,27 +35,40 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:layout_margin="35dp"
-            android:id="@+id/buttonsignout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/SignOut"
-            android:textAlignment="textStart"
-            android:drawableEnd="@drawable/signouticon"
-            android:background="@drawable/settingshape"
-            app:backgroundTint="@null"/>
-
-        <Button
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="35dp"
             android:id="@+id/buttonpasschange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="35dp"
+            android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/continueicon"
             android:text="@string/changepassword"
             android:textAlignment="textStart"
-            android:drawableEnd="@drawable/continueicon"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/buttonsignout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
             android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/exiticon"
+            android:text="@string/SignOut"
+            android:textAlignment="textStart"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/buttonexit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/settingshape"
+            android:drawableEnd="@drawable/signouticon"
+            android:text="@string/exit"
+            android:textAlignment="textStart"
             app:backgroundTint="@null" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

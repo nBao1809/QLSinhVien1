@@ -1,14 +1,39 @@
 package com.example.qlsinhvien.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.qlsinhvien.ClassAdapter;
+import com.example.qlsinhvien.InteractActivity;
+import com.example.qlsinhvien.LopHocPhan;
 import com.example.qlsinhvien.R;
+import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +82,102 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    RecyclerView recycleHocPhan;
+    ClassAdapter classAdapter;
+    SearchView searchView;
+    MaterialToolbar toolbar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        recycleHocPhan = view.findViewById(R.id.recycleHocPhan);
+        classAdapter = new ClassAdapter(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recycleHocPhan.setLayoutManager(linearLayoutManager);
+        classAdapter.setData(getListHocPhan());
+        recycleHocPhan.setAdapter(classAdapter);
+        toolbar = view.findViewById(R.id.toolbar);
+        OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
+        onBackPressedDispatcher.addCallback(requireActivity(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (!searchView.isIconified()) {
+                    searchView.setIconified(true);
+                    return;
+                }
+                new AlertDialog.Builder(requireActivity())
+                        .setTitle("Xác nhận").setIcon(R.drawable.checkicon)
+                        .setMessage("Bạn có muốn đăng xuất không?")
+                        .setPositiveButton("Có", (dialog, which) -> requireActivity().finish())
+                        .setNegativeButton("Không", null)
+                        .show();
+
+            }
+        });
+        toolbar.inflateMenu(R.menu.menutoolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.search) {
+                    searchView = (SearchView) item.getActionView();
+                    SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+                    assert searchView != null;
+                    searchView.setQueryHint("Tìm theo tên môn học");
+
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            classAdapter.getFilter().filter(query);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            classAdapter.getFilter().filter(newText);
+                            return false;
+                        }
+                    });
+                    return true;
+                }
+                if (id == R.id.notification) {
+                    Toast.makeText(requireActivity(), "Chưa có chức năng", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+
+        });
+        Menu menu = toolbar.getMenu();
+
+        return view;
     }
+
+
+    private List<LopHocPhan> getListHocPhan() {
+        List<LopHocPhan> listHocPhan = new ArrayList<>();
+        for (int i = 0; i <= 3; i++) {
+            listHocPhan.add(new LopHocPhan("Khoa học máy tính", "OOP", "CS02", "Dương Hữu Thành"));
+        }
+        for (int i = 0; i <= 3; i++) {
+            listHocPhan.add(new LopHocPhan("Khoa học máy tính", "Công nghệ phần mềm", "CS02", "Dương Hữu Thành"));
+        }
+        for (int i = 0; i <= 3; i++) {
+            listHocPhan.add(new LopHocPhan("Khoa học máy tính", "Lập trình trên thiết bị di động", "CS02", "Dương Hữu Thành"));
+        }
+        for (int i = 0; i <= 3; i++) {
+            listHocPhan.add(new LopHocPhan("Khoa học máy tính", "Các công nghệ lập trình hiện đại", "CS02", "Dương Hữu Thành"));
+        }
+        for (int i = 0; i <= 3; i++) {
+            listHocPhan.add(new LopHocPhan("Khoa học máy tính", "Kĩ thuật lập trình", "CS02", "Dương Hữu Thành"));
+        }
+        return listHocPhan;
+    }
+
 }
+
+

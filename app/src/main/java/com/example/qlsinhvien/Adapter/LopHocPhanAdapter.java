@@ -1,4 +1,4 @@
-package com.example.qlsinhvien;
+package com.example.qlsinhvien.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,17 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qlsinhvien.fragment.HomeFragment;
+import com.example.qlsinhvien.Models.LopHocPhan;
+import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.StringUtility;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> implements Filterable {
+public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.ClassViewHolder> implements Filterable {
     private Context context;
     private List<LopHocPhan> listHocPhan;
     private List<LopHocPhan> listHocPhanOld;
 
-    public ClassAdapter(Context context) {
+    public LopHocPhanAdapter(Context context) {
         this.context = context;
     }
 
@@ -44,9 +46,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         LopHocPhan lopHocPhan = listHocPhan.get(position);
         if (lopHocPhan == null)
             return;
-        holder.txtNganh.setText(lopHocPhan.getTenNganh());
-        holder.txtMonHoc.setText(lopHocPhan.getTenMonHoc());
-        holder.txtGVPhuTrach.setText(lopHocPhan.getTenGiaoVienPhuTrach());
+        holder.txtNganh.setText(lopHocPhan.getMaMonHoc());
+        holder.txtMonHoc.setText(lopHocPhan.getTenLop());
+        holder.txtGVPhuTrach.setText(lopHocPhan.getMaGiangVienPhuTrach());
         holder.txtLop.setText(lopHocPhan.getTenLop());
     }
 
@@ -68,7 +70,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                 } else {
                     List<LopHocPhan> list = new ArrayList<>();
                     for (LopHocPhan lopHocPhan : listHocPhanOld) {
-                        String tenMonHoc = StringUtility.removeMark(lopHocPhan.getTenMonHoc().toLowerCase());
+                        String tenMonHoc = StringUtility.removeMark(lopHocPhan.getTenLop().toLowerCase());
                         if (tenMonHoc.contains(searchString)) {
                             list.add(lopHocPhan);
                         }

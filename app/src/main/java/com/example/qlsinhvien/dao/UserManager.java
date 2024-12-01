@@ -1,4 +1,4 @@
-package com.example.qlsinhvien.Models;
+package com.example.qlsinhvien.dao;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.qlsinhvien.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class UserManager {
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private List<User> userList;
     SharedPreferences userRefs, otpRefs;
@@ -32,6 +34,22 @@ public class UserManager {
         otpRefs = context.getSharedPreferences("OTP",
                 MODE_PRIVATE);
         otpEditor = otpRefs.edit();
+    }
+
+    public long addUser(User user) {
+        db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.USERNAME, user.getUsername());
+        values.put(DatabaseHelper.PASSWORD, user.getPassword());
+        values.put(DatabaseHelper.PHOTO, user.getPhoto());
+        values.put(DatabaseHelper.EMAIL, user.getEmail());
+        values.put(DatabaseHelper.ROLE, user.getRole());
+
+        long rowInserted = db.insert(DatabaseHelper.TB_USERS, null, values);
+        db.close();
+
+        return rowInserted; // >0 nếu thêm thành công, -1 nếu thất bại
     }
 
     public List<User> getAllUser() {
@@ -48,35 +66,13 @@ public class UserManager {
         }
         return null;
     }
-
-    public List<User> getUserByRole(String Role) {
-        userList = new ArrayList<>();
-        db = dbHelper.getReadableDatabase();
-        String[] selection = new String[]{Role};
-        Cursor c = db.query(DatabaseHelper.TB_USERS, null,
-                DatabaseHelper.ROLE +
-                        "= ?",
-                selection,
-                Role,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
-            userList.add(new User(c.getInt(0), c.getString(1), c.getString(2),
-                    c.getString(3), c.getString(4), c.getString(5)));
-            c.close();
-            return userList;
-        }
-        return null;
-    }
-
-    public User getUser(String username) {
+    public User getUser(int maUser) {
         userList = new ArrayList<>();
         db = dbHelper.getReadableDatabase();
         User user = null;
-        String[] selection = new String[]{username};
+        String[] selection = new String[]{String.valueOf(maUser)};
         Cursor c = db.query(DatabaseHelper.TB_USERS, null,
-                DatabaseHelper.USERNAME +
+                DatabaseHelper.ID +
                         "= ?",
                 selection,
                 null,
@@ -91,27 +87,12 @@ public class UserManager {
         }
         return null;
     }
-
-    public void insertUser(User user) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(DatabaseHelper.ID, user.getID());
-        values.put(DatabaseHelper.USERNAME, user.getUsername());
-        values.put(DatabaseHelper.PHOTO, user.getPhoto());
-        values.put(DatabaseHelper.EMAIL, user.getEmail());
-        values.put(DatabaseHelper.ROLE, user.getRole());
-
-        db.insert(DatabaseHelper.TB_USERS, null, values);
-        db.close();
-    }
-
     public int updateUser(User user) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.ID, user.getID());
         values.put(DatabaseHelper.USERNAME, user.getUsername());
+        values.put(DatabaseHelper.PASSWORD, user.getPassword());
         values.put(DatabaseHelper.PHOTO, user.getPhoto());
         values.put(DatabaseHelper.EMAIL, user.getEmail());
         values.put(DatabaseHelper.ROLE, user.getRole());
@@ -124,6 +105,16 @@ public class UserManager {
         );
         db.close();//>0 thành công =0 ko thành công
         return rowsUpdated;
+    }
+    public int deleteUser(long userID) {
+        db = dbHelper.getWritableDatabase();
+        String selection = DatabaseHelper.ID + " = ?";
+        String[] selectionArgs = { String.valueOf(userID) };
+
+        int rowsDeleted = db.delete(DatabaseHelper.TB_USERS, selection, selectionArgs);
+        db.close();
+
+        return rowsDeleted; // Trả về số dòng bị xóa, >0 nếu xóa thành công, 0 nếu không có gì bị xóa
     }
 
     public User checkLogin(String username, String password) {
@@ -153,10 +144,13 @@ public class UserManager {
         return null;
     }
 
-    public void sendEmail(String fromEmail, String password, String toEmail) {
+    public void sendEmail(String toEmail) {
+        String fromEmail="qlsinhvien0@gmail.com";
+        String password="zonb hknp gsxw autw";
         /*
         mail: qlsinhvien0@gmail.com
-        pass mail:zonb hknp gsxw autw
+        app-pass mail:zonb hknp gsxw autw
+        pass: qlsinhvien123
         */
 
         String otp = generateOTP();
@@ -197,7 +191,7 @@ public class UserManager {
         return String.valueOf(otp);
     }
 
-    public boolean changePassWord(String password, String inputOTP) {
+    public boolean changePassword(String password, String inputOTP) {
         long currentTime = System.currentTimeMillis();
         String otp = otpRefs.getString("otp","");
         long otpTime = otpRefs.getLong("otp_time", 0);

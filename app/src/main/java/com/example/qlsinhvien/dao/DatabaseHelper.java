@@ -1,4 +1,4 @@
-package com.example.qlsinhvien.Models;
+package com.example.qlsinhvien.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    //region
+    //region tên cột
     public static final String DATABASE_NAME = "ql_sinhvien.db";
     public static final int DATABASE_VERSION = 1;
 
     public static final String TB_USERS = "USERS";
+    public static final String ID = "ID";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
-
     public static final String PHOTO = "PHOTO";
     public static final String EMAIL = "EMAIL";
     public static final String ROLE = "ROLE";
@@ -36,7 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String NAMHOC = "NAMHOC";
 
     public static final String TB_LOPSINHVIEN = "LOP_SINHVIEN";
-    public static final String ID = "ID";
+    public static final String MA_LOPSINHVIEN = "MA_LOPSINHVIEN";
+
     public static final String TB_LOPHOCPHAN = "LOPHOCPHAN";
     public static final String MA_LOP = "MA_LOP";
     public static final String TENLOP = "TENLOP";
@@ -49,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DIEMSO = "DIEMSO";
     public static final String TB_LOAIDIEM = "LOAIDIEM";
     public static final String MA_LOAIDIEM = "MA_LOAIDIEM";
-    public static final String TEN_LOAIDIEM="TEN_LOAIDIEM";
+    public static final String TEN_LOAIDIEM = "TEN_LOAIDIEM";
     public static final String TRONGSO = "TRONGSO";
 
 
@@ -57,58 +58,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String MA_MONHOC = "MA_MONHOC";
     public static final String TENMONHOC = "TENMONHOC";
     public static final String TINCHI = "TINCHI";
-    public static final String NGANH = "NGANH";
+
 
     public static final String TB_LOPHANHCHINH = "LOPHANHCHINH";
     public static final String MA_LOPHANHCHINH = "MA_LOPHANHCHINH";
-    public static final String TENLOPHANHCHINH = "TENLOPHANHCHINH";
+    public static final String TEN_LOPHANHCHINH = "TEN_LOPHANHCHINH";
 
     public static final String TB_NGANH = "NGANH";
     public static final String MA_NGANH = "MA_NGANH";
+    public static final String TEN_NGANH = "TEN_NGANH";
     //endregion
+    //region tạo bảng
     public static final String CREATE_MONHOC =
             "CREATE TABLE " + TB_MONHOC + " (" + MA_MONHOC +
                     " TEXT PRIMARY KEY , " + TENMONHOC + " TEXT NOT NULL, " + TINCHI +
-                    " DOUBLE , " + NGANH + " TEXT REFERENCES " + TB_NGANH + " (" + MA_NGANH + "))";
+                    " DOUBLE , " + MA_NGANH + " REFERENCES " + TB_NGANH + " (" + MA_NGANH + "))";
     public static final String CREATE_NGANH =
             "CREATE TABLE " + TB_NGANH + " (" + MA_NGANH +
-                    " TEXT PRIMARY KEY, " + NGANH + " TEXT )";
+                    " TEXT PRIMARY KEY, " + TEN_NGANH + " TEXT )";
     public static final String CREATE_LOPHANHCHINH =
             "CREATE TABLE " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH +
-                    " TEXT PRIMARY KEY, " + TENLOPHANHCHINH + " TEXT NOT NULL)";
-    public static final String CREATE_USERS = "CREATE TABLE " + TB_USERS + " (" + ID + " INTEGER" +
-            " PRIMARY KEY AUTOINCREMENT, " + USERNAME + " TEXT , " + PASSWORD + " TEXT, " + PHOTO + " TEXT, " + EMAIL + " TEXT, " + ROLE + " TEXT)";
+                    " TEXT PRIMARY KEY, " + TEN_LOPHANHCHINH + " TEXT NOT NULL)";
+    public static final String CREATE_USERS = "CREATE TABLE " + TB_USERS + " (" + ID +
+            " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME + " TEXT , " + PASSWORD +
+            " TEXT, " + PHOTO + " TEXT, " + EMAIL + " TEXT, " + ROLE + " TEXT)";
     public static final String CREATE_GIANGVIEN =
             "CREATE TABLE " + TB_GIANGVIEN + " (" + MA_GIANGVIEN + " TEXT PRIMARY KEY, " + HOTEN +
-                    " TEXT NOT NULL, " + CCCD + " TEXT, " + NGAYSINH + "TEXT, " + KHOA +
+                    " TEXT NOT NULL, " + CCCD + " TEXT, " + NGAYSINH + "REAL, " + KHOA +
                     " TEXT, " + ID + " REFERENCES " + TB_USERS + "(" + ID + "))";
     public static final String CREATE_SINHVIEN = "CREATE TABLE " + TB_SINHVIEN + " (" + MSSV +
-            " TEXT PRIMARY KEY, " + HOTEN + "TEXT NOT NULL, " + CCCD + " TEXT, " + NGAYSINH + " " +
-            " TEXT, " + ID + " REFERENCES " + TB_USERS + "(" + ID + ")," +
+            " TEXT PRIMARY KEY, " + HOTEN + "TEXT NOT NULL, " + CCCD + " TEXT, " + NGAYSINH +
+            " REAL, " + ID + " REFERENCES " + TB_USERS + "(" + ID + ")," +
             MA_LOPHANHCHINH + " REFERENCES " + TB_LOPHANHCHINH + "(" + MA_LOPHANHCHINH + "), " +
             MA_NGANH + " REFERENCES " + TB_NGANH + "(" + MA_NGANH + "))";
     public static final String CREATE_HOCKY =
             "CREATE TABLE " + TB_HOCKY + " (" + MA_HOCKY + " TEXT PRIMARY KEY, " + TENHOCKY +
                     " TEXT NOT NULL, " + NAMHOC + " TEXT )";
     public static final String CREATE_LOPSINHVIEN =
-            "CREATE TABLE " + TB_LOPSINHVIEN + " (" + ID + " TEXT PRIMARY KEY , " +
+            "CREATE TABLE " + TB_LOPSINHVIEN + " (" + MA_LOPSINHVIEN + " TEXT PRIMARY KEY , " +
                     MA_LOP + " REFERENCES " + TB_LOPHOCPHAN + "(" + MA_LOP +
                     "), " + MSSV + " REFERENCES " + TB_SINHVIEN + "(" + MSSV + "), " +
                     MA_HOCKY + " REFERENCES " + TB_HOCKY + "(" + MA_HOCKY + "))";
     public static final String CREATE_LOAIDIEM = "CREATE TABLE " + TB_LOAIDIEM + " (" + MA_LOAIDIEM +
-            " TEXT PRIMARY KEY , " + TEN_LOAIDIEM + " TEXT, " + TRONGSO  +
+            " TEXT PRIMARY KEY , " + TEN_LOAIDIEM + " TEXT, " + TRONGSO +
             " REAL )";
-    public static final String CREATE_DIEM = "CREATE TABLE " + TB_DIEM + " (" + MA_DIEM  +
-            " INTEGER PRIMARY KEY AUTOINCREMENT, " + DIEMSO + " REAL, " + MA_LOAIDIEM  +
-            " REFERENCES " +TB_LOAIDIEM+"("+MA_LOAIDIEM+"), "
-             + ID + " REFERENCES " + TB_LOPSINHVIEN + "(" + ID + "))";
+    public static final String CREATE_DIEM = "CREATE TABLE " + TB_DIEM + " (" + MA_DIEM +
+            " INTEGER PRIMARY KEY AUTOINCREMENT, " + DIEMSO + " REAL, " + MA_LOAIDIEM +
+            " REFERENCES " + TB_LOAIDIEM + "(" + MA_LOAIDIEM + "), "
+            + MA_LOPSINHVIEN + " REFERENCES " + TB_LOPSINHVIEN + "(" + MA_LOPSINHVIEN + "))";
     public static final String CREATE_LOPHOCPHAN =
             "CREATE TABLE " + TB_LOPHOCPHAN + " (" + MA_LOP + " TEXT PRIMARY KEY, " + TENLOP +
-                    " TEXT, " + NGAYBATDAU + " TEXT, " + NGAYKETTHUC + " TEXT, " +
-                    MA_LOP + " REFERENCES " + TB_LOPHOCPHAN + "(" + MA_LOP +
-                    "), " + MSSV + " REFERENCES " + TB_SINHVIEN + "(" + MSSV + "), " +
-                    MA_HOCKY + " REFERENCES " + TB_HOCKY + "(" + MA_HOCKY + "))";
+                    " TEXT, " + NGAYBATDAU + " REAL, " + NGAYKETTHUC + " REAL, " +
+                    MA_MONHOC + " REFERENCES " + TB_MONHOC + "(" + MA_MONHOC +
+                    "), " + MA_GIANGVIEN + " REFERENCES " + TB_GIANGVIEN + "(" + MA_GIANGVIEN +
+                    "))";
 
+    //endregion
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -144,6 +149,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
         onCreate(db);
     }
-
-
 }

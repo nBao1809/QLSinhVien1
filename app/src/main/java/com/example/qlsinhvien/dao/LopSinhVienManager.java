@@ -38,12 +38,16 @@ public class LopSinhVienManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_LOPSINHVIEN;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            lopSinhVienList.add(new LopSinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getString(3)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                lopSinhVienList.add(new LopSinhVien(c.getString(0), c.getString(1), c.getString(2), c.getString(3)));
+            } while (c.moveToNext());
             c.close();
             return lopSinhVienList;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }
@@ -53,18 +57,19 @@ public class LopSinhVienManager {
         LopSinhVien lopSinhVien = null;
         String[] selection = new String[]{maLopSinhVien};
         Cursor c = db.query(DatabaseHelper.TB_LOPSINHVIEN, null,
-                DatabaseHelper.MA_LOP +
-                        "= ?",
+                DatabaseHelper.MA_LOP + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
-            lopSinhVien = new LopSinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getString(3));
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
+            lopSinhVien = new LopSinhVien(c.getString(0), c.getString(1), c.getString(2), c.getString(3));
             c.close();
             return lopSinhVien;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }

@@ -1,8 +1,8 @@
 package com.example.qlsinhvien.Models;
 
 public class LopHocPhan {
-    private String maLop,tenLop,maMonHoc,maGiangVienPhuTrach;
-    private double ngayBatDau,ngayKetThuc;
+    private String maLop, tenLop, maMonHoc, maGiangVienPhuTrach;
+    private double ngayBatDau, ngayKetThuc;
 
     public String getMaLop() {
         return maLop;

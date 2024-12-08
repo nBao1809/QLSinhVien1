@@ -26,7 +26,7 @@ public DiemManager(Context context) {
         values.put(DatabaseHelper.MA_DIEM, diem.getMaDiem());
         values.put(DatabaseHelper.DIEMSO, diem.getDiemSo());
         values.put(DatabaseHelper.TRONGSO, diem.getMaLoaiDiem());
-        values.put(DatabaseHelper.TRONGSO, diem.getId());
+        values.put(DatabaseHelper.MA_LOPSINHVIEN, diem.getMaLopSinhVien());
 
         long rowInserted = db.insert(DatabaseHelper.TB_DIEM, null, values);
         db.close();
@@ -35,34 +35,42 @@ public DiemManager(Context context) {
     }
 
     public List<Diem> getAllDiem() {
-        diemList= new ArrayList<>();
+        diemList = new ArrayList<>();
         String query = "SELECT * FROM " + DatabaseHelper.TB_DIEM;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            diemList.add(new Diem(c.getInt(0), c.getDouble(1), c.getString(2),c.getInt(3)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                diemList.add(new Diem(c.getInt(0), c.getDouble(1), c.getString(2), c.getString(3)));
+            } while (c.moveToNext());
             c.close();
             return diemList;
         }
+        if (c != null) {
+            c.close();
+        }
         return null;
+
     }
     public Diem getDiem(int maDiem) {
         db = dbHelper.getReadableDatabase();
         Diem diem = null;
         String[] selection = new String[]{String.valueOf(maDiem)};
         Cursor c = db.query(DatabaseHelper.TB_DIEM, null,
-                DatabaseHelper.MA_DIEM +
-                        "= ?",
+                DatabaseHelper.MA_DIEM + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
-            diem = new Diem(c.getInt(0), c.getDouble(1), c.getString(2),c.getInt(3));
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
+            diem = new Diem(c.getInt(0), c.getDouble(1), c.getString(2), c.getString(3));
             c.close();
             return diem;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }
@@ -74,7 +82,7 @@ public DiemManager(Context context) {
         values.put(DatabaseHelper.MA_DIEM, Diem.getMaDiem());
         values.put(DatabaseHelper.DIEMSO, Diem.getDiemSo());
         values.put(DatabaseHelper.MA_LOAIDIEM, Diem.getMaLoaiDiem());
-        values.put(DatabaseHelper.ID, Diem.getId());
+        values.put(DatabaseHelper.MA_LOPSINHVIEN, Diem.getMaLopSinhVien());
 
         int rowsUpdated = db.update(
                 DatabaseHelper.TB_DIEM,

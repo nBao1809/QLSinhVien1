@@ -41,34 +41,51 @@ public class GiangVienManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_GIANGVIEN;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            giangVienList.add(new GiangVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getString(4), c.getInt(5)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                giangVienList.add(new GiangVien(
+                        c.getString(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getInt(3),
+                        c.getString(4),
+                        c.getInt(5)
+                ));
+            } while (c.moveToNext());
             c.close();
             return giangVienList;
         }
+
+        if (c != null) {
+            c.close();
+        }
+
         return null;
+
     }
-    public GiangVien getGiangVien(int maGiangVien) {
+    public GiangVien getGiangVien(String maGiangVien) {
         db = dbHelper.getReadableDatabase();
         GiangVien giangVien = null;
-        String[] selection = new String[]{String.valueOf(maGiangVien)};
+        String[] selection = new String[]{maGiangVien};
         Cursor c = db.query(DatabaseHelper.TB_GIANGVIEN, null,
-                DatabaseHelper.MA_GIANGVIEN +
-                        "= ?",
+                DatabaseHelper.MA_GIANGVIEN + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
             giangVien = new GiangVien(c.getString(0), c.getString(1), c.getString(2),
                     c.getInt(3), c.getString(4), c.getInt(5));
             c.close();
             return giangVien;
         }
+        if (c != null) {
+            c.close();
+        }
         return null;
+
     }
     public int updateGiangVien(GiangVien giangVien) {
         db = dbHelper.getWritableDatabase();

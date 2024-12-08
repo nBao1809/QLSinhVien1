@@ -37,11 +37,17 @@ public class LopHanhChinhManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_LOPHANHCHINH;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            lopHanhChinhList.add(new LopHanhChinh(c.getString(0), c.getString(1)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                lopHanhChinhList.add(new LopHanhChinh(c.getString(0), c.getString(1)));
+            } while (c.moveToNext());
             c.close();
             return lopHanhChinhList;
+        }
+
+        if (c != null) {
+            c.close();
         }
         return null;
     }
@@ -50,20 +56,23 @@ public class LopHanhChinhManager {
         LopHanhChinh lopHanhChinh = null;
         String[] selection = new String[]{maLopHanhChinh};
         Cursor c = db.query(DatabaseHelper.TB_LOPHANHCHINH, null,
-                DatabaseHelper.MA_LOPHANHCHINH +
-                        "= ?",
+                DatabaseHelper.MA_LOPHANHCHINH + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
             lopHanhChinh = new LopHanhChinh(c.getString(0), c.getString(1));
             c.close();
             return lopHanhChinh;
         }
+        if (c != null) {
+            c.close();
+        }
         return null;
     }
+
     public int updateLopHanhChinh(LopHanhChinh lopHanhChinh) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

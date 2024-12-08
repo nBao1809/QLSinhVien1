@@ -39,33 +39,39 @@ public class MonHocManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_MONHOC;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            monHocList.add(new MonHoc(c.getString(0), c.getString(1), c.getDouble(2),
-                    c.getString(3)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                monHocList.add(new MonHoc(c.getString(0), c.getString(1), c.getDouble(2), c.getString(3)));
+            } while (c.moveToNext());
             c.close();
             return monHocList;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }
 
     public MonHoc getMonHoc(String maMonHoc) {
         db = dbHelper.getReadableDatabase();
-        MonHoc monHoc= null;
+        MonHoc monHoc = null;
         String[] selection = new String[]{maMonHoc};
         Cursor c = db.query(DatabaseHelper.TB_MONHOC, null,
-                DatabaseHelper.MA_NGANH +
-                        "= ?",
+                DatabaseHelper.MA_MONHOC + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
-            monHoc = new MonHoc(c.getString(0), c.getString(1), c.getDouble(2),
-                    c.getString(3));
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
+            monHoc = new MonHoc(c.getString(0), c.getString(1), c.getDouble(2), c.getString(3));
             c.close();
             return monHoc;
+        }
+
+        if (c != null) {
+            c.close();
         }
         return null;
     }

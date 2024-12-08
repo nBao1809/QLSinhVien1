@@ -4,13 +4,13 @@ public class Diem {
     private int maDiem;
     private double diemSo;
     private String maLoaiDiem;
-    private int id;
+    private String maLopSinhVien;
 
-    public Diem(int maDiem, double diemSo, String maLoaiDiem, int id) {
+    public Diem(int maDiem, double diemSo, String maLoaiDiem, String maLopSinhVien) {
         this.maDiem = maDiem;
         this.diemSo = diemSo;
         this.maLoaiDiem = maLoaiDiem;
-        this.id = id;
+        this.maLopSinhVien = maLopSinhVien;
     }
 
     public int getMaDiem() {
@@ -37,12 +37,12 @@ public class Diem {
         this.maLoaiDiem = maLoaiDiem;
     }
 
-    public int getId() {
-        return id;
+    public String getMaLopSinhVien() {
+        return maLopSinhVien;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMaLopSinhVien(String maLopSinhVien) {
+        this.maLopSinhVien = maLopSinhVien;
     }
 
 }

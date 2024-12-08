@@ -15,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -24,6 +23,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    packaging.resources {
+        excludes.add("META-INF/NOTICE.md")
+        excludes.add("META-INF/LICENSE.md")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -37,10 +40,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.airbnb.android:lottie:6.6.0")
-    implementation ("com.sun.mail:javax.mail:1.6.2")
+    implementation(libs.lottie)
+    implementation(libs.android.mail)
+    implementation (libs.android.activation)
+
 }

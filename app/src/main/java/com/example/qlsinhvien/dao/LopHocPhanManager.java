@@ -14,6 +14,7 @@ public class LopHocPhanManager {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private List<LopHocPhan> lopHocPhanList;
+
     public LopHocPhanManager(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
@@ -40,35 +41,51 @@ public class LopHocPhanManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_LOPHOCPHAN;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            lopHocPhanList.add(new LopHocPhan(c.getString(0), c.getString(1),c.getDouble(2),
-                    c.getDouble(3),c.getString(4),c.getString(5)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                lopHocPhanList.add(new LopHocPhan(
+                        c.getString(0),
+                        c.getString(1),
+                        c.getDouble(2),
+                        c.getDouble(3),
+                        c.getString(4),
+                        c.getString(5)
+                ));
+            } while (c.moveToNext());
             c.close();
             return lopHocPhanList;
         }
+        if (c != null) {
+            c.close();
+        }
         return null;
     }
+
     public LopHocPhan getLopHocPhan(String maLopHocPhan) {
         db = dbHelper.getReadableDatabase();
         LopHocPhan lopHocPhan = null;
         String[] selection = new String[]{maLopHocPhan};
         Cursor c = db.query(DatabaseHelper.TB_LOPHOCPHAN, null,
-                DatabaseHelper.MA_LOP +
-                        "= ?",
+                DatabaseHelper.MA_LOP + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
-            lopHocPhan = new LopHocPhan(c.getString(0), c.getString(1),c.getDouble(2),
-                    c.getDouble(3),c.getString(4),c.getString(5));
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
+            lopHocPhan = new LopHocPhan(c.getString(0), c.getString(1), c.getDouble(2),
+                    c.getDouble(3), c.getString(4), c.getString(5));
             c.close();
             return lopHocPhan;
         }
+
+        if (c != null) {
+            c.close();
+        }
         return null;
     }
+
     public int updateLopHocPhan(LopHocPhan lopHocPhan) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

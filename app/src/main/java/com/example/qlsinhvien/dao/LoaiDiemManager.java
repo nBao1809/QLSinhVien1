@@ -38,11 +38,17 @@ public class LoaiDiemManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_LOAIDIEM;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            loaiDiemList.add(new LoaiDiem(c.getString(0), c.getString(1), c.getDouble(2)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                loaiDiemList.add(new LoaiDiem(c.getString(0), c.getString(1), c.getDouble(2)));
+            } while (c.moveToNext());
             c.close();
             return loaiDiemList;
+        }
+
+        if (c != null) {
+            c.close();
         }
         return null;
     }
@@ -51,17 +57,19 @@ public class LoaiDiemManager {
         LoaiDiem loaiDiem = null;
         String[] selection = new String[]{maLoaiDiem};
         Cursor c = db.query(DatabaseHelper.TB_LOAIDIEM, null,
-                DatabaseHelper.MA_LOAIDIEM +
-                        "= ?",
+                DatabaseHelper.MA_LOAIDIEM + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
             loaiDiem = new LoaiDiem(c.getString(0), c.getString(1), c.getDouble(2));
             c.close();
             return loaiDiem;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }

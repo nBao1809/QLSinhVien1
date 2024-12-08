@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,19 +15,18 @@
         android:theme="@style/Theme.QLSinhVien"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            />
+            android:name=".Activities.LoginActivity"
+            android:exported="false" />
         <activity
-            android:name=".fragment.SettingActivity"
+            android:name=".Activities.SettingActivity"
             android:exported="false"
-            android:parentActivityName=".fragment.SettingActivity" />
+            android:parentActivityName=".Activities.SettingActivity" />
         <activity
-            android:name=".InteractActivity"
+            android:name=".Activities.InteractActivity"
             android:exported="false"
-            android:parentActivityName=".LoginActivity" />
+            android:parentActivityName=".Activities.LoginActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

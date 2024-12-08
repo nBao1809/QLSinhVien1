@@ -1,4 +1,4 @@
-package com.example.qlsinhvien.fragment;
+package com.example.qlsinhvien.Fragments;
 
 import android.os.Bundle;
 

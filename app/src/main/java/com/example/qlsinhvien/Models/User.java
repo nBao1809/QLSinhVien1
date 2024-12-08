@@ -1,5 +1,9 @@
 package com.example.qlsinhvien.Models;
 
+import android.graphics.Bitmap;
+
+
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -7,9 +11,13 @@ public class User {
     private int ID;
     private String username;
     private String password;
-    private String photo;
+    private Bitmap photo;
     private String email;
     private String role;
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
     public int getID() {
         return ID;
@@ -26,17 +34,17 @@ public class User {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = hashPassword(password);
     }
-    public String getPhoto() {
+
+    public Bitmap getPhoto() {
         return photo;
     }
-
-    public void setPhoto(String photo) {
+    public void setPhoto(Bitmap photo) {
         this.photo = photo;
     }
+
     public String getEmail() {
         return email;
     }
@@ -53,8 +61,15 @@ public class User {
         this.role = role;
     }
 
-    public User(int ID, String username, String password, String email,String photo, String role) {
-        this.ID = ID;
+    public User(int ID, String username, String password, Bitmap photo,String email, String role) {
+        this.ID=ID;
+        this.username = username;
+        this.password = hashPassword(password);
+        this.photo=photo;
+        this.email = email;
+        this.role = role;
+    }
+    public User(String username, String password, Bitmap photo, String email, String role) {
         this.username = username;
         this.password = hashPassword(password);
         this.photo=photo;
@@ -75,5 +90,4 @@ public class User {
             throw new RuntimeException(e);
         }
     }
-
 }

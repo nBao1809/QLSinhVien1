@@ -1,4 +1,4 @@
-package com.example.qlsinhvien.fragment;
+package com.example.qlsinhvien.Fragments;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -21,12 +21,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
+import com.example.qlsinhvien.Models.MonHoc;
+import com.example.qlsinhvien.Models.Nganh;
+import com.example.qlsinhvien.dao.GiangVienManager;
+import com.example.qlsinhvien.dao.MonHocManager;
+import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.DatabaseHelper;
+import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.google.android.material.appbar.MaterialToolbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +84,11 @@ public class HomeFragment extends Fragment {
     LopHocPhanAdapter lopHocPhanAdapter;
     SearchView searchView;
     MaterialToolbar toolbar;
+    LopHocPhanManager lopHocPhanManager;
+    MonHocManager monHocManager;
+    GiangVienManager giangVienManager;
+    NganhManager nganhManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,10 +96,18 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recycleHocPhan = view.findViewById(R.id.recycleHocPhan);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+
+        lopHocPhanManager = new LopHocPhanManager(getContext());
+        giangVienManager = new GiangVienManager(getContext());
+        monHocManager = new MonHocManager(getContext());
+        nganhManager = new NganhManager(getContext());
+
         lopHocPhanAdapter = new LopHocPhanAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recycleHocPhan.setLayoutManager(linearLayoutManager);
-        lopHocPhanAdapter.setData(getListHocPhan());
+        lopHocPhanAdapter.setData(lopHocPhanManager.getAllLopHocPhan());
         recycleHocPhan.setAdapter(lopHocPhanAdapter);
         toolbar = view.findViewById(R.id.toolbar);
         OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
@@ -146,34 +164,37 @@ public class HomeFragment extends Fragment {
 
         });
         Menu menu = toolbar.getMenu();
-
+//        nganhManager.addNganh(new Nganh("N1", "Khoa Hoc May Tinh"));
+//        giangVienManager.addGiangVien(new GiangVien("GV1", "nguyen van a", "123456", 31, "CNTT", 8));
+//        monHocManager.addMonHoc(new MonHoc("ITEC123", "OOP", 2, "N1"));
+//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP1","LOP1",1,2,"ITEC123","GV1"));
         return view;
     }
 
 
-    private List<LopHocPhan> getListHocPhan() {
-        List<LopHocPhan> listHocPhan = new ArrayList<>();
-        for (int i = 0; i <= 3; i++) {
-            listHocPhan.add(new LopHocPhan("IT1", "OOP", 1,1 ,null,"Dương Hữu Thành"));
-        }
-        for (int i = 0; i <= 3; i++) {
-            listHocPhan.add(new LopHocPhan("CS1", "Công nghệ phần mềm", 1,1 ,null,"Dương Hữu " +
-                    "Thành"));
-        }
-        for (int i = 0; i <= 3; i++) {
-            listHocPhan.add(new LopHocPhan("IM1", "Lập trình trên thiết bị di động",1,1 ,null,
-                    "Dương Hữu Thành"));
-        }
-        for (int i = 0; i <= 3; i++) {
-            listHocPhan.add(new LopHocPhan("CS2", "Các công nghệ lập trình hiện đại",1,1 ,null
-                    ,"Dương Hữu Thành"));
-        }
-        for (int i = 0; i <= 3; i++) {
-            listHocPhan.add(new LopHocPhan("IT2", "Kĩ thuật lập trình", 1,1 ,null,"Dương " +
-                    "Hữu Thành"));
-        }
-        return listHocPhan;
-    }
+//    private List<LopHocPhan> getListHocPhan() {
+//        List<LopHocPhan> listHocPhan = new ArrayList<>();
+//        for (int i = 0; i <= 3; i++) {
+//            listHocPhan.add(new LopHocPhan("IT1", "OOP", 1,1 ,null,"Dương Hữu Thành"));
+//        }
+//        for (int i = 0; i <= 3; i++) {
+//            listHocPhan.add(new LopHocPhan("CS1", "Công nghệ phần mềm", 1,1 ,null,"Dương Hữu " +
+//                    "Thành"));
+//        }
+//        for (int i = 0; i <= 3; i++) {
+//            listHocPhan.add(new LopHocPhan("IM1", "Lập trình trên thiết bị di động",1,1 ,null,
+//                    "Dương Hữu Thành"));
+//        }
+//        for (int i = 0; i <= 3; i++) {
+//            listHocPhan.add(new LopHocPhan("CS2", "Các công nghệ lập trình hiện đại",1,1 ,null
+//                    ,"Dương Hữu Thành"));
+//        }
+//        for (int i = 0; i <= 3; i++) {
+//            listHocPhan.add(new LopHocPhan("IT2", "Kĩ thuật lập trình", 1,1 ,null,"Dương " +
+//                    "Hữu Thành"));
+//        }
+//        return listHocPhan;
+//    }
 
 }
 

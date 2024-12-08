@@ -5,12 +5,13 @@ public class SinhVien {
     private String hoTen;
     private String cccd;
     private double ngaySinh;
-    private String id;
+    private int id;
     private String maLopHanhChinh;
     private String maNganh;
 
-    // Constructor
-    public SinhVien(String mssv, String hoTen, String cccd, double ngaySinh, String id, String maLopHanhChinh, String maNganh) {
+
+    public SinhVien(String mssv, String hoTen, String cccd, double ngaySinh, int id,
+                    String maLopHanhChinh, String maNganh) {
         this.mssv = mssv;
         this.hoTen = hoTen;
         this.cccd = cccd;
@@ -20,7 +21,7 @@ public class SinhVien {
         this.maNganh = maNganh;
     }
 
-    // Getter và Setter
+
     public String getMssv() {
         return mssv;
     }
@@ -53,11 +54,11 @@ public class SinhVien {
         this.ngaySinh = ngaySinh;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

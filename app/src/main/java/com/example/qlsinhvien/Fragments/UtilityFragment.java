@@ -1,9 +1,7 @@
-package com.example.qlsinhvien.fragment;
+package com.example.qlsinhvien.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -14,26 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.qlsinhvien.InteractActivity;
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AccountFragment#newInstance} factory method to
+ * Use the {@link UtilityFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AccountFragment extends Fragment {
+public class UtilityFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public AccountFragment() {
+    public UtilityFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +41,11 @@ public class AccountFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AccountFragment.
+     * @return A new instance of fragment UtilityFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AccountFragment newInstance(String param1, String param2) {
-        AccountFragment fragment = new AccountFragment();
+    public static UtilityFragment newInstance(String param1, String param2) {
+        UtilityFragment fragment = new UtilityFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,13 +64,14 @@ public class AccountFragment extends Fragment {
 
     MaterialToolbar toolbar;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_utility, container, false);
         toolbar = view.findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menuaccount);
+        toolbar.inflateMenu(R.menu.menuutility);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -85,11 +84,7 @@ public class AccountFragment extends Fragment {
             }
         });
         Menu menu = toolbar.getMenu();
-        toolbar.setNavigationOnClickListener(v -> {
-            Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
-            startActivity(myIntent);
-        });
         return view;
-    }
 
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.qlsinhvien.fragment;
+package com.example.qlsinhvien.Activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -10,14 +10,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.qlsinhvien.LoginActivity;
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -72,6 +70,7 @@ public class SettingActivity extends AppCompatActivity {
         buttonsignout = findViewById(R.id.buttonsignout);
         buttonsignout.setOnClickListener(v -> {
             Intent myinIntent = new Intent(SettingActivity.this, LoginActivity.class);
+            myinIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(myinIntent);
             finish();
         });

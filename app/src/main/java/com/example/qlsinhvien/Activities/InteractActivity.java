@@ -1,38 +1,32 @@
-package com.example.qlsinhvien;
+package com.example.qlsinhvien.Activities;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.qlsinhvien.fragment.AccountFragment;
-import com.example.qlsinhvien.fragment.HomeFragment;
-import com.example.qlsinhvien.fragment.StatisticFragment;
-import com.example.qlsinhvien.fragment.UtilityFragment;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.example.qlsinhvien.Fragments.AccountFragment;
+import com.example.qlsinhvien.Fragments.HomeFragment;
+import com.example.qlsinhvien.Fragments.StatisticFragment;
+import com.example.qlsinhvien.Fragments.UtilityFragment;
+import com.example.qlsinhvien.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-
+SharedPreferences userRefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +50,7 @@ public class InteractActivity extends AppCompatActivity {
                         .show();
             }
         });
+        userRefs= this.getSharedPreferences("currentUser",MODE_PRIVATE);
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -69,12 +64,13 @@ public class InteractActivity extends AppCompatActivity {
                 } else if (id == R.id.stat) {
                     replaceFragment(new StatisticFragment());
                 } else if (id == R.id.account) {
-                    replaceFragment(new AccountFragment());
+                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID",-1)));
                 }
                 return true;
             }
         });
     }
+
 
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

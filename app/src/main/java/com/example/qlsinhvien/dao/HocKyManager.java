@@ -39,11 +39,16 @@ public class HocKyManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_HOCKY;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            HocKyList.add(new HocKy(c.getString(0), c.getString(1), c.getString(2)));
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                HocKyList.add(new HocKy(c.getString(0), c.getString(1), c.getString(2)));
+            } while (c.moveToNext());
             c.close();
             return HocKyList;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }
@@ -52,17 +57,19 @@ public class HocKyManager {
         HocKy hocKy = null;
         String[] selection = new String[]{maHocKy};
         Cursor c = db.query(DatabaseHelper.TB_HOCKY, null,
-                DatabaseHelper.MA_HOCKY +
-                        "= ?",
+                DatabaseHelper.MA_HOCKY + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
             hocKy = new HocKy(c.getString(0), c.getString(1), c.getString(2));
             c.close();
             return hocKy;
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }

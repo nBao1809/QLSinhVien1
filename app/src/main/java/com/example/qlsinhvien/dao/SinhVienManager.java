@@ -42,35 +42,39 @@ public class SinhVienManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_SINHVIEN;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
+        if (c != null && c.moveToFirst()) {
+
             sinhVienList.add(new SinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getString(4), c.getString(5), c.getString(6)));
+                    c.getInt(3), c.getInt(4), c.getString(5), c.getString(6)));
             c.close();
             return sinhVienList;
+
+        }
+        if (c != null) {
+            c.close();
         }
         return null;
     }
 
-    public SinhVien getSinhVien(int maSinhVien) {
+    public SinhVien getSinhVien(String maSinhVien) {
         db = dbHelper.getReadableDatabase();
         SinhVien sinhVien = null;
-        String[] selection = new String[]{String.valueOf(maSinhVien)};
+        String[] selection = new String[]{maSinhVien};
         Cursor c = db.query(DatabaseHelper.TB_SINHVIEN, null,
-                DatabaseHelper.MSSV +
-                        "= ?",
+                DatabaseHelper.MSSV + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
             sinhVien = new SinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getString(4), c.getString(5), c.getString(6));
+                    c.getInt(3), c.getInt(4), c.getString(5), c.getString(6));
             c.close();
             return sinhVien;
         }
         return null;
+
     }
 
     public int updateSinhVien(SinhVien sinhVien) {

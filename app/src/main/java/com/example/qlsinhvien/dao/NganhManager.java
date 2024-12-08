@@ -37,12 +37,17 @@ public class NganhManager {
         String query = "SELECT * FROM " + DatabaseHelper.TB_NGANH;
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-            nganhList.add(new Nganh(c.getString(0), c.getString(1)));
+
+        if (c != null &&c.moveToFirst()) {
+            do {
+                nganhList.add(new Nganh(c.getString(0), c.getString(1)));
+            } while (c.moveToNext());
             c.close();
-            return nganhList;
+                return nganhList;
         }
+            if (c != null) {
+                c.close();
+            }
         return null;
     }
     public Nganh getNganh(String maNganh) {
@@ -50,15 +55,14 @@ public class NganhManager {
         Nganh nganh = null;
         String[] selection = new String[]{maNganh};
         Cursor c = db.query(DatabaseHelper.TB_NGANH, null,
-                DatabaseHelper.MA_NGANH +
-                        "= ?",
+                DatabaseHelper.MA_NGANH + "= ?",
                 selection,
                 null,
-                null
-                , null);
-        if (c != null) {
-            c.moveToFirst();
-            nganh = new Nganh(c.getString(0), c.getString(1));
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
+                nganh = new Nganh(c.getString(0), c.getString(1));
             c.close();
             return nganh;
         }

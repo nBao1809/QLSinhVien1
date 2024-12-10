@@ -27,9 +27,9 @@ public class SinhVienManager {
         values.put(DatabaseHelper.HOTEN, sinhVien.getHoTen());
         values.put(DatabaseHelper.CCCD, sinhVien.getCccd());
         values.put(DatabaseHelper.NGAYSINH, sinhVien.getNgaySinh());
-        values.put(DatabaseHelper.KHOA, sinhVien.getId());
-        values.put(DatabaseHelper.ID, sinhVien.getMaLopHanhChinh());
-        values.put(DatabaseHelper.KHOA, sinhVien.getMaNganh());
+        values.put(DatabaseHelper.ID, sinhVien.getId());
+        values.put(DatabaseHelper.MA_LOPHANHCHINH, sinhVien.getMaLopHanhChinh());
+        values.put(DatabaseHelper.MA_NGANH, sinhVien.getMaNganh());
 
         long rowInserted = db.insert(DatabaseHelper.TB_SINHVIEN, null, values);
         db.close();

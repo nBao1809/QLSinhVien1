@@ -44,7 +44,8 @@ public class AccountFragment extends Fragment {
     ImageView imageView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_CURRENTUSER = "userID";
+    private static final String ARG_CURRENTUSER = "user";
+    private User currentUser;
     private int currentUserID;
 
     public AccountFragment() {
@@ -61,8 +62,9 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userManager=new UserManager(requireContext());
         if (getArguments() != null) {
-            currentUserID = getArguments().getInt(ARG_CURRENTUSER);
+            currentUser = userManager.getUserByID(getArguments().getInt(ARG_CURRENTUSER));
         }
     }
 
@@ -82,11 +84,10 @@ public class AccountFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
 
         userManager = new UserManager(requireContext());
-        User currentUser = userManager.getUserByID(currentUserID);
 
         imageView.setImageBitmap(currentUser.getPhoto());
-        txtTen.setText(userManager.getUserByID(currentUser.getID()).getUsername());
-        txtMail.setText(userManager.getUserByID(currentUser.getID()).getEmail());
+        txtTen.setText(currentUser.getUsername());
+        txtMail.setText(currentUser.getEmail());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuaccount);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -132,7 +133,7 @@ public class AccountFragment extends Fragment {
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePicker.launch(intent);
         });
-userManager.sendEmail("tonhatbao@gmail.com");
+//userManager.sendEmail("tonhatbao@gmail.com");
         imagePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -141,7 +142,8 @@ userManager.sendEmail("tonhatbao@gmail.com");
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
                             imageView.setImageBitmap(bitmap);
-                            userManager.updatePhoto(currentUser.getID(), bitmap);
+                            currentUser.setPhoto(bitmap);
+                            userManager.updateUser(currentUser);
                         } catch (IOException e) {
                             e.printStackTrace();
                             Toast.makeText(requireContext(), "Lỗi khi xử lý ảnh!", Toast.LENGTH_SHORT).show();

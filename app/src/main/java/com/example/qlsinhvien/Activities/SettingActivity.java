@@ -54,6 +54,10 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
         buttonpasschange = findViewById(R.id.buttonpasschange);
+        buttonpasschange.setOnClickListener(v -> {
+            Intent myinIntent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
+            startActivity(myinIntent);
+        });
         buttonexit = findViewById(R.id.buttonexit);
         buttonexit.setOnClickListener(new View.OnClickListener() {
             @Override

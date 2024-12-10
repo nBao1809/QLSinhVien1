@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.MonHoc;
+import com.example.qlsinhvien.Models.Nganh;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
 import com.example.qlsinhvien.dao.GiangVienManager;
@@ -57,10 +58,13 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
         LopHocPhan lopHocPhan = listHocPhan.get(position);
         if (lopHocPhan == null)
             return;
-        holder.txtNganh.setText(nganhManager.getNganh(
-                monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getMaNganh()).getTenNganh());
-        holder.txtMonHoc.setText(monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getTenMonHoc());
-        holder.txtGVPhuTrach.setText(giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach()).getHoTen());
+        MonHoc monHoc =monHocManager.getMonHoc(lopHocPhan.getMaMonHoc());
+        Nganh nganh =nganhManager.getNganh(monHoc.getMaNganh());
+        GiangVien giangVien=giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach());
+
+        holder.txtNganh.setText(nganh.getTenNganh());
+        holder.txtMonHoc.setText(monHoc.getTenMonHoc());
+        holder.txtGVPhuTrach.setText(giangVien.getHoTen());
         holder.txtLop.setText(lopHocPhan.getTenLop());
     }
 

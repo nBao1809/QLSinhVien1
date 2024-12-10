@@ -29,7 +29,7 @@ public class UserManager {
 
     private SQLiteDatabase db;
     private List<User> userList;
-    SharedPreferences  otpRefs;
+    SharedPreferences otpRefs;
     SharedPreferences.Editor otpEditor;
 
     public UserManager(Context context) {
@@ -37,11 +37,12 @@ public class UserManager {
         otpRefs = context.getSharedPreferences("OTP",
                 MODE_PRIVATE);
         otpEditor = otpRefs.edit();
+
     }
 
     public long addUser(User user) {
-        User isUserExits= getUserByUserName(user.getUsername());
-        if (isUserExits!=null){
+        User isUserExits = getUserByUserName(user.getUsername());
+        if (isUserExits != null) {
             return -1;
         }
         db = dbHelper.getWritableDatabase();
@@ -69,7 +70,7 @@ public class UserManager {
                 byte[] imageBytes = c.getBlob(3);
                 Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 userList.add(new User(c.getInt(0), c.getString(1), c.getString(2),
-                       image , c.getString(4), c.getString(5)));
+                        image, c.getString(4), c.getString(5)));
             } while (c.moveToNext());
             c.close();
             return userList;
@@ -101,6 +102,7 @@ public class UserManager {
         }
         return null;
     }
+
     public User getUserByUserName(String username) {
         db = dbHelper.getReadableDatabase();
         User user = null;
@@ -137,7 +139,7 @@ public class UserManager {
             values.put(DatabaseHelper.EMAIL, user.getEmail());
         }
         if (user.getPhoto() != null) {
-            byte[] imageBytes=getBitmapAsByteArray(resizeImage( user.getPhoto()));
+            byte[] imageBytes = getBitmapAsByteArray(resizeImage(user.getPhoto()));
             values.put(DatabaseHelper.PHOTO, imageBytes);
         }
         if (user.getRole() != null) {
@@ -149,25 +151,6 @@ public class UserManager {
                 values,
                 DatabaseHelper.ID + " = ?",
                 new String[]{String.valueOf(user.getID())}
-        );
-        db.close();//>0 thành công =0 ko thành công
-        return rowsUpdated;
-    }
-
-    public int updatePhoto(int ID,Bitmap photo) {
-        db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        if (photo != null) {
-            byte[]imageBytes=getBitmapAsByteArray(resizeImage(photo));
-            values.put(DatabaseHelper.PHOTO, imageBytes);
-        }
-
-        int rowsUpdated = db.update(
-                DatabaseHelper.TB_USERS,
-                values,
-                DatabaseHelper.ID + " = ?",
-                new String[]{String.valueOf(ID)}
         );
         db.close();//>0 thành công =0 ko thành công
         return rowsUpdated;
@@ -194,8 +177,8 @@ public class UserManager {
                 selection,
                 null, null
                 , null);
-        if (c != null&&c.moveToFirst()) {
-            Bitmap image= BitmapFactory.decodeByteArray(c.getBlob(3),0,c.getBlob(3).length);
+        if (c != null && c.moveToFirst()) {
+            Bitmap image = BitmapFactory.decodeByteArray(c.getBlob(3), 0, c.getBlob(3).length);
             user = new User(c.getInt(0), c.getString(1), c.getString(2),
                     image, c.getString(4), c.getString(5));
 
@@ -209,10 +192,7 @@ public class UserManager {
     }
 
 
-
-
-
-    public void sendEmail(final String toEmail) {
+    public void sendEmail(String toEmail,String OTP) {
         String fromEmail = "qlsinhvien0@gmail.com";
         String password = "zonb hknp gsxw autw";
         /*
@@ -220,11 +200,93 @@ public class UserManager {
         app-pass mail:zonb hknp gsxw autw
         pass: qlsinhvien123
         */
-        String otp = generateOTP();
-        otpEditor.putString("otp", otp);
-        otpEditor.putLong("otp_time", System.currentTimeMillis());
+        String otp = OTP;
+        String body = "<!DOCTYPE html>\n" +
+                "<html lang=\"vi\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Xác thực thay đổi mật khẩu</title>\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            background-color: #f4f4f9;\n" +
+                "            margin: 0;\n" +
+                "            padding: 0;\n" +
+                "        }\n" +
+                "        .email-container {\n" +
+                "            max-width: 600px;\n" +
+                "            margin: 0 auto;\n" +
+                "            background-color: #ffffff;\n" +
+                "            padding: 20px;\n" +
+                "            border-radius: 8px;\n" +
+                "            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n" +
+                "        }\n" +
+                "        .email-header {\n" +
+                "            text-align: center;\n" +
+                "            background-color: #4CAF50;\n" +
+                "            color: #ffffff;\n" +
+                "            padding: 20px;\n" +
+                "            border-radius: 8px;\n" +
+                "        }\n" +
+                "        .email-header h1 {\n" +
+                "            margin: 0;\n" +
+                "        }\n" +
+                "        .email-body {\n" +
+                "            margin-top: 20px;\n" +
+                "            font-size: 16px;\n" +
+                "            color: #333;\n" +
+                "        }\n" +
+                "        .email-body p {\n" +
+                "            line-height: 1.6;\n" +
+                "        }\n" +
+                "        .otp-code {\n" +
+                "            font-size: 24px;\n" +
+                "            font-weight: bold;\n" +
+                "            color: #4CAF50;\n" +
+                "            margin-top: 10px;\n" +
+                "        }\n" +
+                "        .footer {\n" +
+                "            margin-top: 30px;\n" +
+                "            text-align: center;\n" +
+                "            font-size: 14px;\n" +
+                "            color: #777;\n" +
+                "        }\n" +
+                "        .footer a {\n" +
+                "            color: #4CAF50;\n" +
+                "            text-decoration: none;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "\n" +
+                "<div class=\"email-container\">\n" +
+                "    <div class=\"email-header\">\n" +
+                "        <h1>Xác nhận thay đổi mật khẩu</h1>\n" +
+                "    </div>\n" +
+                "\n" +
+                "    <div class=\"email-body\">\n" +
+                "        <p>Chào bạn,</p>\n" +
+                "        <p>Chúng tôi nhận được yêu cầu thay đổi mật khẩu từ tài khoản của bạn. Để bảo mật tài khoản của bạn, vui lòng nhập mã OTP dưới đây vào ứng dụng của chúng tôi để xác nhận thay đổi mật khẩu:</p>\n" +
+                "\n" +
+                "        <div class=\"otp-code\">\n" +
+                "            Mã OTP của bạn: <strong>" + otp + "</strong>\n" +
+                "        </div>\n" +
+                "\n" +
+                "        <p>Mã OTP này có hiệu lực trong vòng 10 phút. Nếu bạn không yêu cầu thay đổi mật khẩu, vui lòng bỏ qua email này.</p>\n" +
+                "        <p>Trân trọng,</p>\n" +
+                "        <p><strong>Đội ngũ hỗ trợ</strong><br/>Ứng dụng XYZ</p>\n" +
+                "    </div>\n" +
+                "\n" +
+                "    <div class=\"footer\">\n" +
+                "        <p>Nếu bạn gặp vấn đề, vui lòng liên hệ với chúng tôi qua <a href=\"mailto:support@xyz.com\">support@xyz.com</a>.</p>\n" +
+                "    </div>\n" +
+                "</div>\n" +
+                "\n" +
+                "</body>\n" +
+                "</html>\n";
         String messageBody = "Mã OTP đổi mật khẩu: " + otp;
-        String subject = "Đổi mật khẩu";
+        String subject = "Xác thực yêu cầu thay đổi mật khẩu của bạn";
         // Tạo một AsyncTask để gửi email không làm treo UI thread
         AsyncTask.execute(new Runnable() {
             @Override
@@ -250,7 +312,7 @@ public class UserManager {
                     message.setFrom(new InternetAddress(fromEmail));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject(subject);
-                    message.setText(messageBody);
+                    message.setContent(body, "text/html;charset=UTF-8");
 
                     // Gửi email
                     Transport.send(message);
@@ -261,30 +323,33 @@ public class UserManager {
             }
         });
     }
-    public static String generateOTP() {
+
+    public static String generateOTP( ) {
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
+    }
+
+    public boolean changePassword(String password, User user) {
+
+        user.setPassword(password);
+        db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.PASSWORD, user.getPassword());
+        int rowUpdated = db.update(DatabaseHelper.TB_USERS, values, "ID= ?", new String[]{
+                String.valueOf(user.getID())
+        });
+        return rowUpdated > 0;
+//            }
+//            else {
+//            nhap sai otp
+//            }
 
     }
 
-    public boolean changePassword(String password, String inputOTP) {
-        long currentTime = System.currentTimeMillis();
-        String otp = otpRefs.getString("otp", "");
-        long otpTime = otpRefs.getLong("otp_time", 0);
-        long timeElapsed = currentTime - otpTime;
-        if (timeElapsed <= 300000) {
-            if (otp.equals(inputOTP)) {
-                // đổi pass o day
-            } else {
-//                nhap sai otp
-            }
-        }
-        return false;
-    }
     private Bitmap resizeImage(Bitmap originalBitmap) {
-        int maxWidth,maxHeight;
-        maxWidth=maxHeight=800;
+        int maxWidth, maxHeight;
+        maxWidth = maxHeight = 800;
         int width = originalBitmap.getWidth();
         int height = originalBitmap.getHeight();
 
@@ -308,7 +373,7 @@ public class UserManager {
 
     public byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
         return outputStream.toByteArray();
     }
 }

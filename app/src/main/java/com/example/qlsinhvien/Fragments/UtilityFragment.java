@@ -1,5 +1,6 @@
 package com.example.qlsinhvien.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -10,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -63,6 +66,7 @@ public class UtilityFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
+    Button btnQuanLyLopHoc;
 
 
     @Override
@@ -84,6 +88,14 @@ public class UtilityFragment extends Fragment {
             }
         });
         Menu menu = toolbar.getMenu();
+        btnQuanLyLopHoc=view.findViewById(R.id.btnQuanLyLopHoc);
+        btnQuanLyLopHoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(requireActivity(), QuanLyLopHocActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
 
     }

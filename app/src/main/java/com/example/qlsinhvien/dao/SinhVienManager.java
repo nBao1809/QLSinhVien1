@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.qlsinhvien.Models.SinhVien;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SinhVienManager {
@@ -27,9 +29,9 @@ public class SinhVienManager {
         values.put(DatabaseHelper.HOTEN, sinhVien.getHoTen());
         values.put(DatabaseHelper.CCCD, sinhVien.getCccd());
         values.put(DatabaseHelper.NGAYSINH, sinhVien.getNgaySinh());
-        values.put(DatabaseHelper.KHOA, sinhVien.getId());
-        values.put(DatabaseHelper.ID, sinhVien.getMaLopHanhChinh());
-        values.put(DatabaseHelper.KHOA, sinhVien.getMaNganh());
+        values.put(DatabaseHelper.ID, sinhVien.getId());
+        values.put(DatabaseHelper.MA_LOPHANHCHINH, sinhVien.getMaLopHanhChinh());
+        values.put(DatabaseHelper.MA_NGANH, sinhVien.getMaNganh());
 
         long rowInserted = db.insert(DatabaseHelper.TB_SINHVIEN, null, values);
         db.close();
@@ -77,6 +79,56 @@ public class SinhVienManager {
 
     }
 
+
+    public List<SinhVien> getSinhVienByMSSVList(List<String> mssvList) {
+        List<SinhVien> sinhVienList = new ArrayList<>();
+        if (mssvList.isEmpty()) return sinhVienList;
+
+        db = dbHelper.getReadableDatabase();
+        String selection = DatabaseHelper.MSSV + " IN (" + makePlaceholders(mssvList.size()) + ")";
+        String[] selectionArgs = mssvList.toArray(new String[0]);
+        Log.d("SQL_Query", "Selection: " + selection);
+        Log.d("SQL_Query", "SelectionArgs: " + Arrays.toString(selectionArgs));
+
+        Cursor c = db.query(
+                DatabaseHelper.TB_SINHVIEN,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                SinhVien sinhVien = new SinhVien(
+                        c.getString(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getDouble(3),
+                        c.getInt(4),
+                        c.getString(5),
+                        c.getString(6)
+                );
+                sinhVienList.add(sinhVien);
+            } while (c.moveToNext());
+            c.close();
+        }
+        Log.d("SQL_Query", "sinhvienList: " + sinhVienList);
+        return sinhVienList;
+    }
+
+    // Hàm tạo placeholders
+    private String makePlaceholders(int count) {
+        if (count <= 0) return "";
+        StringBuilder placeholders = new StringBuilder("?");
+        for (int i = 1; i < count; i++) {
+            placeholders.append(", ?");
+        }
+        return placeholders.toString();
+    }
+
     public int updateSinhVien(SinhVien sinhVien) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -85,9 +137,9 @@ public class SinhVienManager {
         values.put(DatabaseHelper.HOTEN, sinhVien.getHoTen());
         values.put(DatabaseHelper.CCCD, sinhVien.getCccd());
         values.put(DatabaseHelper.NGAYSINH, sinhVien.getNgaySinh());
-        values.put(DatabaseHelper.KHOA, sinhVien.getId());
-        values.put(DatabaseHelper.ID, sinhVien.getMaLopHanhChinh());
-        values.put(DatabaseHelper.KHOA, sinhVien.getMaNganh());
+        values.put(DatabaseHelper.ID, sinhVien.getId());
+        values.put(DatabaseHelper.MA_LOPHANHCHINH, sinhVien.getMaLopHanhChinh());
+        values.put(DatabaseHelper.MA_NGANH, sinhVien.getMaNganh());
 
         int rowsUpdated = db.update(
                 DatabaseHelper.TB_SINHVIEN,
@@ -109,4 +161,5 @@ public class SinhVienManager {
 
         return rowsDeleted; // Trả về số dòng bị xóa, >0 nếu xóa thành công, 0 nếu không có gì bị xóa
     }
+
 }

@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.MonHoc;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
@@ -20,89 +23,39 @@ import com.example.qlsinhvien.StringUtility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ClassViewHolder> implements Filterable {
+public class MonHocAdapter extends ArrayAdapter<MonHoc> {
 
-    private Context context;
-    private List<MonHoc> monHocList, monHocListOld;
-
-
-    public MonHocAdapter(Context context) {
-        this.context = context;
-
-    }
-
-    public void setData(List<MonHoc> monHocList) {
-        this.monHocList = monHocList;
-        this.monHocListOld = monHocList;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
-    public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemlophocphan, parent, false);
-        return new ClassViewHolder(view);
-    }
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.itemgiangvienselected,parent,false);
+        TextView txtSelected = convertView.findViewById(R.id.txtSelected);
 
-    @Override
-    public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
-        MonHoc monHoc = monHocList.get(position);
-        if (monHoc == null)
-            return;
-        //holder.txtNganh.setText(diem.getMaMonHoc())
-    }
-
-    @Override
-    public int getItemCount() {
-        if (monHocList != null)
-            return monHocList.size();
-        return 0;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String searchString = StringUtility.removeMark(constraint.toString().toLowerCase());
-                if (searchString.isEmpty()) {
-                    monHocList = monHocListOld;
-                } else {
-                    List<MonHoc> list = new ArrayList<>();
-                    for (MonHoc monHoc : monHocListOld) {
-                        String maMonHoc =
-                                StringUtility.removeMark(monHoc.getMaMonHoc().toLowerCase());
-                        String tenMonHoc =
-                                StringUtility.removeMark(monHoc.getTenMonHoc().toLowerCase());
-                        if (tenMonHoc.contains(searchString)) {
-                            list.add(monHoc);
-                        }
-                        if (maMonHoc.contains(searchString)) {
-                            list.add(monHoc);
-                        }
-                    }
-                    monHocListOld = list;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = monHocList;
-                return filterResults;
+        MonHoc monHoc= this.getItem(position);
+        {
+            if(monHoc!=null){
+                txtSelected.setText(monHoc.getTenMonHoc());
             }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                monHocListOld = (List<MonHoc>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public class ClassViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNganh, txtMonHoc, txtGVPhuTrach, txtLop;
-
-        public ClassViewHolder(@NonNull View itemView) {
-            super(itemView);
-            //txtNganh = itemView.findViewById(R.id.txtNganh);
         }
+        return convertView;
     }
 
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.itemchongiangvien,parent,false);
+        TextView txtChonMonHoc = convertView.findViewById(R.id.txtChonGiangVien);
+
+        MonHoc monHoc= this.getItem(position);
+        {
+            if(monHoc!=null){
+                txtChonMonHoc.setText(monHoc.getTenMonHoc());
+            }
+        }
+        return convertView;
+    }
+
+    public MonHocAdapter(@NonNull Context context, int resource, @NonNull List<MonHoc> objects) {
+        super(context, resource, objects);
+    }
 }

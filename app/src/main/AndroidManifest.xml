@@ -15,6 +15,21 @@
         android:theme="@style/Theme.QLSinhVien"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.QuanLyDiemvaInforSinhVien"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLySinhVienActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLyLopHocActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DiemSinhVien"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DanhSachLopSinhVienActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.LoginActivity"
             android:exported="false" />
         <activity

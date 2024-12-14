@@ -25,7 +25,7 @@ public DiemManager(Context context) {
 
         values.put(DatabaseHelper.MA_DIEM, diem.getMaDiem());
         values.put(DatabaseHelper.DIEMSO, diem.getDiemSo());
-        values.put(DatabaseHelper.TRONGSO, diem.getMaLoaiDiem());
+        values.put(DatabaseHelper.MA_LOAIDIEM, diem.getMaLoaiDiem());
         values.put(DatabaseHelper.MA_LOPSINHVIEN, diem.getMaLopSinhVien());
 
         long rowInserted = db.insert(DatabaseHelper.TB_DIEM, null, values);
@@ -74,6 +74,46 @@ public DiemManager(Context context) {
         }
         return null;
     }
+    public Diem getDiemfromLopSinhVienID(String maLopSinhVien) {
+        db = dbHelper.getReadableDatabase();
+        Diem diem = null;
+        String[] selection = new String[]{String.valueOf(maLopSinhVien)};
+        Cursor c = db.query(DatabaseHelper.TB_DIEM, null,
+                DatabaseHelper.MA_LOPSINHVIEN + "= ?",
+                selection,
+                null,
+                null,
+                null);
+
+        if (c != null && c.moveToFirst()) {
+            diem = new Diem(c.getInt(0), c.getDouble(1), c.getString(2), c.getString(3));
+            c.close();
+            return diem;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+    public List<Diem> getDiemfromMalopsinhvien(String maLopSinhVien) {
+        diemList = new ArrayList<>();
+        String query = "SELECT * "+" FROM " + DatabaseHelper.TB_DIEM +" WHERE "+DatabaseHelper.MA_LOPSINHVIEN+" =?";
+        db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(query, new String[]{maLopSinhVien});
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                diemList.add(new Diem(c.getInt(0), c.getDouble(1), c.getString(2), c.getString(3)));
+            } while (c.moveToNext());
+            c.close();
+            return diemList;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+
 
     public int updateDiem(Diem Diem) {
         db = dbHelper.getWritableDatabase();

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.HomeFragment">
+    tools:context=".Activities.DanhSachLopSinhVienActivity"
+    android:id="@+id/main">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -18,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/bottomnav"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/Home"
+            app:navigationIcon="@drawable/backicon"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,12 +36,12 @@
 
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txtLop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="@string/List"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="26sp"
@@ -53,14 +54,28 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textAlignment="center"
-                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="italic"/>
+                android:textStyle="italic"
+                android:textColor="@color/black"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycleHocPhan"
+                android:id="@+id/recycleSinhVien"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbtnThem"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/fbuttoncolor"
+        android:clickable="true"
+        android:contentDescription="themLopHocPhan"
+        app:srcCompat="@drawable/addicon"
+        app:tint="@color/white" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,8 @@
 package com.example.qlsinhvien.Models;
 
-public class LopHocPhan {
+import java.io.Serializable;
+
+public class LopHocPhan implements Serializable {
     private String maLop, tenLop, maMonHoc, maGiangVienPhuTrach;
     private double ngayBatDau, ngayKetThuc;
 

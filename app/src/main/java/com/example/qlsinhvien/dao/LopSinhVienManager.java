@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.example.qlsinhvien.Models.HocKy;
 import com.example.qlsinhvien.Models.LopSinhVien;
 
 import java.util.ArrayList;
@@ -51,7 +53,56 @@ public class LopSinhVienManager {
         }
         return null;
     }
+    public List<String> getMSSVfromMalop(String maLop) {
+        List<String> mssvList = new ArrayList<>();
+        String query = "SELECT "+DatabaseHelper.MSSV+" FROM " + DatabaseHelper.TB_LOPSINHVIEN +" WHERE "+DatabaseHelper.MA_LOP+" =?";
+        db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(query, new String[]{maLop});
 
+        if (c != null && c.moveToFirst()) {
+            do {
+                mssvList.add(c.getString(0));
+            } while (c.moveToNext());
+            c.close();
+            return mssvList;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+    public String getMaHocKyfromMalop(String maLop) {
+        db = dbHelper.getReadableDatabase();
+        String maHocKy ;
+        String query = "SELECT "+DatabaseHelper.MA_HOCKY+" FROM " + DatabaseHelper.TB_LOPSINHVIEN +" WHERE " +DatabaseHelper.MA_LOP+" =?";
+        Cursor c = db.rawQuery(query,new String[]{maLop});
+
+        if (c != null && c.moveToFirst()) {
+            maHocKy = c.getString(0);
+            c.close();
+            return maHocKy;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+    public String getMaLopSinhVienfromMalopMSSV(String maLop, String MSSV) {
+        db = dbHelper.getReadableDatabase();
+        String maLopSinhVien ;
+        String query = "SELECT "+DatabaseHelper.MA_LOPSINHVIEN+" FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE "+ DatabaseHelper.MA_LOP +" =? " +" AND " +DatabaseHelper.MSSV+" =? ";
+        Cursor c = db.rawQuery(query,new String[]{maLop,MSSV});
+
+        if (c != null && c.moveToFirst()) {
+            maLopSinhVien = c.getString(0);
+            c.close();
+            return maLopSinhVien;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
     public LopSinhVien getLopSinhVien(String maLopSinhVien) {
         db = dbHelper.getReadableDatabase();
         LopSinhVien lopSinhVien = null;
@@ -73,6 +124,7 @@ public class LopSinhVienManager {
         }
         return null;
     }
+
 
     public int updateLopSinhVien(LopSinhVien lopSinhVien) {
         db = dbHelper.getWritableDatabase();

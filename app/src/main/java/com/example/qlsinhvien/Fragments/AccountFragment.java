@@ -44,8 +44,8 @@ public class AccountFragment extends Fragment {
     ImageView imageView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_CURRENTUSER = "userID";
-    private int currentUserID;
+    private static final String ARG_CURRENTUSER = "user";
+    private User currentUser;
 
     public AccountFragment() {
     }
@@ -61,8 +61,9 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userManager = new UserManager(requireContext());
         if (getArguments() != null) {
-            currentUserID = getArguments().getInt(ARG_CURRENTUSER);
+            currentUser = userManager.getUserByID(getArguments().getInt(ARG_CURRENTUSER));
         }
     }
 
@@ -73,20 +74,22 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        TextView txtTen, txtMail;
+        TextView txtUsername, txtMail, txtRole, txtName;
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-
-        txtTen = view.findViewById(R.id.txtTen);
+        txtName = view.findViewById(R.id.txtNameUser);
+        txtRole = view.findViewById(R.id.txtRole);
+        txtUsername = view.findViewById(R.id.txtTen);
         txtMail = view.findViewById(R.id.txtmail);
 
         imageView = view.findViewById(R.id.imageView);
 
         userManager = new UserManager(requireContext());
-        User currentUser = userManager.getUserByID(currentUserID);
 
         imageView.setImageBitmap(currentUser.getPhoto());
-        txtTen.setText(userManager.getUserByID(currentUser.getID()).getUsername());
-        txtMail.setText(userManager.getUserByID(currentUser.getID()).getEmail());
+        txtUsername.setText(currentUser.getUsername());
+        txtMail.setText(currentUser.getEmail());
+        txtName.setText(currentUser.getUsername());
+        txtRole.setText(currentUser.getRole());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuaccount);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -132,6 +135,7 @@ public class AccountFragment extends Fragment {
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePicker.launch(intent);
         });
+
         imagePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

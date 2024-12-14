@@ -23,16 +23,16 @@ import java.util.List;
 
 public class LopHanhChinhAdapter extends RecyclerView.Adapter<LopHanhChinhAdapter.ClassViewHolder> implements Filterable {
 
-    private Context context;
     private List<LopHanhChinh> lopHanhChinhList, lopHanhChinhListOld;
 
 
-    public LopHanhChinhAdapter(Context context) {
-        this.context = context;
+    public LopHanhChinhAdapter() {
 
     }
 
     public void setData(List<LopHanhChinh> lopHanhChinhList) {
+        if(lopHanhChinhList==null)
+            return;
         this.lopHanhChinhList = lopHanhChinhList;
         this.lopHanhChinhListOld = lopHanhChinhList;
         notifyDataSetChanged();
@@ -82,7 +82,7 @@ public class LopHanhChinhAdapter extends RecyclerView.Adapter<LopHanhChinhAdapte
                             list.add(lopHanhChinh);
                         }
                     }
-                    lopHanhChinhListOld = list;
+                    lopHanhChinhList = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = lopHanhChinhList;

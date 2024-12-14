@@ -23,10 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
-import com.example.qlsinhvien.Models.GiangVien;
-import com.example.qlsinhvien.Models.LopHocPhan;
-import com.example.qlsinhvien.Models.MonHoc;
-import com.example.qlsinhvien.Models.Nganh;
+
 import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.MonHocManager;
 import com.example.qlsinhvien.dao.NganhManager;
@@ -111,10 +108,11 @@ public class HomeFragment extends Fragment {
         onBackPressedDispatcher.addCallback(requireActivity(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                if(searchView!=null){
                 if (!searchView.isIconified()) {
                     searchView.setIconified(true);
                     return;
-                }
+                }}
                 new AlertDialog.Builder(requireActivity())
                         .setTitle("Xác nhận").setIcon(R.drawable.checkicon)
                         .setMessage("Bạn có muốn đăng xuất không?")
@@ -134,8 +132,11 @@ public class HomeFragment extends Fragment {
                     SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
                     searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
-                    assert searchView != null;
-                    searchView.setQueryHint("Tìm theo tên hoặc môn học");
+
+                    if (searchView != null) {
+                        searchView.setQueryHint("Tìm theo tên môn học");
+                    }
+
 
                     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
@@ -161,6 +162,7 @@ public class HomeFragment extends Fragment {
 
         });
         Menu menu = toolbar.getMenu();
+
 //        nganhManager.addNganh(new Nganh("N2", "Khoa Hoc May Tinh"));
 //        giangVienManager.addGiangVien(new GiangVien("GV2", "nguyen van a", "123456", 31, "CNTT", 8));
 //        monHocManager.addMonHoc(new MonHoc("ITEC101", "Data Structure", 2, "N2"));
@@ -195,6 +197,25 @@ public class HomeFragment extends Fragment {
             lopHocPhanAdapter.release();
         }
     }
+
+//        nganhManager.addNganh(new Nganh("N1", "Khoa Hoc May Tinh"));
+//        giangVienManager.addGiangVien(new GiangVien("GV1", "nguyen van a", "123456", 31, "CNTT",
+//                1));
+//        monHocManager.addMonHoc(new MonHoc("ITEC123", "OOP", 2, "N1"));
+//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP1","LOP1",1,2,"ITEC123","GV1"));
+//
+//        nganhManager.addNganh(new Nganh("N2", "Luat"));
+//        giangVienManager.addGiangVien(new GiangVien("GV2", "nguyen van B", "123456", 31, "Luat",
+//                2));
+//        monHocManager.addMonHoc(new MonHoc("LUAT1", "Mon LUAT", 2, "N2"));
+//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP2","LOP2",1,2,"LUAT1","GV2"));
+//
+//        nganhManager.addNganh(new Nganh("N3", "Kien Truc"));
+//        giangVienManager.addGiangVien(new GiangVien("GV3", "Khang", "123456", 31, "CNTT",
+//                3));
+//        monHocManager.addMonHoc(new MonHoc("KT1", "KT", 2, "N3"));
+//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP3","LOP3",1,2,"KT1","GV3"));
+
 }
 
 

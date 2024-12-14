@@ -20,7 +20,9 @@ import com.example.qlsinhvien.Fragments.AccountFragment;
 import com.example.qlsinhvien.Fragments.HomeFragment;
 import com.example.qlsinhvien.Fragments.StatisticFragment;
 import com.example.qlsinhvien.Fragments.UtilityFragment;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -39,6 +41,9 @@ public class InteractActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        userManager = new UserManager(this);
+        userRefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        User currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
         onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -56,9 +61,12 @@ public class InteractActivity extends AppCompatActivity {
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            int isDisplay = -1;
+
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+
                 if (id == R.id.home && id != idc) {
                     replaceFragment(new HomeFragment());
 

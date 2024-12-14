@@ -56,8 +56,8 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     }
 
 
-
     public void setData(List<SinhVien> sinhVienList, Boolean bool) {
+
         this.sinhVienList = sinhVienList;
         this.sinhVienListOld = sinhVienList;
         this.bool = bool;
@@ -145,6 +145,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
 
                     }
                     sinhVienList = list;
+
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = sinhVienList;

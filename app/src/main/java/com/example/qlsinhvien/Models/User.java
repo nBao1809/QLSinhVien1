@@ -3,11 +3,11 @@ package com.example.qlsinhvien.Models;
 import android.graphics.Bitmap;
 
 
-
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class User {
+public class User  {
     private int ID;
     private String username;
     private String password;

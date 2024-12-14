@@ -26,7 +26,8 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-SharedPreferences userRefs;
+    SharedPreferences userRefs;
+    int idc = R.id.home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,22 +51,29 @@ SharedPreferences userRefs;
                         .show();
             }
         });
-        userRefs= this.getSharedPreferences("currentUser",MODE_PRIVATE);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.home) {
+                if (id == R.id.home && id != idc) {
                     replaceFragment(new HomeFragment());
-                } else if (id == R.id.utility) {
+
+
+                } else if (id == R.id.utility && id != idc) {
                     replaceFragment(new UtilityFragment());
-                } else if (id == R.id.stat) {
+
+                } else if (id == R.id.stat && id != idc) {
                     replaceFragment(new StatisticFragment());
-                } else if (id == R.id.account) {
-                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID",-1)));
+
+                } else if (id == R.id.account && id != idc) {
+                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID", -1)));
+
                 }
+                idc =id;
                 return true;
             }
         });
@@ -73,6 +81,7 @@ SharedPreferences userRefs;
 
 
     public void replaceFragment(Fragment fragment) {
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left, R.anim.enter_left_to_right, R.anim.exit_left_to_right);
         fragmentTransaction.replace(R.id.frameLayout, fragment);

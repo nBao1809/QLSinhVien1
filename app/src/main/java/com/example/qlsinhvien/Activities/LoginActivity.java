@@ -62,9 +62,10 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 //                    userManager.updatePhoto(1, BitmapFactory.decodeResource(getResources(),
 //                            R.drawable.avatarsample));
-//                    userManager.addUser(new User("admin","123456",
+//                    userManager.addUser(new User("sinhvientester","123456",
 //                            BitmapFactory.decodeResource(getResources(),R.drawable.avatarsample),
-//                            "admin@ou.edu.vn","admin"));
+//                            "admin@ou.edu.vn","SinhVien"));
+
                     User isUserValid = userManager.checkLogin(edtLoginString,
                             edtPasswordString);
 

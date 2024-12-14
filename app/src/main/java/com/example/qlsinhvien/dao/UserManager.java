@@ -223,8 +223,32 @@ public class UserManager {
         String otp = generateOTP();
         otpEditor.putString("otp", otp);
         otpEditor.putLong("otp_time", System.currentTimeMillis());
-        String messageBody = "Mã OTP đổi mật khẩu: " + otp;
-        String subject = "Đổi mật khẩu";
+        String messageBody = "<!DOCTYPE html><html><head><style>"
+                + "body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f9f9f9; }"
+                + ".container { background-color: #ffffff; border-radius: 10px; width: 400px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }"
+                + ".header { background-color: #007bff; color: #ffffff; padding: 15px; font-size: 20px; text-align: center; font-weight: bold; }"
+                + ".content { padding: 20px; font-size: 14px; line-height: 1.6; }"
+                + ".otp-code { font-size: 24px; font-weight: bold; color: #000000; text-align: center; margin: 20px 0; padding: 10px; background-color: #f1f1f1; border-radius: 5px; }"
+                + ".footer { font-size: 12px; color: #777; padding: 15px; background-color: #f9f9f9; text-align: justify; border-top: 1px solid #ddd; }"
+                + "</style></head><body>"
+                + "<div class='container'>"
+                + "<div class='header'>Mã OTP của bạn</div>"
+                + "<div class='content'>"
+                + "<p>Chào bạn,</p>"
+                + "<p>Để khôi phục tài khoản của bạn, vui lòng nhập mã OTP dưới đây:</p>"
+                + "<div class='otp-code'>" + otp + "</div>"
+                + "<p>Thời gian hiệu lực của mã OTP này là <b>5 phút</b>.</p>"
+                + "</div>"
+                + "<div class='footer'>"
+                + "<p>Nếu bạn không yêu cầu mã này thì có thể là ai đó đang tìm cách truy cập vào tài khoản Google <b>" + toEmail + "</b>. Không chuyển tiếp hoặc cung cấp mã này cho bất kỳ ai.</p>"
+                + "<p>Bạn nhận được thông báo này vì địa chỉ email này được liên kết với tài khoản của bạn. Nếu thông tin này không chính xác, vui lòng liên hệ với Phòng công tác sinh viên để được hỗ trợ.</p>"
+                + "<p>Trân trọng!</p>"
+                + "<p>Đây là email tự động, vui lòng không trả lời.</p>"
+                + "</div>"
+                + "</div>"
+                + "</body></html>";
+
+        String subject = "Mã xác minh của bạn là " + otp;
         // Tạo một AsyncTask để gửi email không làm treo UI thread
         AsyncTask.execute(new Runnable() {
             @Override
@@ -250,7 +274,7 @@ public class UserManager {
                     message.setFrom(new InternetAddress(fromEmail));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject(subject);
-                    message.setText(messageBody);
+                    message.setContent(messageBody,"text/html;charset=UTF-8");
 
                     // Gửi email
                     Transport.send(message);
@@ -263,8 +287,8 @@ public class UserManager {
     }
     public static String generateOTP() {
         Random random = new Random();
-        int otp = 100000 + random.nextInt(900000);
-        return String.valueOf(otp);
+        int otp =  random.nextInt(900000);
+        return String.format("%06d", otp);
 
     }
 

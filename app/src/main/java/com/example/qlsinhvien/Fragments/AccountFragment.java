@@ -132,7 +132,6 @@ public class AccountFragment extends Fragment {
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePicker.launch(intent);
         });
-userManager.sendEmail("tonhatbao@gmail.com");
         imagePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

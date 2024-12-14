@@ -12,6 +12,11 @@ public class Diem {
         this.maLoaiDiem = maLoaiDiem;
         this.maLopSinhVien = maLopSinhVien;
     }
+    public Diem( double diemSo, String maLoaiDiem, String maLopSinhVien) {
+        this.diemSo = diemSo;
+        this.maLoaiDiem = maLoaiDiem;
+        this.maLopSinhVien = maLopSinhVien;
+    }
 
     public int getMaDiem() {
         return maDiem;

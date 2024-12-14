@@ -240,93 +240,37 @@ public class UserManager {
         app-pass mail:zonb hknp gsxw autw
         pass: qlsinhvien123
         */
-        String otp = OTP;
-        String body = "<!DOCTYPE html>\n" +
-                "<html lang=\"vi\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "    <title>Xác thực thay đổi mật khẩu</title>\n" +
-                "    <style>\n" +
-                "        body {\n" +
-                "            font-family: Arial, sans-serif;\n" +
-                "            background-color: #f4f4f9;\n" +
-                "            margin: 0;\n" +
-                "            padding: 0;\n" +
-                "        }\n" +
-                "        .email-container {\n" +
-                "            max-width: 600px;\n" +
-                "            margin: 0 auto;\n" +
-                "            background-color: #ffffff;\n" +
-                "            padding: 20px;\n" +
-                "            border-radius: 8px;\n" +
-                "            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n" +
-                "        }\n" +
-                "        .email-header {\n" +
-                "            text-align: center;\n" +
-                "            background-color: #4CAF50;\n" +
-                "            color: #ffffff;\n" +
-                "            padding: 20px;\n" +
-                "            border-radius: 8px;\n" +
-                "        }\n" +
-                "        .email-header h1 {\n" +
-                "            margin: 0;\n" +
-                "        }\n" +
-                "        .email-body {\n" +
-                "            margin-top: 20px;\n" +
-                "            font-size: 16px;\n" +
-                "            color: #333;\n" +
-                "        }\n" +
-                "        .email-body p {\n" +
-                "            line-height: 1.6;\n" +
-                "        }\n" +
-                "        .otp-code {\n" +
-                "            font-size: 24px;\n" +
-                "            font-weight: bold;\n" +
-                "            color: #4CAF50;\n" +
-                "            margin-top: 10px;\n" +
-                "        }\n" +
-                "        .footer {\n" +
-                "            margin-top: 30px;\n" +
-                "            text-align: center;\n" +
-                "            font-size: 14px;\n" +
-                "            color: #777;\n" +
-                "        }\n" +
-                "        .footer a {\n" +
-                "            color: #4CAF50;\n" +
-                "            text-decoration: none;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "\n" +
-                "<div class=\"email-container\">\n" +
-                "    <div class=\"email-header\">\n" +
-                "        <h1>Xác nhận thay đổi mật khẩu</h1>\n" +
-                "    </div>\n" +
-                "\n" +
-                "    <div class=\"email-body\">\n" +
-                "        <p>Chào bạn,</p>\n" +
-                "        <p>Chúng tôi nhận được yêu cầu thay đổi mật khẩu từ tài khoản của bạn. Để bảo mật tài khoản của bạn, vui lòng nhập mã OTP dưới đây vào ứng dụng của chúng tôi để xác nhận thay đổi mật khẩu:</p>\n" +
-                "\n" +
-                "        <div class=\"otp-code\">\n" +
-                "            Mã OTP của bạn: <strong>" + otp + "</strong>\n" +
-                "        </div>\n" +
-                "\n" +
-                "        <p>Mã OTP này có hiệu lực trong vòng 10 phút. Nếu bạn không yêu cầu thay đổi mật khẩu, vui lòng bỏ qua email này.</p>\n" +
-                "        <p>Trân trọng,</p>\n" +
-                "        <p><strong>Đội ngũ hỗ trợ</strong><br/>Ứng dụng XYZ</p>\n" +
-                "    </div>\n" +
-                "\n" +
-                "    <div class=\"footer\">\n" +
-                "        <p>Nếu bạn gặp vấn đề, vui lòng liên hệ với chúng tôi qua <a href=\"mailto:support@xyz.com\">support@xyz.com</a>.</p>\n" +
-                "    </div>\n" +
-                "</div>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>\n";
-        String messageBody = "Mã OTP đổi mật khẩu: " + otp;
-        String subject = "Xác thực yêu cầu thay đổi mật khẩu của bạn";
+
+        String otp = generateOTP();
+        otpEditor.putString("otp", otp);
+        otpEditor.putLong("otp_time", System.currentTimeMillis());
+        String messageBody = "<!DOCTYPE html><html><head><style>"
+                + "body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f9f9f9; }"
+                + ".container { background-color: #ffffff; border-radius: 10px; width: 400px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }"
+                + ".header { background-color: #007bff; color: #ffffff; padding: 15px; font-size: 20px; text-align: center; font-weight: bold; }"
+                + ".content { padding: 20px; font-size: 14px; line-height: 1.6; }"
+                + ".otp-code { font-size: 24px; font-weight: bold; color: #000000; text-align: center; margin: 20px 0; padding: 10px; background-color: #f1f1f1; border-radius: 5px; }"
+                + ".footer { font-size: 12px; color: #777; padding: 15px; background-color: #f9f9f9; text-align: justify; border-top: 1px solid #ddd; }"
+                + "</style></head><body>"
+                + "<div class='container'>"
+                + "<div class='header'>Mã OTP của bạn</div>"
+                + "<div class='content'>"
+                + "<p>Chào bạn,</p>"
+                + "<p>Để khôi phục tài khoản của bạn, vui lòng nhập mã OTP dưới đây:</p>"
+                + "<div class='otp-code'>" + otp + "</div>"
+                + "<p>Thời gian hiệu lực của mã OTP này là <b>5 phút</b>.</p>"
+                + "</div>"
+                + "<div class='footer'>"
+                + "<p>Nếu bạn không yêu cầu mã này thì có thể là ai đó đang tìm cách truy cập vào tài khoản Google <b>" + toEmail + "</b>. Không chuyển tiếp hoặc cung cấp mã này cho bất kỳ ai.</p>"
+                + "<p>Bạn nhận được thông báo này vì địa chỉ email này được liên kết với tài khoản của bạn. Nếu thông tin này không chính xác, vui lòng liên hệ với Phòng công tác sinh viên để được hỗ trợ.</p>"
+                + "<p>Trân trọng!</p>"
+                + "<p>Đây là email tự động, vui lòng không trả lời.</p>"
+                + "</div>"
+                + "</div>"
+                + "</body></html>";
+
+        String subject = "Mã xác minh của bạn là " + otp;
+
         // Tạo một AsyncTask để gửi email không làm treo UI thread
         AsyncTask.execute(new Runnable() {
             @Override
@@ -352,7 +296,8 @@ public class UserManager {
                     message.setFrom(new InternetAddress(fromEmail));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject(subject);
-                    message.setContent(body, "text/html;charset=UTF-8");
+                    message.setContent(messageBody,"text/html;charset=UTF-8");
+
 
                     // Gửi email
                     Transport.send(message);
@@ -366,8 +311,9 @@ public class UserManager {
 
     public static String generateOTP() {
         Random random = new Random();
-        int otp = 100000 + random.nextInt(900000);
-        return String.valueOf(otp);
+        int otp =  random.nextInt(900000);
+        return String.format("%06d", otp);
+
     }
 
     public boolean changePassword(String password, User user) {
@@ -380,11 +326,6 @@ public class UserManager {
                 String.valueOf(user.getID())
         });
         return rowUpdated > 0;
-//            }
-//            else {
-//            nhap sai otp
-//            }
-
     }
 
     private Bitmap resizeImage(Bitmap originalBitmap) {

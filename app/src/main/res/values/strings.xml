@@ -18,7 +18,6 @@
     <string name="List">Danh sách lớp học phần</string>
     <string name="infor">Thông tin cá nhân</string>
     <string name="change">Chỉnh sửa</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">Cài đặt</string>
     <string name="changepassword">Đổi mật khẩu</string>
@@ -27,7 +26,7 @@
     <string name="UserManagement">Quản lý user</string>
     <string name="StudentScoreManagement">Quản lý điểm sinh viên</string>
     <string name="StudentListManagement">Quản lý danh sách sinh viên</string>
-    <string name="ClassManagement">Quản lý lớp học phần</string>
+    <string name="ClassManagement">Quản lý lớp học </string>
     <string name="ListForgetPassword">Danh sách cấp lại mật khẩu</string>
     <string name="UserRegister">Đăng ký thành viên</string>
     <string name="AverageScoreStat">Thống kê điểm trung bình của sinh viên theo môn học</string>
@@ -42,4 +41,14 @@
     <string name="Birthday">Ngày sinh </string>
     <string name="Phone">Số điện thoại </string>
     <string name="Email">Email </string>
+    <string name="Name">Tên:</string>
+    <string name="MSSV">MSSV:</string>
+    <string name="Birth">Ngày Sinh:</string>
+    <string name="rClass">Lớp hành chính:</string>
+    <string name="scoreType">Loại Điểm</string>
+    <string name="score">Điểm</string>
+    <string name="weight">Trọng số</string>
+    <string name="Success">Thành công</string>
+    <string name="Fail">Thất bại</string>
+    <string name="Done">Xong</string>
 </resources>

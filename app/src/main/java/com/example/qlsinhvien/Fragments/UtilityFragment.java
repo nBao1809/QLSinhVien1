@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.qlsinhvien.Activities.UserActivity;
+
+import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
+
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -66,7 +68,9 @@ public class UtilityFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
-Button btnUser;
+    Button btnQuanLyLopHoc;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +96,14 @@ Button btnUser;
             }
         });
         Menu menu = toolbar.getMenu();
+        btnQuanLyLopHoc=view.findViewById(R.id.btnQuanLyLopHoc);
+        btnQuanLyLopHoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(requireActivity(), QuanLyLopHocActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
 
     }

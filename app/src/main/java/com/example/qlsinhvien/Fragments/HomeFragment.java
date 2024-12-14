@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
@@ -29,6 +31,8 @@ import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DatabaseHelper;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +81,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    TextView txtThongBao;
     RecyclerView recycleHocPhan;
     LopHocPhanAdapter lopHocPhanAdapter;
     SearchView searchView;
@@ -92,20 +97,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        txtThongBao = view.findViewById(R.id.txtThongBao);
         recycleHocPhan = view.findViewById(R.id.recycleHocPhan);
-
-        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
-
         lopHocPhanManager = new LopHocPhanManager(getContext());
         giangVienManager = new GiangVienManager(getContext());
         monHocManager = new MonHocManager(getContext());
         nganhManager = new NganhManager(getContext());
-
-        lopHocPhanAdapter = new LopHocPhanAdapter(getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        recycleHocPhan.setLayoutManager(linearLayoutManager);
-        lopHocPhanAdapter.setData(lopHocPhanManager.getAllLopHocPhan());
-        recycleHocPhan.setAdapter(lopHocPhanAdapter);
         toolbar = view.findViewById(R.id.toolbar);
         OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
         onBackPressedDispatcher.addCallback(requireActivity(), new OnBackPressedCallback(true) {
@@ -134,6 +131,7 @@ public class HomeFragment extends Fragment {
                     searchView = (SearchView) item.getActionView();
                     SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
                     searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
 
                     if (searchView != null) {
                         searchView.setQueryHint("Tìm theo tên môn học");
@@ -164,6 +162,42 @@ public class HomeFragment extends Fragment {
 
         });
         Menu menu = toolbar.getMenu();
+
+//        nganhManager.addNganh(new Nganh("N2", "Khoa Hoc May Tinh"));
+//        giangVienManager.addGiangVien(new GiangVien("GV2", "nguyen van a", "123456", 31, "CNTT", 8));
+//        monHocManager.addMonHoc(new MonHoc("ITEC101", "Data Structure", 2, "N2"));
+//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP2","DH22CS01",1,2,"ITEC101","GV2"));
+        lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recycleHocPhan.setLayoutManager(linearLayoutManager);
+        List<LopHocPhan> lopHocPhan = lopHocPhanManager.getAllLopHocPhan();
+        if (lopHocPhan == null || lopHocPhan.isEmpty()) {
+
+
+        }
+        Boolean bool = Boolean.FALSE;
+        lopHocPhanAdapter.setData(lopHocPhan,bool);
+        recycleHocPhan.setAdapter(lopHocPhanAdapter);
+        return view;
+    }
+
+    public void setThongBaoVisibility(boolean isVisible) {
+        if (isVisible) {
+            txtThongBao.setText("Không tìm thấy lớp học phần");
+            txtThongBao.setVisibility(View.VISIBLE);
+        } else {
+            txtThongBao.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (lopHocPhanAdapter != null) {
+            lopHocPhanAdapter.release();
+        }
+    }
+
 //        nganhManager.addNganh(new Nganh("N1", "Khoa Hoc May Tinh"));
 //        giangVienManager.addGiangVien(new GiangVien("GV1", "nguyen van a", "123456", 31, "CNTT",
 //                1));
@@ -181,8 +215,6 @@ public class HomeFragment extends Fragment {
 //                3));
 //        monHocManager.addMonHoc(new MonHoc("KT1", "KT", 2, "N3"));
 //        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP3","LOP3",1,2,"KT1","GV3"));
-        return view;
-    }
 
 }
 

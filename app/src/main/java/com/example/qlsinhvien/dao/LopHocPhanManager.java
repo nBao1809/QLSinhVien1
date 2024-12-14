@@ -31,6 +31,7 @@ public class LopHocPhanManager {
         values.put(DatabaseHelper.MA_GIANGVIEN, lopHocPhan.getMaGiangVienPhuTrach());
 
         long rowInserted = db.insert(DatabaseHelper.TB_LOPHOCPHAN, null, values);
+
         db.close();
 
         return rowInserted; // >0 nếu thêm thành công, -1 nếu thất bại

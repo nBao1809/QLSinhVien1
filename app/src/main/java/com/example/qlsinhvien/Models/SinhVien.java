@@ -1,6 +1,8 @@
 package com.example.qlsinhvien.Models;
 
-public class SinhVien {
+import java.io.Serializable;
+
+public class SinhVien implements Serializable {
     private String mssv;
     private String hoTen;
     private String cccd;

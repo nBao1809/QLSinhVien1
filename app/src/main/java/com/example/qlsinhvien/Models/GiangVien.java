@@ -1,5 +1,9 @@
 package com.example.qlsinhvien.Models;
 
+import androidx.annotation.Nullable;
+
+import java.util.Objects;
+
 public class GiangVien {
     private String maGiangVien;
     private String hoTen;
@@ -7,6 +11,19 @@ public class GiangVien {
     private double ngaySinh;
     private String khoa;
     private int id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GiangVien giangVien = (GiangVien) o;
+        return maGiangVien.equals(giangVien.maGiangVien);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maGiangVien);
+    }
+
 
     public GiangVien(String maGiangVien, String hoTen, String cccd, double ngaySinh, String khoa, int id) {
         this.maGiangVien = maGiangVien;
@@ -65,4 +82,5 @@ public class GiangVien {
     public void setId(int id) {
         this.id = id;
     }
+
 }

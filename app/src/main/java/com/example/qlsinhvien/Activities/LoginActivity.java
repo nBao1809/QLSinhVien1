@@ -87,6 +87,15 @@ public class LoginActivity extends AppCompatActivity {
 //                    userManager.addUser(new User("he", "1",
 //                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
 //                            "deptrai@ou.edu.vn", "admin"));
+//                    userManager.addUser(new User("1", "1",
+//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
+//                            "deptrai@ou.edu.vn", "mod"));
+//                    userManager.addUser(new User("2", "1",
+//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
+//                            "deptrai@ou.edu.vn", "gv"));
+//                    userManager.addUser(new User("3", "1",
+//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
+//                            "deptrai@ou.edu.vn", "sv"));
                     //        lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("1","CS2202"));
 //        nganhManager.addNganh(new Nganh("1","Khoa hoc may tinh"));
 //         sinhVienManager.addSinhVien(new SinhVien("223","Tester","225101",2004.0102,2,"1","1"));

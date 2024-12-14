@@ -23,16 +23,18 @@ import java.util.List;
 
 public class NganhAdapter extends RecyclerView.Adapter<NganhAdapter.ClassViewHolder> implements Filterable {
 
-    private Context context;
+
     private List<Nganh> nganhList, nganhListOld;
 
 
-    public NganhAdapter(Context context) {
-        this.context = context;
+    public NganhAdapter() {
+
 
     }
 
     public void setData(List<Nganh> nganhList) {
+        if(nganhList==null)
+            return;
         this.nganhList = nganhList;
         this.nganhListOld = nganhList;
         notifyDataSetChanged();
@@ -82,7 +84,7 @@ public class NganhAdapter extends RecyclerView.Adapter<NganhAdapter.ClassViewHol
                             list.add(nganh);
                         }
                     }
-                    nganhListOld = list;
+                    nganhList = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = nganhList;

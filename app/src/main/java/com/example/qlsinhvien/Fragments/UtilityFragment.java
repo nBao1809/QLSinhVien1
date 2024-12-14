@@ -1,5 +1,6 @@
 package com.example.qlsinhvien.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -10,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.qlsinhvien.Activities.UserActivity;
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -63,7 +66,7 @@ public class UtilityFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
-
+Button btnUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +75,11 @@ public class UtilityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_utility, container, false);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuutility);
+        btnUser=view.findViewById(R.id.btnQuanLiUser);
+        btnUser.setOnClickListener(v -> {
+            Intent intent=new Intent(requireContext(), UserActivity.class);
+            startActivity(intent);
+        });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

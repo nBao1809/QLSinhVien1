@@ -39,6 +39,8 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.ClassV
     }
 
     public void setData(List<SinhVien> sinhVienList) {
+        if(sinhVienList==null)
+            return;
         this.sinhVienList = sinhVienList;
         this.sinhVienListOld = sinhVienList;
         notifyDataSetChanged();
@@ -88,7 +90,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.ClassV
                             list.add(sinhVien);
                         }
                     }
-                    sinhVienListOld = list;
+                    sinhVienList= list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = sinhVienList;

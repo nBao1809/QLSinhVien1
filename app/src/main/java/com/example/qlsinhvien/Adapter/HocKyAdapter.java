@@ -22,16 +22,18 @@ import java.util.List;
 
 public class HocKyAdapter extends RecyclerView.Adapter<HocKyAdapter.ClassViewHolder> implements Filterable {
 
-    private Context context;
+
     private List<HocKy> hocKyList, hocKyListOld;
 
 
-    public HocKyAdapter(Context context) {
-        this.context = context;
+    public HocKyAdapter() {
+
 
     }
 
     public void setData(List<HocKy> hocKyList) {
+        if(hocKyList==null)
+            return;
         this.hocKyList = hocKyList;
         this.hocKyListOld = hocKyList;
         notifyDataSetChanged();
@@ -81,7 +83,7 @@ public class HocKyAdapter extends RecyclerView.Adapter<HocKyAdapter.ClassViewHol
                             list.add(hocKy);
                         }
                     }
-                    hocKyListOld = list;
+                    hocKyList = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = hocKyList;

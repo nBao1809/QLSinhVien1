@@ -46,7 +46,6 @@ public class AccountFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_CURRENTUSER = "user";
     private User currentUser;
-    private int currentUserID;
 
     public AccountFragment() {
     }
@@ -62,7 +61,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userManager=new UserManager(requireContext());
+        userManager = new UserManager(requireContext());
         if (getArguments() != null) {
             currentUser = userManager.getUserByID(getArguments().getInt(ARG_CURRENTUSER));
         }
@@ -75,10 +74,11 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        TextView txtTen, txtMail;
+        TextView txtUsername, txtMail, txtRole, txtName;
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-
-        txtTen = view.findViewById(R.id.txtTen);
+        txtName = view.findViewById(R.id.txtNameUser);
+        txtRole = view.findViewById(R.id.txtRole);
+        txtUsername = view.findViewById(R.id.txtTen);
         txtMail = view.findViewById(R.id.txtmail);
 
         imageView = view.findViewById(R.id.imageView);
@@ -86,8 +86,10 @@ public class AccountFragment extends Fragment {
         userManager = new UserManager(requireContext());
 
         imageView.setImageBitmap(currentUser.getPhoto());
-        txtTen.setText(currentUser.getUsername());
+        txtUsername.setText(currentUser.getUsername());
         txtMail.setText(currentUser.getEmail());
+        txtName.setText(currentUser.getUsername());
+        txtRole.setText(currentUser.getRole());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuaccount);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -142,8 +144,7 @@ public class AccountFragment extends Fragment {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
                             imageView.setImageBitmap(bitmap);
-                            currentUser.setPhoto(bitmap);
-                            userManager.updateUser(currentUser);
+                            userManager.updatePhoto(currentUser.getID(), bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
                             Toast.makeText(requireContext(), "Lỗi khi xử lý ảnh!", Toast.LENGTH_SHORT).show();

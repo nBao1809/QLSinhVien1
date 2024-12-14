@@ -26,12 +26,13 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ClassViewH
     private List<MonHoc> monHocList, monHocListOld;
 
 
-    public MonHocAdapter(Context context) {
-        this.context = context;
+    public MonHocAdapter() {
 
     }
 
     public void setData(List<MonHoc> monHocList) {
+        if(monHocList==null)
+            return;
         this.monHocList = monHocList;
         this.monHocListOld = monHocList;
         notifyDataSetChanged();
@@ -81,7 +82,7 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ClassViewH
                             list.add(monHoc);
                         }
                     }
-                    monHocListOld = list;
+                    monHocList = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = monHocList;

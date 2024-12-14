@@ -41,6 +41,8 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
     }
 
     public void setData(List<LopHocPhan> listHocPhan) {
+        if(listHocPhan==null)
+            return;
         this.listHocPhan = listHocPhan;
         this.listHocPhanOld = listHocPhan;
         notifyDataSetChanged();
@@ -89,12 +91,10 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
                         String tenMonHoc = StringUtility.removeMark(lopHocPhan.getTenLop().toLowerCase());
                         String maLopHoc =
                                 StringUtility.removeMark(lopHocPhan.getMaLop().toLowerCase());
-                        if (tenMonHoc.contains(searchString)) {
+                        if (tenMonHoc.contains(searchString)||maLopHoc.contains(searchString)) {
                             list.add(lopHocPhan);
                         }
-                        if (maLopHoc.contains(searchString)) {
-                            list.add(lopHocPhan);
-                        }
+
                     }
                     listHocPhan = list;
                 }

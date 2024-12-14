@@ -35,6 +35,8 @@ public class GiangVienAdapter extends RecyclerView.Adapter<GiangVienAdapter.Clas
     }
 
     public void setData(List<GiangVien> giangVienList) {
+        if(giangVienList==null)
+            return;
         this.giangVienList = giangVienList;
         this.giangVienListOld = giangVienList;
         notifyDataSetChanged();
@@ -82,7 +84,7 @@ public class GiangVienAdapter extends RecyclerView.Adapter<GiangVienAdapter.Clas
                             list.add(giangVien);
                         }
                     }
-                    giangVienListOld = list;
+                    giangVienList = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = giangVienList;

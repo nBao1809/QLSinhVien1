@@ -125,6 +125,29 @@ public class UserManager {
         return null;
     }
 
+    public List<User> getUsersByRole(String Role) {
+        userList = new ArrayList<>();
+        db=dbHelper.getReadableDatabase();
+        String[] selection = new String[]{Role};
+        Cursor c = db.query(DatabaseHelper.TB_USERS, null,
+                DatabaseHelper.ROLE + "= ?",
+                selection, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            do {
+                byte[] imageBytes = c.getBlob(3);
+                Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                userList.add(new User(c.getInt(0), c.getString(1), c.getString(2),
+                        image, c.getString(4), c.getString(5)));
+            } while (c.moveToNext());
+            c.close();
+            return userList;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+
     public int updateUser(User user) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -151,6 +174,23 @@ public class UserManager {
                 values,
                 DatabaseHelper.ID + " = ?",
                 new String[]{String.valueOf(user.getID())}
+        );
+        db.close();//>0 thành công =0 ko thành công
+        return rowsUpdated;
+    }
+
+    public int updatePhoto(int userID, Bitmap bitmap) {
+        db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        if (bitmap == null)
+            return -1;
+        byte[] imageBytes = getBitmapAsByteArray(resizeImage(bitmap));
+        values.put(DatabaseHelper.PHOTO, imageBytes);
+        int rowsUpdated = db.update(
+                DatabaseHelper.TB_USERS,
+                values,
+                DatabaseHelper.ID + " = ?",
+                new String[]{String.valueOf(userID)}
         );
         db.close();//>0 thành công =0 ko thành công
         return rowsUpdated;
@@ -192,7 +232,7 @@ public class UserManager {
     }
 
 
-    public void sendEmail(String toEmail,String OTP) {
+    public void sendEmail(String toEmail, String OTP) {
         String fromEmail = "qlsinhvien0@gmail.com";
         String password = "zonb hknp gsxw autw";
         /*
@@ -324,7 +364,7 @@ public class UserManager {
         });
     }
 
-    public static String generateOTP( ) {
+    public static String generateOTP() {
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);

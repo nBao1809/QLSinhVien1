@@ -135,8 +135,10 @@ public class HomeFragment extends Fragment {
                     SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
                     searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
-                    assert searchView != null;
-                    searchView.setQueryHint("Tìm theo tên môn học");
+                    if (searchView != null) {
+                        searchView.setQueryHint("Tìm theo tên môn học");
+                    }
+
 
                     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override

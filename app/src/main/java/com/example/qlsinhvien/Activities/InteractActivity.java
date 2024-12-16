@@ -29,6 +29,7 @@ import com.google.android.material.navigation.NavigationBarView;
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     SharedPreferences userRefs;
+    UserManager userManager;
     int idc = R.id.home;
 
     @Override
@@ -53,8 +54,9 @@ public class InteractActivity extends AppCompatActivity {
                         .show();
             }
         });
+        userManager = new UserManager(this);
         userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-
+        User currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -65,20 +67,20 @@ public class InteractActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 if (id == R.id.home && id != idc) {
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment().newInstance(currentUser.getID()));
 
 
                 } else if (id == R.id.utility && id != idc) {
-                    replaceFragment(new UtilityFragment());
+                    replaceFragment(new UtilityFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.stat && id != idc) {
-                    replaceFragment(new StatisticFragment());
+                    replaceFragment(new StatisticFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.account && id != idc) {
-                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID", -1)));
+                    replaceFragment(new AccountFragment().newInstance(currentUser.getID()));
 
                 }
-                idc =id;
+                idc = id;
                 return true;
             }
         });

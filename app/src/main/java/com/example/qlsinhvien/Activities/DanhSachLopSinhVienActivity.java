@@ -2,6 +2,7 @@ package com.example.qlsinhvien.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -58,7 +59,8 @@ public class DanhSachLopSinhVienActivity extends AppCompatActivity {
     TextView txtLop,txtThongBao;
     List<String> mssvList;
     List<SinhVien> sinhVienList;
-
+    User currentUser;
+SharedPreferences userRefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,8 @@ public class DanhSachLopSinhVienActivity extends AppCompatActivity {
         userManager = new UserManager(this);
         hocKyManager = new HocKyManager(this);
         lopHanhChinhManager = new LopHanhChinhManager(this);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
 //        lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("1","CS2202"));
 //        nganhManager.addNganh(new Nganh("1","Khoa hoc may tinh"));
 //        sinhVienManager.addSinhVien(new SinhVien("223","Tester","225101",2004.0102,2,"1","1"));

@@ -75,7 +75,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ClassViewHolde
         holder.photo.setImageBitmap(user.getPhoto());
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), SingleUserActivity.class);
-            intent.putExtra("userID",user.getID());
             holder.itemView.getContext().startActivity(intent);
         });
     }

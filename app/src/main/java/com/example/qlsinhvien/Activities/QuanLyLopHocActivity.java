@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
 import android.os.Bundle;
@@ -37,11 +38,13 @@ import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 import com.example.qlsinhvien.Adapter.MonHocAdapter;
 import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.example.qlsinhvien.dao.MonHocManager;
 import com.example.qlsinhvien.dao.NganhManager;
+import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -61,9 +64,12 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
     MonHocManager monHocManager;
     GiangVienManager giangVienManager;
     NganhManager nganhManager;
+    UserManager userManager;
     Double ngayBatDau = 0.0;
     Double ngayKetthuc = 0.0;
     String maMonHoc, maGiangVien, maLop, tenLop;
+    SharedPreferences userRefs;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +95,12 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
         giangVienManager = new GiangVienManager(this);
         monHocManager = new MonHocManager(this);
         nganhManager = new NganhManager(this);
+        userManager = new UserManager(this);
         fbtnThem = findViewById(R.id.fbtnThem);
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuquanlylophoc);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         Menu menu = toolbar.getMenu();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +182,6 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
                 });
 
 
-
                 ibtnStartday.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -189,10 +197,10 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
 
                     }
                 });
-                List<GiangVien> giangVienList=giangVienManager.getAllGiangVien();
-                if(giangVienList==null)return;
+                List<GiangVien> giangVienList = giangVienManager.getAllGiangVien();
+                if (giangVienList == null) return;
                 GiangVienAdapter adapter = new GiangVienAdapter(QuanLyLopHocActivity.this,
-                        R.layout.itemgiangvienselected,giangVienList);
+                        R.layout.itemgiangvienselected, giangVienList);
                 spinnerGiangVien.setAdapter(adapter);
                 spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

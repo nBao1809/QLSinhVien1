@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 //                            BitmapFactory.decodeResource(getResources(),R.drawable.avatarsample),
 //                            "admin@ou.edu.vn","SinhVien"));
 
-//                    userManager.addUser(new User("he", "1",
+//                    userManager.addUser(new User("h1", "1",
 //                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
 //                            "deptrai@ou.edu.vn", "admin"));
 //                    userManager.addUser(new User("1", "1",

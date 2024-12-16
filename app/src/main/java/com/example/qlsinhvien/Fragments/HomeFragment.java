@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 
+import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.MonHocManager;
 import com.example.qlsinhvien.dao.NganhManager;
@@ -109,10 +110,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 if(searchView!=null){
-                if (!searchView.isIconified()) {
-                    searchView.setIconified(true);
-                    return;
-                }}
+                    if (!searchView.isIconified()) {
+                        searchView.setIconified(true);
+                        return;
+                    }}
                 new AlertDialog.Builder(requireActivity())
                         .setTitle("Xác nhận").setIcon(R.drawable.checkicon)
                         .setMessage("Bạn có muốn đăng xuất không?")
@@ -217,5 +218,3 @@ public class HomeFragment extends Fragment {
 //        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP3","LOP3",1,2,"KT1","GV3"));
 
 }
-
-

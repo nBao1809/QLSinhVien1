@@ -77,12 +77,10 @@ public class NganhAdapter extends RecyclerView.Adapter<NganhAdapter.ClassViewHol
                                 StringUtility.removeMark(nganh.getTenNganh().toLowerCase());
                         String maNganh =
                                 StringUtility.removeMark(nganh.getMaNganh().toLowerCase());
-                        if (tenNganh.contains(searchString)) {
+                        if (tenNganh.contains(searchString)||maNganh.contains(searchString)) {
                             list.add(nganh);
                         }
-                        if (maNganh.contains(searchString)) {
-                            list.add(nganh);
-                        }
+
                     }
                     nganhList = list;
                 }

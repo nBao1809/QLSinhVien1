@@ -5,15 +5,15 @@ import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,7 +38,6 @@ import com.example.qlsinhvien.Adapter.MonHocAdapter;
 import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.R;
-import com.example.qlsinhvien.dao.DatabaseHelper;
 import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.example.qlsinhvien.dao.MonHocManager;
@@ -47,9 +46,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -94,7 +90,6 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
         monHocManager = new MonHocManager(this);
         nganhManager = new NganhManager(this);
         fbtnThem = findViewById(R.id.fbtnThem);
-        toolbar = findViewById(R.id.toolbar);
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuquanlylophoc);
         Menu menu = toolbar.getMenu();
@@ -194,7 +189,10 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
 
                     }
                 });
-                GiangVienAdapter adapter = new GiangVienAdapter(QuanLyLopHocActivity.this, R.layout.itemgiangvienselected, giangVienManager.getAllGiangVien());
+                List<GiangVien> giangVienList=giangVienManager.getAllGiangVien();
+                if(giangVienList==null)return;
+                GiangVienAdapter adapter = new GiangVienAdapter(QuanLyLopHocActivity.this,
+                        R.layout.itemgiangvienselected,giangVienList);
                 spinnerGiangVien.setAdapter(adapter);
                 spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

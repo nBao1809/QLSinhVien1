@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
 
+import com.example.qlsinhvien.Activities.UserActivity;
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -69,7 +70,7 @@ public class UtilityFragment extends Fragment {
 
     MaterialToolbar toolbar;
     Button btnQuanLyLopHoc;
-
+Button btnUser;
 
 
     @Override

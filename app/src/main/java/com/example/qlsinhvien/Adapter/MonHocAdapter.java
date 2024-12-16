@@ -41,7 +41,7 @@ public class MonHocAdapter extends ArrayAdapter<MonHoc> {
         return convertView;
     }
 
-    @Overrid
+    @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.itemchongiangvien,parent,false);
         TextView txtChonMonHoc = convertView.findViewById(R.id.txtChonGiangVien);

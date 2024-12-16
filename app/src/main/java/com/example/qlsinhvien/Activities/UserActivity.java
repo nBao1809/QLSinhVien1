@@ -43,6 +43,7 @@ public class UserActivity extends AppCompatActivity {
             return insets;
         });
         toolbar = findViewById(R.id.toolbaruser);
+        toolbar.inflateMenu(R.menu.menuuser);
         userManager = new UserManager(this);
         adminAdapter = new UserAdapter();
         modAdapter = new UserAdapter();
@@ -127,7 +128,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        toolbar.inflateMenu(R.menu.menutoolbar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

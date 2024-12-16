@@ -41,9 +41,6 @@ public class InteractActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        userManager = new UserManager(this);
-        userRefs = getSharedPreferences("currentUser", MODE_PRIVATE);
-        User currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
         onBackPressedDispatcher.addCallback(this, new OnBackPressedCallback(true) {
             @Override

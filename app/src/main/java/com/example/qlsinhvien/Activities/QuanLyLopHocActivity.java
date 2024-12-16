@@ -95,7 +95,6 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
         nganhManager = new NganhManager(this);
         fbtnThem = findViewById(R.id.fbtnThem);
         toolbar = findViewById(R.id.toolbar);
-        toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuquanlylophoc);
         Menu menu = toolbar.getMenu();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

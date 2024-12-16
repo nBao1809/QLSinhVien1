@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,7 +57,6 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     }
 
 
-
     public void setData(List<SinhVien> sinhVienList, Boolean bool) {
         this.sinhVienList = sinhVienList;
         this.sinhVienListOld = sinhVienList;
@@ -76,7 +76,12 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     @NonNull
     @Override
     public SinhVienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemsinhvien, parent, false);
+        View view;
+        if (!bool) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemsinhvien, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemquanlysinhvien, parent, false);
+        }
         return new SinhVienViewHolder(view);
     }
 
@@ -85,17 +90,51 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         SinhVien sinhVien = sinhVienList.get(position);
         if (sinhVien == null)
             return;
-        holder.txtTen.setText(sinhVien.getHoTen());
-        holder.txtMSSV.setText(sinhVien.getMssv());
-        String formattedDate = dateFormat(sinhVien.getNgaySinh());
-        holder.txtNgaySinh.setText(formattedDate);
-        holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
-        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickGoToLopSinhVien(sinhVien, bool);
-            }
-        });
+        if (!bool) {
+            holder.txtTen.setText(sinhVien.getHoTen());
+            holder.txtMSSV.setText(sinhVien.getMssv());
+            String formattedDate = dateFormat(sinhVien.getNgaySinh());
+            holder.txtNgaySinh.setText(formattedDate);
+            holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
+            holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickGoToLopSinhVien(sinhVien, bool);
+                }
+            });
+        } else {
+            holder.txtTen.setText(sinhVien.getHoTen());
+            holder.txtMSSV.setText(sinhVien.getMssv());
+            String formattedDate = dateFormat(sinhVien.getNgaySinh());
+            holder.txtNgaySinh.setText(formattedDate);
+            holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
+            holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickGoToLopSinhVien(sinhVien, bool);
+                }
+            });
+            holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickEdit(sinhVien);
+                }
+            });
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickDelete(sinhVien);
+                }
+            });
+        }
+    }
+
+    public void onClickEdit(SinhVien sinhVien) {
+
+    }
+
+    public void onClickDelete(SinhVien sinhvien) {
+
     }
 
     private void onClickGoToLopSinhVien(SinhVien sinhVien, Boolean bool) {
@@ -139,7 +178,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
                                 StringUtility.removeMark(sinhVien.getMssv().toLowerCase());
                         String tenSinhVien =
                                 StringUtility.removeMark(sinhVien.getHoTen().toLowerCase());
-                        if (mssv.startsWith(searchString) || tenSinhVien.contains(searchString) || mssv.contains(searchString) || tenSinhVien.startsWith(searchString)) {
+                        if (mssv.startsWith(searchString) || tenSinhVien.contains(searchString)  || tenSinhVien.startsWith(searchString)) {
                             list.add(sinhVien);
                         }
 
@@ -184,6 +223,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     public class SinhVienViewHolder extends RecyclerView.ViewHolder {
         TextView txtTen, txtMSSV, txtNgaySinh, txtLopHanhChinh;
         CardView itemLayout;
+        ImageButton btnEdit, btnDelete;
 
         public SinhVienViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -192,6 +232,8 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
             txtNgaySinh = itemView.findViewById(R.id.txtNgaySinh);
             txtLopHanhChinh = itemView.findViewById(R.id.txtLopHanhChinh);
             itemLayout = itemView.findViewById(R.id.layoutItem);
+            btnEdit = itemView.findViewById(R.id.btnEdit);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
 
         }
     }

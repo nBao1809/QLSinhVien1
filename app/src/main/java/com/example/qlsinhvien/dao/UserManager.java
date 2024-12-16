@@ -29,7 +29,7 @@ public class UserManager {
 
     private SQLiteDatabase db;
     private List<User> userList;
-    SharedPreferences  otpRefs;
+    SharedPreferences otpRefs;
     SharedPreferences.Editor otpEditor;
 
     public UserManager(Context context) {
@@ -40,8 +40,8 @@ public class UserManager {
     }
 
     public long addUser(User user) {
-        User isUserExits= getUserByUserName(user.getUsername());
-        if (isUserExits!=null){
+        User isUserExits = getUserByUserName(user.getUsername());
+        if (isUserExits != null) {
             return -1;
         }
         db = dbHelper.getWritableDatabase();
@@ -69,7 +69,7 @@ public class UserManager {
                 byte[] imageBytes = c.getBlob(3);
                 Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 userList.add(new User(c.getInt(0), c.getString(1), c.getString(2),
-                       image , c.getString(4), c.getString(5)));
+                        image, c.getString(4), c.getString(5)));
             } while (c.moveToNext());
             c.close();
             return userList;
@@ -101,6 +101,7 @@ public class UserManager {
         }
         return null;
     }
+
     public User getUserByUserName(String username) {
         db = dbHelper.getReadableDatabase();
         User user = null;
@@ -137,7 +138,7 @@ public class UserManager {
             values.put(DatabaseHelper.EMAIL, user.getEmail());
         }
         if (user.getPhoto() != null) {
-            byte[] imageBytes=getBitmapAsByteArray(resizeImage( user.getPhoto()));
+            byte[] imageBytes = getBitmapAsByteArray(resizeImage(user.getPhoto()));
             values.put(DatabaseHelper.PHOTO, imageBytes);
         }
         if (user.getRole() != null) {
@@ -154,12 +155,12 @@ public class UserManager {
         return rowsUpdated;
     }
 
-    public int updatePhoto(int ID,Bitmap photo) {
+    public int updatePhoto(int ID, Bitmap photo) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         if (photo != null) {
-            byte[]imageBytes=getBitmapAsByteArray(resizeImage(photo));
+            byte[] imageBytes = getBitmapAsByteArray(resizeImage(photo));
             values.put(DatabaseHelper.PHOTO, imageBytes);
         }
 
@@ -173,7 +174,7 @@ public class UserManager {
         return rowsUpdated;
     }
 
-    public int deleteUser(long userID) {
+    public int deleteUser(int userID) {
         db = dbHelper.getWritableDatabase();
         String selection = DatabaseHelper.ID + " = ?";
         String[] selectionArgs = {String.valueOf(userID)};
@@ -194,8 +195,8 @@ public class UserManager {
                 selection,
                 null, null
                 , null);
-        if (c != null&&c.moveToFirst()) {
-            Bitmap image= BitmapFactory.decodeByteArray(c.getBlob(3),0,c.getBlob(3).length);
+        if (c != null && c.moveToFirst()) {
+            Bitmap image = BitmapFactory.decodeByteArray(c.getBlob(3), 0, c.getBlob(3).length);
             user = new User(c.getInt(0), c.getString(1), c.getString(2),
                     image, c.getString(4), c.getString(5));
 
@@ -208,7 +209,37 @@ public class UserManager {
         return null;
     }
 
+    public long getNextUserId() {
+        long nextUserId = -1;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+
+        String query = "SELECT seq FROM sqlite_sequence WHERE name = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"users"});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                nextUserId = cursor.getLong(0);  //
+            }
+            cursor.close();
+        }
+        db.close();
+
+        return nextUserId + 1;
+    }
+    public long getLastUserID() {
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + DatabaseHelper.ID + ") FROM " + DatabaseHelper.TB_USERS, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            long lastUserId = cursor.getLong(0);  // Lấy ID của người dùng có ID lớn nhất
+            cursor.close();
+            return lastUserId;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return -1;  // Trả về -1 nếu không tìm thấy người dùng nào
+    }
 
 
 
@@ -274,7 +305,7 @@ public class UserManager {
                     message.setFrom(new InternetAddress(fromEmail));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject(subject);
-                    message.setContent(messageBody,"text/html;charset=UTF-8");
+                    message.setContent(messageBody, "text/html;charset=UTF-8");
 
                     // Gửi email
                     Transport.send(message);
@@ -285,9 +316,10 @@ public class UserManager {
             }
         });
     }
+
     public static String generateOTP() {
         Random random = new Random();
-        int otp =  random.nextInt(900000);
+        int otp = random.nextInt(900000);
         return String.format("%06d", otp);
 
     }
@@ -306,9 +338,10 @@ public class UserManager {
         }
         return false;
     }
+
     private Bitmap resizeImage(Bitmap originalBitmap) {
-        int maxWidth,maxHeight;
-        maxWidth=maxHeight=800;
+        int maxWidth, maxHeight;
+        maxWidth = maxHeight = 800;
         int width = originalBitmap.getWidth();
         int height = originalBitmap.getHeight();
 

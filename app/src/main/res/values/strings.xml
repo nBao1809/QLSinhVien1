@@ -16,6 +16,7 @@
     <string name="Statistic">Thống kê</string>
     <string name="Account">Tài khoản</string>
     <string name="List">Danh sách lớp học phần</string>
+    <string name="ListSV">Danh sách sinh viên</string>
     <string name="infor">Thông tin cá nhân</string>
     <string name="change">Chỉnh sửa</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -43,7 +44,7 @@
     <string name="Email">Email </string>
     <string name="Name">Tên:</string>
     <string name="MSSV">MSSV:</string>
-    <string name="Birth">Ngày Sinh:</string>
+    <string name="Birth">Ngày sinh:</string>
     <string name="rClass">Lớp hành chính:</string>
     <string name="scoreType">Loại Điểm</string>
     <string name="score">Điểm</string>

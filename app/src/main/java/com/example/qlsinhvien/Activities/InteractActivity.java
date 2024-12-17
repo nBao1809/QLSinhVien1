@@ -1,6 +1,7 @@
 package com.example.qlsinhvien.Activities;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -55,12 +56,16 @@ public class InteractActivity extends AppCompatActivity {
             }
         });
         userManager = new UserManager(this);
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-        User currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
+        Intent intent=getIntent();
+        User currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
+        if(currentUser.getRole().equals("gv")||currentUser.getRole().equals("sv")){
+            bottomNavigationView.getMenu().removeItem(R.id.utility);
+            bottomNavigationView.getMenu().removeItem(R.id.stat);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            int isDisplay = -1;
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

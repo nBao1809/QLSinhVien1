@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     UserManager userManager;
     Button btLogin;
     TextView forgetPass;
-    SharedPreferences userRefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +43,6 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        userRefs = this.getSharedPreferences("currentUser",
-                MODE_PRIVATE);
-        SharedPreferences.Editor currentUsereditor = userRefs.edit();
 
         userManager = new UserManager(this);
         edtPassword = findViewById(R.id.edtPassword);
@@ -88,9 +84,12 @@ public class LoginActivity extends AppCompatActivity {
 //                            BitmapFactory.decodeResource(getResources(),R.drawable.avatarsample),
 //                            "admin@ou.edu.vn","SinhVien"));
 
-//                    userManager.addUser(new User("h1", "1",
+//                    userManager.addUser(new User("sv", "1",
 //                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
-//                            "deptrai@ou.edu.vn", "admin"));
+//                            "deptrai@ou.edu.vn", "sv"));
+//                    userManager.addUser(new User("gv", "1",
+//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
+//                            "deptrai@ou.edu.vn", "gv"));
 //                    userManager.addUser(new User("1", "1",
 //                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
 //                            "deptrai@ou.edu.vn", "mod"));
@@ -109,12 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                             edtPasswordString);
 
                     if (isUserValid != null) {
-                        currentUsereditor.putInt("ID", isUserValid.getID());
-                        currentUsereditor.putString("Username", isUserValid.getUsername());
-                        currentUsereditor.putString("Email", isUserValid.getEmail());
-                        currentUsereditor.putString("Role", isUserValid.getRole());
-                        currentUsereditor.apply();
                         Intent myIntent = new Intent(LoginActivity.this, InteractActivity.class);
+                        myIntent.putExtra("ID",isUserValid.getID());
                         startActivity(myIntent);
                         finish();
                     } else {

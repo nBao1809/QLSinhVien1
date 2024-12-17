@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
     //region tên cột
     public static final String DATABASE_NAME = "ql_sinhvien.db";
-    public static final int DATABASE_VERSION = 34;
+    public static final int DATABASE_VERSION = 35;
 
     public static final String TB_USERS = "USERS";
     public static final String ID = "ID";
@@ -17,6 +17,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PHOTO = "PHOTO";
     public static final String EMAIL = "EMAIL";
     public static final String ROLE = "ROLE";
+
+    public static final String TB_ROLE="ROLE";
+    public static final String MA_ROLE ="MA_ROLE";
+    public static final String TEN_ROLE="TEN_ROLE";
 
 
     public static final String TB_SINHVIEN = "SINHVIEN";
@@ -88,7 +92,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             PASSWORD + " TEXT, " +
             PHOTO + " BLOB, " +
             EMAIL + " TEXT, " +
-            ROLE + " TEXT)";
+            ROLE + " TEXT, "+"FOREIGN KEY(" + ROLE + ") REFERENCES " + TB_ROLE + "(" + MA_ROLE +
+            "))";
     public static final String CREATE_GIANGVIEN = "CREATE TABLE " + TB_GIANGVIEN + " (" +
             MA_GIANGVIEN + " TEXT PRIMARY KEY, " +
             HOTEN + " TEXT NOT NULL, " +
@@ -112,6 +117,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MA_HOCKY + " TEXT PRIMARY KEY, " +
             TENHOCKY +" TEXT NOT NULL, " +
             NAMHOC + " TEXT )";
+    public static final String CREATE_ROLE ="CREATE TABLE " + TB_ROLE + " (" +
+            MA_ROLE + " TEXT PRIMARY KEY, " +
+            TEN_ROLE +" TEXT NOT NULL )";
+
     public static final String CREATE_LOPSINHVIEN ="CREATE TABLE " + TB_LOPSINHVIEN + " (" +
             MA_LOPSINHVIEN + " TEXT PRIMARY KEY, " +
             MA_LOP + " TEXT, " +
@@ -163,6 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_HOCKY);
         db.execSQL(CREATE_LOPSINHVIEN);
         db.execSQL(CREATE_DIEM);
+        db.execSQL(CREATE_ROLE);
     }
 
     @Override
@@ -179,6 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHANHCHINH);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
         onCreate(db);
     }
 }

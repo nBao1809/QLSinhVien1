@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.qlsinhvien.Activities.SettingActivity;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.RoleManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -41,6 +42,7 @@ import java.io.IOException;
 public class AccountFragment extends Fragment {
     private ActivityResultLauncher<Intent> imagePicker;
     private UserManager userManager;
+    private RoleManager roleManager;
     ImageView imageView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,6 +64,7 @@ public class AccountFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userManager = new UserManager(requireContext());
+        roleManager = new RoleManager(requireContext());
         if (getArguments() != null) {
             currentUser = userManager.getUserByID(getArguments().getInt(ARG_CURRENTUSER));
         }
@@ -89,7 +92,7 @@ public class AccountFragment extends Fragment {
         txtUsername.setText(currentUser.getUsername());
         txtMail.setText(currentUser.getEmail());
         txtName.setText(currentUser.getUsername());
-        txtRole.setText(currentUser.getRole());
+        txtRole.setText(roleManager.getRole(currentUser.getRole()).getTenRole());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuaccount);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

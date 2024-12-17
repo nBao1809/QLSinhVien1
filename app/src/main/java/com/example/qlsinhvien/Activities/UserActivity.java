@@ -93,7 +93,12 @@ public class UserActivity extends AppCompatActivity {
         layoutMod = findViewById(R.id.Mod);
         layoutGV = findViewById(R.id.Giangvien);
         layoutSV = findViewById(R.id.SinhVien);
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         layoutAdmin.setOnClickListener(v -> {
             ImageView image = findViewById(R.id.admin);
             if (recycleUserAdmin.getVisibility() == View.VISIBLE) {

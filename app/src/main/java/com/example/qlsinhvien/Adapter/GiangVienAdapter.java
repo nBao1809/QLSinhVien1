@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GiangVienAdapter extends ArrayAdapter<GiangVien> {
-
+ 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.itemchongiangvien,parent,false);

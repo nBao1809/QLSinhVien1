@@ -29,7 +29,7 @@ public class UserManager {
 
     private SQLiteDatabase db;
     private List<User> userList;
-    SharedPreferences otpRefs;
+    SharedPreferences  otpRefs;
     SharedPreferences.Editor otpEditor;
 
     public UserManager(Context context) {
@@ -101,7 +101,6 @@ public class UserManager {
         }
         return null;
     }
-
     public User getUserByUserName(String username) {
         db = dbHelper.getReadableDatabase();
         User user = null;
@@ -138,7 +137,7 @@ public class UserManager {
             values.put(DatabaseHelper.EMAIL, user.getEmail());
         }
         if (user.getPhoto() != null) {
-            byte[] imageBytes = getBitmapAsByteArray(resizeImage(user.getPhoto()));
+            byte[] imageBytes=getBitmapAsByteArray(resizeImage( user.getPhoto()));
             values.put(DatabaseHelper.PHOTO, imageBytes);
         }
         if (user.getRole() != null) {
@@ -155,26 +154,24 @@ public class UserManager {
         return rowsUpdated;
     }
 
-    public int updatePhoto(int ID, Bitmap photo) {
+    public int updatePhoto(int userID, Bitmap bitmap) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        if (photo != null) {
-            byte[] imageBytes = getBitmapAsByteArray(resizeImage(photo));
-            values.put(DatabaseHelper.PHOTO, imageBytes);
-        }
-
+        if (bitmap == null)
+            return -1;
+        byte[] imageBytes = getBitmapAsByteArray(resizeImage(bitmap));
+        values.put(DatabaseHelper.PHOTO, imageBytes);
         int rowsUpdated = db.update(
                 DatabaseHelper.TB_USERS,
                 values,
                 DatabaseHelper.ID + " = ?",
-                new String[]{String.valueOf(ID)}
+                new String[]{String.valueOf(userID)}
         );
         db.close();//>0 thành công =0 ko thành công
         return rowsUpdated;
     }
 
-    public int deleteUser(int userID) {
+    public int deleteUser(long userID) {
         db = dbHelper.getWritableDatabase();
         String selection = DatabaseHelper.ID + " = ?";
         String[] selectionArgs = {String.valueOf(userID)};
@@ -212,8 +209,6 @@ public class UserManager {
     public long getNextUserId() {
         long nextUserId = -1;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-
         String query = "SELECT seq FROM sqlite_sequence WHERE name = ?";
         Cursor cursor = db.rawQuery(query, new String[]{"users"});
 
@@ -305,7 +300,7 @@ public class UserManager {
                     message.setFrom(new InternetAddress(fromEmail));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject(subject);
-                    message.setContent(messageBody, "text/html;charset=UTF-8");
+                    message.setContent(messageBody,"text/html;charset=UTF-8");
 
                     // Gửi email
                     Transport.send(message);
@@ -316,10 +311,9 @@ public class UserManager {
             }
         });
     }
-
     public static String generateOTP() {
         Random random = new Random();
-        int otp = random.nextInt(900000);
+        int otp =  random.nextInt(900000);
         return String.format("%06d", otp);
 
     }
@@ -338,10 +332,9 @@ public class UserManager {
         }
         return false;
     }
-
     private Bitmap resizeImage(Bitmap originalBitmap) {
-        int maxWidth, maxHeight;
-        maxWidth = maxHeight = 800;
+        int maxWidth,maxHeight;
+        maxWidth=maxHeight=800;
         int width = originalBitmap.getWidth();
         int height = originalBitmap.getHeight();
 

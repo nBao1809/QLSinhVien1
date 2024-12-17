@@ -30,6 +30,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+    SharedPreferences userRefs;
     int idc = R.id.home;
     User currentUser;
     UserManager userManager;
@@ -56,22 +57,25 @@ public class InteractActivity extends AppCompatActivity {
                         .show();
             }
         });
-        userManager=new UserManager(this);
+        userManager = new UserManager(this);
         Intent intent=getIntent();
-        currentUser=userManager.getUserByID(intent.getIntExtra("ID",-1));
+        User currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
-        if (currentUser.getRole().equals("gv")  || currentUser.getRole().equals("sv") ) {
+        if(currentUser.getRole().equals("gv")||currentUser.getRole().equals("sv")){
             bottomNavigationView.getMenu().removeItem(R.id.utility);
             bottomNavigationView.getMenu().removeItem(R.id.stat);
         }
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
 
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+
                 if (id == R.id.home && id != idc) {
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment().newInstance(currentUser.getID()));
+
+
                 } else if (id == R.id.utility && id != idc) {
                     replaceFragment(new UtilityFragment());
 
@@ -79,13 +83,12 @@ public class InteractActivity extends AppCompatActivity {
                     replaceFragment(new StatisticFragment());
 
                 } else if (id == R.id.account && id != idc) {
-                    replaceFragment(new AccountFragment().newInstance(currentUser.getID()));
+                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID", -1)));
 
                 }
-                idc = id;
+                idc =id;
                 return true;
             }
-
         });
     }
 

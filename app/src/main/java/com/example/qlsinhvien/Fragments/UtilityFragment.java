@@ -14,7 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-
+import com.example.qlsinhvien.Activities.DanhSachLopSinhVienActivity;
+import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
 
 import com.example.qlsinhvien.Activities.UserActivity;
@@ -57,8 +58,8 @@ public class UtilityFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
-    Button btnQuanLyLopHoc;
-Button btnUser;
+    Button btnQuanLyLopHoc,btnQuanLyDanhSachSinhVien;
+
 
 
     @Override
@@ -93,6 +94,15 @@ Button btnUser;
                 startActivity(intent);
             }
         });
+        btnQuanLyDanhSachSinhVien= view.findViewById(R.id.btnQuanLyDanhSachSinhVien);
+        btnQuanLyDanhSachSinhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), QuanLyDanhSachSinhVienActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
 
     }

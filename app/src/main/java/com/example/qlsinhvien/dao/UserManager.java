@@ -179,6 +179,7 @@ public class UserManager {
         return rowsUpdated;
     }
 
+
     public int updatePhoto(int userID, Bitmap bitmap) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -196,7 +197,7 @@ public class UserManager {
         return rowsUpdated;
     }
 
-    public int deleteUser(long userID) {
+    public int deleteUser(int userID) {
         db = dbHelper.getWritableDatabase();
         String selection = DatabaseHelper.ID + " = ?";
         String[] selectionArgs = {String.valueOf(userID)};
@@ -231,8 +232,41 @@ public class UserManager {
         return null;
     }
 
+    public long getNextUserId() {
+        long nextUserId = -1;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-    public void sendEmail(String toEmail, String OTP) {
+
+        String query = "SELECT seq FROM sqlite_sequence WHERE name = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"users"});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                nextUserId = cursor.getLong(0);  //
+            }
+            cursor.close();
+        }
+        db.close();
+
+        return nextUserId + 1;
+    }
+    public long getLastUserID() {
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + DatabaseHelper.ID + ") FROM " + DatabaseHelper.TB_USERS, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            long lastUserId = cursor.getLong(0);  // Lấy ID của người dùng có ID lớn nhất
+            cursor.close();
+            return lastUserId;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return -1;  // Trả về -1 nếu không tìm thấy người dùng nào
+    }
+
+
+
+    public void sendEmail(final String toEmail) {
         String fromEmail = "qlsinhvien0@gmail.com";
         String password = "zonb hknp gsxw autw";
         /*
@@ -296,7 +330,7 @@ public class UserManager {
                     message.setFrom(new InternetAddress(fromEmail));
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
                     message.setSubject(subject);
-                    message.setContent(messageBody,"text/html;charset=UTF-8");
+                    message.setContent(messageBody, "text/html;charset=UTF-8");
 
 
                     // Gửi email
@@ -311,7 +345,7 @@ public class UserManager {
 
     public static String generateOTP() {
         Random random = new Random();
-        int otp =  random.nextInt(900000);
+        int otp = random.nextInt(900000);
         return String.format("%06d", otp);
 
     }

@@ -4,106 +4,63 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.qlsinhvien.Models.HocKy;
+
+
+import com.example.qlsinhvien.Models.GiangVien;
 
 import com.example.qlsinhvien.Models.LopHanhChinh;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
+import com.example.qlsinhvien.dao.UserManager;
 
 
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LopHanhChinhAdapter extends RecyclerView.Adapter<LopHanhChinhAdapter.ClassViewHolder> implements Filterable {
+public class LopHanhChinhAdapter extends ArrayAdapter<LopHanhChinh> {
 
-    private List<LopHanhChinh> lopHanhChinhList, lopHanhChinhListOld;
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.itemchongiangvien,parent,false);
+        TextView txtChonGiangVien = convertView.findViewById(R.id.txtChonGiangVien);
 
-
-    public LopHanhChinhAdapter() {
-
-    }
-
-    public void setData(List<LopHanhChinh> lopHanhChinhList) {
-        if(lopHanhChinhList==null)
-            return;
-        this.lopHanhChinhList = lopHanhChinhList;
-        this.lopHanhChinhListOld = lopHanhChinhList;
-        notifyDataSetChanged();
+        LopHanhChinh lopHanhChinh= this.getItem(position);
+        {
+            if(lopHanhChinh!=null){
+                txtChonGiangVien.setText(lopHanhChinh.getTenLopHanhChinh());
+            }
+        }
+        return convertView;
     }
 
     @NonNull
     @Override
-    public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemlophocphan, parent, false);
-        return new ClassViewHolder(view);
-    }
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.itemgiangvienselected,parent,false);
+        TextView txtSelected = convertView.findViewById(R.id.txtSelected);
 
-    @Override
-    public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
-        LopHanhChinh lopHanhChinh = lopHanhChinhList.get(position);
-        if (lopHanhChinh == null)
-            return;
-        //holder.txtNganh.setText(diem.getMaMonHoc())
-    }
+        LopHanhChinh lopHanhChinh= this.getItem(position);
+        {
+            if(lopHanhChinh!=null){
+                txtSelected.setText(lopHanhChinh.getTenLopHanhChinh());
 
-    @Override
-    public int getItemCount() {
-        if (lopHanhChinhList != null)
-            return lopHanhChinhList.size();
-        return 0;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String searchString = StringUtility.removeMark(constraint.toString().toLowerCase());
-                if (searchString.isEmpty()) {
-                    lopHanhChinhList = lopHanhChinhListOld;
-                } else {
-                    List<LopHanhChinh> list = new ArrayList<>();
-                    for (LopHanhChinh lopHanhChinh : lopHanhChinhListOld) {
-                        String maLopHanhChinh =
-                                StringUtility.removeMark(lopHanhChinh.getMaLopHanhChinh().toLowerCase());
-                        String tenLopHanhChinh =
-                                StringUtility.removeMark(lopHanhChinh.getMaLopHanhChinh().toLowerCase());
-                        if (maLopHanhChinh.contains(searchString)) {
-                            list.add(lopHanhChinh);
-                        }
-                        if (tenLopHanhChinh.contains(searchString)) {
-                            list.add(lopHanhChinh);
-                        }
-                    }
-                    lopHanhChinhList = list;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = lopHanhChinhList;
-                return filterResults;
             }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                lopHanhChinhListOld = (List<LopHanhChinh>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public class ClassViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNganh, txtMonHoc, txtGVPhuTrach, txtLop;
-
-        public ClassViewHolder(@NonNull View itemView) {
-            super(itemView);
-            //txtNganh = itemView.findViewById(R.id.txtNganh);
         }
+        return convertView;
     }
 
+    public LopHanhChinhAdapter(@NonNull Context context, int resource, @NonNull List<LopHanhChinh> objects) {
+        super(context, resource, objects);
+    }
 }

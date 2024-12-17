@@ -58,7 +58,7 @@ public class UtilityFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
-    Button btnQuanLyLopHoc,btnQuanLyDanhSachSinhVien;
+    Button btnQuanLyLopHoc,btnQuanLyDanhSachSinhVien,btnUser;
 
 
 

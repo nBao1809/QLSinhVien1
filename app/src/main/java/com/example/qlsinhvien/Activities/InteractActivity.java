@@ -77,13 +77,13 @@ public class InteractActivity extends AppCompatActivity {
 
 
                 } else if (id == R.id.utility && id != idc) {
-                    replaceFragment(new UtilityFragment());
+                    replaceFragment(new UtilityFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.stat && id != idc) {
-                    replaceFragment(new StatisticFragment());
+                    replaceFragment(new StatisticFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.account && id != idc) {
-                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID", -1)));
+                    replaceFragment(new AccountFragment().newInstance(currentUser.getID()));
 
                 }
                 idc =id;

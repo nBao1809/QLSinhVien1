@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         String admin = "admin";
         String password = "123456";
-        userRefs = this.getSharedPreferences("currentUser",
+        userRefs = getSharedPreferences("currentUser",
                 MODE_PRIVATE);
         SharedPreferences.Editor currentUsereditor = userRefs.edit();
 
@@ -71,11 +71,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (isUserValid!=null) {
                         currentUsereditor.putInt("ID", isUserValid.getID());
-                        currentUsereditor.putString("Username", isUserValid.getUsername());
-                        currentUsereditor.putString("Email", isUserValid.getEmail());
-                        currentUsereditor.putString("Role", isUserValid.getRole());
-                        currentUsereditor.apply();
+//                        currentUsereditor.putString("Username", isUserValid.getUsername());
+//                        currentUsereditor.putString("Email", isUserValid.getEmail());
+//                        currentUsereditor.putString("Role", isUserValid.getRole());
+                        currentUsereditor.commit();
                         Intent myIntent = new Intent(LoginActivity.this, InteractActivity.class);
+                        myIntent.putExtra("ID",isUserValid.getID());
                         startActivity(myIntent);
                     } else {
                         Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();

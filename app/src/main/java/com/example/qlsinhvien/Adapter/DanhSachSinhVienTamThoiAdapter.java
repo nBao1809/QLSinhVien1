@@ -98,12 +98,6 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
         holder.txtTen.setText(sinhVien.getHoTen());
         holder.txtMSSV.setText(sinhVien.getMssv());
         holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
-        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickGoToLopSinhVien(sinhVien);
-            }
-        });
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

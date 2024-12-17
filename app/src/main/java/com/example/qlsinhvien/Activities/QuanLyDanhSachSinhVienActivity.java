@@ -38,6 +38,8 @@ import com.example.qlsinhvien.Adapter.DanhSachSinhVienTamThoiAdapter;
 import com.example.qlsinhvien.Adapter.LopHanhChinhAdapter;
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 import com.example.qlsinhvien.Adapter.NganhAdapter;
+import com.example.qlsinhvien.Models.LopHanhChinh;
+import com.example.qlsinhvien.Models.Nganh;
 import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
@@ -201,6 +203,10 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                         showMaterialDatePicker2(edtNgaySinh);
                     }
                 });
+
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP1","LOP1"));
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP2","LOP2"));
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP3","LOP3"));
                 lopHanhChinhAdapter = new LopHanhChinhAdapter(QuanLyDanhSachSinhVienActivity.this, R.layout.itemgiangvienselected, lopHanhChinhManager.getAllLopHanhChinh());
                 spinnerLopHanhChinh.setAdapter(lopHanhChinhAdapter);
                 spinnerLopHanhChinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -214,6 +220,8 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
 
                     }
                 });
+//                nganhManager.addNganh(new Nganh("nganh1","nganh1"));
+//                nganhManager.addNganh(new Nganh("nganh2","nganh2"));
                 nganhAdapter = new NganhAdapter(QuanLyDanhSachSinhVienActivity.this, R.layout.itemgiangvienselected, nganhManager.getAllNganh());
                 spinnerNganh.setAdapter(nganhAdapter);
                 spinnerNganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

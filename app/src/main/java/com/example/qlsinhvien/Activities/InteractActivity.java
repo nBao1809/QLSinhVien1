@@ -1,6 +1,7 @@
 package com.example.qlsinhvien.Activities;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -20,13 +21,16 @@ import com.example.qlsinhvien.Fragments.AccountFragment;
 import com.example.qlsinhvien.Fragments.HomeFragment;
 import com.example.qlsinhvien.Fragments.StatisticFragment;
 import com.example.qlsinhvien.Fragments.UtilityFragment;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     SharedPreferences userRefs;
+    UserManager userManager;
     int idc = R.id.home;
 
     @Override
@@ -51,29 +55,37 @@ public class InteractActivity extends AppCompatActivity {
                         .show();
             }
         });
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-
+        userManager = new UserManager(this);
+        Intent intent=getIntent();
+        User currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
+        if(currentUser.getRole().equals("gv")||currentUser.getRole().equals("sv")){
+            bottomNavigationView.getMenu().removeItem(R.id.utility);
+            bottomNavigationView.getMenu().removeItem(R.id.stat);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+
                 if (id == R.id.home && id != idc) {
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment().newInstance(currentUser.getID()));
 
 
                 } else if (id == R.id.utility && id != idc) {
-                    replaceFragment(new UtilityFragment());
+                    replaceFragment(new UtilityFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.stat && id != idc) {
-                    replaceFragment(new StatisticFragment());
+                    replaceFragment(new StatisticFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.account && id != idc) {
-                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID", -1)));
+                    replaceFragment(new AccountFragment().newInstance(currentUser.getID()));
 
                 }
-                idc =id;
+                idc = id;
                 return true;
             }
         });

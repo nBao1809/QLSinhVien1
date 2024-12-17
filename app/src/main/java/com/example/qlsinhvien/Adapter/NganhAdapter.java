@@ -24,7 +24,6 @@ import com.example.qlsinhvien.StringUtility;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class NganhAdapter extends ArrayAdapter<Nganh> {
 
 
@@ -52,6 +51,7 @@ public class NganhAdapter extends ArrayAdapter<Nganh> {
         {
             if(nganh!=null){
                 txtChonGiangVien.setText(nganh.getTenNganh());
+
             }
         }
         return convertView;

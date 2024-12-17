@@ -58,6 +58,7 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
         lopSinhVienManager = new LopSinhVienManager(context);
     }
 
+
     public void setData(List<Diem> listDiem) {
         this.listDiem = listDiem;
         notifyDataSetChanged();

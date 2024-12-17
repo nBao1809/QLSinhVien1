@@ -1,5 +1,6 @@
 package com.example.qlsinhvien.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.qlsinhvien.Models.Diem;
 import com.example.qlsinhvien.Models.LoaiDiem;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DiemManager;
 import com.example.qlsinhvien.dao.HocKyManager;
@@ -27,12 +29,13 @@ import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.dao.SinhVienManager;
+import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 
 public class DiemSinhVien extends AppCompatActivity {
-    TextView txtTenSinhVien, txtMSSV, txtNgaySinh, txtCCCD, txtLopHanhChinh, txtNganh, txtTenLop, txtMalop, txtHocky,txtThongBao;
+    TextView txtTenSinhVien, txtMSSV, txtNgaySinh, txtCCCD, txtLopHanhChinh, txtNganh, txtTenLop, txtMalop, txtHocky, txtThongBao;
     RecyclerView recycleDiemSinhVien;
     LopSinhVienAdapter lopSinhVienAdapter;
     SinhVienManager sinhVienManager;
@@ -45,7 +48,9 @@ public class DiemSinhVien extends AppCompatActivity {
     NganhManager nganhManager;
     MaterialToolbar toolbar;
     List<Diem> listDiem;
-
+    UserManager userManager;
+    SharedPreferences userRefs;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,8 @@ public class DiemSinhVien extends AppCompatActivity {
         txtTenLop = findViewById(R.id.txtTenLop);
         recycleDiemSinhVien = findViewById(R.id.recycleDiemSinhVien);
         toolbar = findViewById(R.id.toolbar);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,10 +113,10 @@ public class DiemSinhVien extends AppCompatActivity {
         txtNganh.setText(nganhManager.getNganh(sinhVien.getMaNganh()).getTenNganh());
         txtTenLop.setText(lopHocPhan.getTenLop());
         txtMalop.setText(lopHocPhan.getMaLop());
-        txtThongBao=findViewById(R.id.txtThongBao);
+        txtThongBao = findViewById(R.id.txtThongBao);
         lopSinhVienAdapter = new LopSinhVienAdapter(this);
         listDiem = diemManager.getDiemfromMalopsinhvien(lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), sinhVien.getMssv()));
-        if(listDiem==null){
+        if (listDiem == null) {
             txtThongBao.setText("Giáo viên chưa nhập điểm");
             txtThongBao.setVisibility(View.VISIBLE);
             return;

@@ -23,7 +23,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     TextInputEditText oldPass, newPass, confirmPass;
     Button btn;
     UserManager userManager;
-SharedPreferences userRefs;
+    SharedPreferences userRefs;
+    User currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +34,9 @@ SharedPreferences userRefs;
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            userRefs= this.getSharedPreferences("currentUser",MODE_PRIVATE);
-            userManager=new UserManager(this);
+            userManager = new UserManager(this);
+            userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+            currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
             oldPass = findViewById(R.id.edtOldPass);
             newPass = findViewById(R.id.edtNewPass);
             confirmPass = findViewById(R.id.edtConfirmPass);
@@ -63,9 +66,9 @@ SharedPreferences userRefs;
                     Toast.makeText(ChangePasswordActivity.this, "Mật khẩu mới và xác nhận mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
                     confirmPass.requestFocus(); // Đặt focus vào Xác nhận mật khẩu mới
                 } else {
-                    User user= userManager.getUserByID( userRefs.getInt("ID",-1));
-                    boolean isChange= userManager.changePassword(newPassString,user);
-                    if (isChange){
+                    User user = userManager.getUserByID(userRefs.getInt("ID", -1));
+                    boolean isChange = userManager.changePassword(newPassString, user);
+                    if (isChange) {
                         Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thành công",
                                 Toast.LENGTH_SHORT).show();
                     }

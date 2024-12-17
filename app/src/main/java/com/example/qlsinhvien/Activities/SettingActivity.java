@@ -2,6 +2,7 @@ package com.example.qlsinhvien.Activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +17,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class SettingActivity extends AppCompatActivity {
     Button buttonsignout, buttonpasschange, buttonexit;
     MaterialToolbar toolbar;
+    SharedPreferences userRefs;
+    User currentUser;
+    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,9 @@ public class SettingActivity extends AppCompatActivity {
         });
         toolbar = findViewById(R.id.toolbarsetting);
         toolbar.inflateMenu(R.menu.menusetting);
+        userManager = new UserManager(this);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         Menu menu = toolbar.getMenu();
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

@@ -2,6 +2,7 @@ package com.example.qlsinhvien.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qlsinhvien.Adapter.UserAdapter;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -31,6 +33,8 @@ public class UserActivity extends AppCompatActivity {
     UserAdapter adminAdapter, modAdapter, gvAdapter, svAdapter;
     UserManager userManager;
     LinearLayout layoutAdmin, layoutMod, layoutGV, layoutSV;
+    SharedPreferences userRefs;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +46,12 @@ public class UserActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        userManager = new UserManager(this);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         toolbar = findViewById(R.id.toolbaruser);
         toolbar.inflateMenu(R.menu.menuuser);
-        userManager = new UserManager(this);
+
         adminAdapter = new UserAdapter();
         modAdapter = new UserAdapter();
         gvAdapter = new UserAdapter();
@@ -86,7 +93,12 @@ public class UserActivity extends AppCompatActivity {
         layoutMod = findViewById(R.id.Mod);
         layoutGV = findViewById(R.id.Giangvien);
         layoutSV = findViewById(R.id.SinhVien);
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         layoutAdmin.setOnClickListener(v -> {
             ImageView image = findViewById(R.id.admin);
             if (recycleUserAdmin.getVisibility() == View.VISIBLE) {

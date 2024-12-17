@@ -2,6 +2,7 @@ package com.example.qlsinhvien.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -96,6 +97,13 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         LopHocPhan lopHocPhan = (LopHocPhan) bundle.get("lopHocPhan");
         txtTenSinhVien.setText(sinhVien.getHoTen());
         txtMSSV.setText(sinhVien.getMssv());
+        if (lopHocPhan != null) {
+            String maLop = lopHocPhan.getMaLop();
+            // Tiếp tục xử lý
+        } else {
+            Log.e("ERROR", "Đối tượng LopHocPhan là null");
+        }
+        assert lopHocPhan != null;
         String tenHocKy = hocKyManager.getHocKy(lopSinhVienManager.getMaHocKyfromMalop(lopHocPhan.getMaLop())).getTenHocKy();
         txtHocky.setText(tenHocKy);
         String formattedDate = dateFormat(sinhVien.getNgaySinh());

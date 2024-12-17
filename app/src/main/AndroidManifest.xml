@@ -27,6 +27,12 @@
             android:name=".Activities.ChangePasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".activity_edit_sinhvien"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLyDanhSachSinhVienActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.QuanLyDiemvaInforSinhVien"
             android:exported="false" />
         <activity

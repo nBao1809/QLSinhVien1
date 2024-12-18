@@ -161,8 +161,7 @@ public class HomeFragment extends Fragment {
         recycleHocPhan.setLayoutManager(linearLayoutManager);
         List<LopHocPhan> lopHocPhan = lopHocPhanManager.getAllLopHocPhan();
         if (lopHocPhan == null || lopHocPhan.isEmpty()) {
-
-
+            setThongBaoVisibility(true);
         }
         Boolean bool = Boolean.FALSE;
         lopHocPhanAdapter.setData(lopHocPhan,bool);

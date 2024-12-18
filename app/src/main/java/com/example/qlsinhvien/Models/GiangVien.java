@@ -2,9 +2,10 @@ package com.example.qlsinhvien.Models;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class GiangVien {
+public class GiangVien implements Serializable {
     private String maGiangVien;
     private String hoTen;
     private String cccd;

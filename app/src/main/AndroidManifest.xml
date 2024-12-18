@@ -27,6 +27,9 @@
             android:name=".Activities.ChangePasswordActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.QuanLyGiangVienActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity_edit_sinhvien"
             android:exported="false" />
         <activity

@@ -10,7 +10,7 @@ import com.example.qlsinhvien.Activities.LoginActivity;
 public class DatabaseHelper extends SQLiteOpenHelper {
     //region tên cột
     public static final String DATABASE_NAME = "ql_sinhvien.db";
-    public static final int DATABASE_VERSION = 35;
+    public static final int DATABASE_VERSION = 34;
 
     public static final String TB_USERS = "USERS";
     public static final String ID = "ID";
@@ -19,10 +19,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PHOTO = "PHOTO";
     public static final String EMAIL = "EMAIL";
     public static final String ROLE = "ROLE";
-
-    public static final String TB_ROLE="ROLE";
-    public static final String MA_ROLE ="MA_ROLE";
-    public static final String TEN_ROLE="TEN_ROLE";
 
 
     public static final String TB_SINHVIEN = "SINHVIEN";
@@ -94,8 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             PASSWORD + " TEXT, " +
             PHOTO + " BLOB, " +
             EMAIL + " TEXT, " +
-            ROLE + " TEXT, "+"FOREIGN KEY(" + ROLE + ") REFERENCES " + TB_ROLE + "(" + MA_ROLE +
-            "))";
+            ROLE + " TEXT)";
     public static final String CREATE_GIANGVIEN = "CREATE TABLE " + TB_GIANGVIEN + " (" +
             MA_GIANGVIEN + " TEXT PRIMARY KEY, " +
             HOTEN + " TEXT NOT NULL, " +
@@ -108,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MSSV + " TEXT PRIMARY KEY, " +
             HOTEN + " TEXT NOT NULL, " +
             CCCD + " TEXT, " +
-            NGAYSINH + " REAL, " +
+            NGAYSINH + " INTEGER, " +
             ID + " INTEGER, " +
             MA_LOPHANHCHINH + " TEXT, " +
             MA_NGANH + " TEXT, " +
@@ -119,10 +114,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MA_HOCKY + " TEXT PRIMARY KEY, " +
             TENHOCKY +" TEXT NOT NULL, " +
             NAMHOC + " TEXT )";
-    public static final String CREATE_ROLE ="CREATE TABLE " + TB_ROLE + " (" +
-            MA_ROLE + " TEXT PRIMARY KEY, " +
-            TEN_ROLE +" TEXT NOT NULL )";
-
     public static final String CREATE_LOPSINHVIEN ="CREATE TABLE " + TB_LOPSINHVIEN + " (" +
             MA_LOPSINHVIEN + " TEXT PRIMARY KEY, " +
             MA_LOP + " TEXT, " +
@@ -175,6 +166,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
         db.execSQL(CREATE_LOPHOCPHAN);
+
+        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC001', 'CS01')");
+        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC002', 'CS02')");
+        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC003', 'IT01')");
+        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC004', 'IT02')");
+        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC005', 'IT03')");
+
+        db.execSQL("INSERT INTO " + TB_NGANH + " (" + MA_NGANH + ", " + TEN_NGANH + ") VALUES ('CNTT', 'Công nghệ thông tin')");
+        db.execSQL("INSERT INTO " + TB_NGANH + " (" + MA_NGANH + ", " + TEN_NGANH + ") VALUES ('KT', 'Kinh tế')");
+        db.execSQL("INSERT INTO " + TB_NGANH + " (" + MA_NGANH + ", " + TEN_NGANH + ") VALUES ('MT', 'Môi trường')");
+        db.execSQL("INSERT INTO " + TB_NGANH + " (" + MA_NGANH + ", " + TEN_NGANH + ") VALUES ('QTKD', 'Quản trị kinh doanh')");
+        db.execSQL("INSERT INTO " + TB_NGANH + " (" + MA_NGANH + ", " + TEN_NGANH + ") VALUES ('HTTT', 'Hệ thống thông tin')");
+
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH001', 'Lập trình Java', 3.0, 'CNTT')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH002', 'Cơ sở dữ liệu', 3.0, 'CNTT')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH003', 'Kinh tế vi mô', 2.5, 'KT')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH004', 'Kinh tế vĩ mô', 2.5, 'KT')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH005', 'Quản trị học', 3.0, 'QTKD')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH006', 'Marketing căn bản', 2.0, 'QTKD')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH007', 'Môi trường học', 3.0, 'MT')");
+        db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
+                "VALUES ('MH008', 'Hệ thống thông tin', 3.0, 'HTTT')");
     }
 
     @Override
@@ -192,6 +212,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_NGANH);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHANHCHINH);
         db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
         onCreate(db);
     }
 }

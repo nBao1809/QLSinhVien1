@@ -23,6 +23,7 @@ import com.example.qlsinhvien.Activities.DiemSinhVien;
 import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDiemvaInforSinhVien;
 import com.example.qlsinhvien.Activities.QuanLySinhVienActivity;
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHanhChinh;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
@@ -30,6 +31,7 @@ import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
+import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.LopHanhChinhManager;
 import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.SinhVienManager;
@@ -45,28 +47,26 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSachSinhVienTamThoiAdapter.DanhSachSinhVienViewHolder> implements Filterable {
+public class DanhSachGiangVienTamThoiAdapter extends RecyclerView.Adapter<DanhSachGiangVienTamThoiAdapter.DanhSachGiangVienTamThoiViewHolder> implements Filterable {
     private UserManager userManager;
-    private LopHanhChinhManager lopHanhChinhManager;
-    private SinhVienManager sinhVienManager;
-    private LopSinhVienManager lopSinhVienManager;
+
+    private GiangVienManager giangVienManager;
     private Context context;
-    private List<SinhVien> sinhVienList,sinhVienListOld;
+    private List<GiangVien> giangVienList, giangVienListOld;
     private List<User> userList;
 
 
-    public DanhSachSinhVienTamThoiAdapter(Context context) {
+    public DanhSachGiangVienTamThoiAdapter(Context context) {
         this.context = context;
         userManager = new UserManager(context);
-        sinhVienManager = new SinhVienManager(context);
-        lopSinhVienManager = new LopSinhVienManager(context);
-        lopHanhChinhManager = new LopHanhChinhManager(context);
+        giangVienManager = new GiangVienManager(context);
+
     }
 
 
-    public void setData(List<SinhVien> sinhVienList,List<User> userList) {
-        this.sinhVienList = sinhVienList;
-        this.sinhVienListOld=sinhVienList;
+    public void setData(List<GiangVien> giangVienList, List<User> userList) {
+        this.giangVienList = giangVienList;
+        this.giangVienListOld = giangVienList;
         this.userList = userList;
         notifyDataSetChanged();
     }
@@ -82,32 +82,31 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
 
     @NonNull
     @Override
-    public DanhSachSinhVienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdanhsachsinhvientemp, parent, false);
+    public DanhSachGiangVienTamThoiViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemthemgiangvientemp, parent, false);
 
 
-        return new DanhSachSinhVienViewHolder(view);
+        return new DanhSachGiangVienTamThoiViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DanhSachSinhVienViewHolder holder, int position) {
-        SinhVien sinhVien = sinhVienList.get(position);
-        if (sinhVien == null)
+    public void onBindViewHolder(@NonNull DanhSachGiangVienTamThoiViewHolder holder, int position) {
+        GiangVien giangVien = giangVienList.get(position);
+        if (giangVien == null)
             return;
 
-        holder.txtTen.setText(sinhVien.getHoTen());
-        holder.txtMSSV.setText(sinhVien.getMssv());
-        holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
+        holder.txtTen.setText(giangVien.getHoTen());
+        holder.txtKhoa.setText(giangVien.getKhoa());
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int positionTam = holder.getAdapterPosition();
                 if (positionTam != RecyclerView.NO_POSITION) {
-                    int idBiXoa = sinhVienList.get(positionTam).getId();
-                    sinhVienList.remove(positionTam);
+                    int idBiXoa = giangVienList.get(positionTam).getId();
+                    giangVienList.remove(positionTam);
                     userList.remove(positionTam);
-                    updateSinhVienList(idBiXoa);
+                    updateGiangVienList(idBiXoa);
                     notifyItemRemoved(positionTam);
                 }
             }
@@ -116,24 +115,21 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
 
     }
 
-    public void updateSinhVienList(int idBiXoa) {
-        for (int i = 0; i < sinhVienList.size(); i++) {
-            if (idBiXoa + 1 == sinhVienList.get(i).getId()) {
-                SinhVien sinhVien = sinhVienList.get(i);
-                sinhVien.setId(idBiXoa);
-                idBiXoa = sinhVienList.get(i).getId();
+    public void updateGiangVienList(int idBiXoa) {
+        for (int i = 0; i < giangVienList.size(); i++) {
+            if (idBiXoa + 1 == giangVienList.get(i).getId()) {
+                GiangVien giangVien = giangVienList.get(i);
+                giangVien.setId(idBiXoa);
+                idBiXoa = giangVienList.get(i).getId();
             }
-            Log.d("test", String.valueOf(sinhVienList.get(i).getId()));
         }
     }
 
 
-
-
     @Override
     public int getItemCount() {
-        if (sinhVienList != null)
-            return sinhVienList.size();
+        if (giangVienList != null)
+            return giangVienList.size();
         return 0;
     }
 
@@ -144,30 +140,30 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
             protected FilterResults performFiltering(CharSequence constraint) {
                 String searchString = StringUtility.removeMark(constraint.toString().toLowerCase());
                 if (searchString.isEmpty()) {
-                    sinhVienList = sinhVienListOld;
+                    giangVienList = giangVienListOld;
                 } else {
-                    List<SinhVien> list = new ArrayList<>();
-                    for (SinhVien sinhVien : sinhVienListOld) {
+                    List<GiangVien> list = new ArrayList<>();
+                    for (GiangVien giangVien : giangVienListOld) {
                         String mssv =
-                                StringUtility.removeMark(sinhVien.getMssv().toLowerCase());
+                                StringUtility.removeMark(giangVien.getMaGiangVien().toLowerCase());
                         String tenSinhVien =
-                                StringUtility.removeMark(sinhVien.getHoTen().toLowerCase());
+                                StringUtility.removeMark(giangVien.getHoTen().toLowerCase());
                         if (mssv.startsWith(searchString) || tenSinhVien.contains(searchString) || tenSinhVien.startsWith(searchString)) {
-                            list.add(sinhVien);
+                            list.add(giangVien);
                         }
 
                     }
-                    sinhVienList = list;
+                    giangVienList = list;
                 }
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = sinhVienList;
+                filterResults.values = giangVienList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                sinhVienList = (List<SinhVien>) results.values;
-                if (sinhVienList == null || sinhVienList.isEmpty()) {
+                giangVienList = (List<GiangVien>) results.values;
+                if (giangVienList == null || giangVienList.isEmpty()) {
                     // Hiển thị thông báo không tìm thấy sinh viên
                     if (context instanceof QuanLyDanhSachSinhVienActivity) {
                         ((QuanLyDanhSachSinhVienActivity) context).setThongBaoVisibility(true);
@@ -183,16 +179,15 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
         };
     }
 
-    public class DanhSachSinhVienViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTen, txtMSSV, txtLopHanhChinh;
+    public class DanhSachGiangVienTamThoiViewHolder extends RecyclerView.ViewHolder {
+        TextView txtTen, txtKhoa;
         CardView itemLayout;
-        ImageButton btnEdit, btnDelete;
+        ImageButton btnDelete;
 
-        public DanhSachSinhVienViewHolder(@NonNull View itemView) {
+        public DanhSachGiangVienTamThoiViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTen = itemView.findViewById(R.id.txtTen);
-            txtMSSV = itemView.findViewById(R.id.txtMSSV);
-            txtLopHanhChinh = itemView.findViewById(R.id.txtLopHanhChinh);
+            txtKhoa = itemView.findViewById(R.id.txtKhoa);
             itemLayout = itemView.findViewById(R.id.layoutItem);
             btnDelete = itemView.findViewById(R.id.btnDelete);
 

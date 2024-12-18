@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,10 +13,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QLSinhVien"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".Activities.SingleUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.UserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLyDiemvaInforSinhVien"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLySinhVienActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLyLopHocActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DiemSinhVien"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DanhSachLopSinhVienActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.SettingActivity"
+            android:exported="false"
+            android:parentActivityName=".Activities.SettingActivity" />
+        <activity
+            android:name=".Activities.InteractActivity"
+            android:exported="false"
+            android:parentActivityName=".Activities.LoginActivity" />
+        <activity
+            android:name=".Activities.SplashActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

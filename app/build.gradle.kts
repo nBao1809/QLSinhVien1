@@ -15,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -24,6 +23,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    packaging.resources {
+        excludes.add("META-INF/NOTICE.md")
+        excludes.add("META-INF/LICENSE.md")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -40,4 +43,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(libs.lottie)
+    implementation(libs.android.mail)
+    implementation (libs.android.activation)
+
 }

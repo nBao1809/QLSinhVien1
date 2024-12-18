@@ -51,6 +51,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,6 +60,7 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
     TextView txtThongBao;
     RecyclerView recycleHocPhan;
     LopHocPhanAdapter lopHocPhanAdapter;
+    List<LopHocPhan>  lopHocPhanList;
     SearchView searchView;
     FloatingActionButton fbtnThem;
     LopHocPhanManager lopHocPhanManager;
@@ -137,13 +139,7 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
         lopHocPhanAdapter = new LopHocPhanAdapter(this, QuanLyLopHocActivity.this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleHocPhan.setLayoutManager(linearLayoutManager);
-        List<LopHocPhan> lopHocPhan = lopHocPhanManager.getAllLopHocPhan();
-        if (lopHocPhan == null || lopHocPhan.isEmpty()) {
-
-
-        }
-        lopHocPhanAdapter.setData(lopHocPhan, bool);
-        recycleHocPhan.setAdapter(lopHocPhanAdapter);
+        lopHocPhanList = new ArrayList<>();
         fbtnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,7 +173,6 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
                 });
 
 
-
                 ibtnStartday.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -193,19 +188,48 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
 
                     }
                 });
-                GiangVienAdapter adapter = new GiangVienAdapter(QuanLyLopHocActivity.this, R.layout.itemgiangvienselected, giangVienManager.getAllGiangVien());
-                spinnerGiangVien.setAdapter(adapter);
-                spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        maGiangVien = adapter.getItem(position).getMaGiangVien();
-                    }
+                List<GiangVien> giangVienList = giangVienManager.getAllGiangVien();
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                if (giangVienList == null || giangVienList.isEmpty()) {
 
-                    }
-                });
+                    ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(
+                            QuanLyLopHocActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            Collections.singletonList("Không có giảng viên")
+                    );
+                    emptyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerGiangVien.setAdapter(emptyAdapter);
+                    spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                } else {
+
+                    GiangVienAdapter adapter = new GiangVienAdapter(
+                            QuanLyLopHocActivity.this,
+                            R.layout.itemgiangvienselected,
+                            giangVienList
+                    );
+                    spinnerGiangVien.setAdapter(adapter);
+                    spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            maGiangVien = adapter.getItem(position).getMaGiangVien();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
                 MonHocAdapter monHocAdapter = new MonHocAdapter(QuanLyLopHocActivity.this, R.layout.itemgiangvienselected, monHocManager.getAllMonHoc());
                 spinnerMonHoc.setAdapter(monHocAdapter);
                 spinnerMonHoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -219,6 +243,7 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
 
                     }
                 });
+
                 btnThem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -228,9 +253,11 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
                             Toast.makeText(QuanLyLopHocActivity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                         } else {
                             lopHocPhanManager.addLopHocPhan(new LopHocPhan(maLop, tenLop, ngayBatDau, ngayKetthuc, maMonHoc, maGiangVien));
-                            lopHocPhan.add(new LopHocPhan(maLop, tenLop, ngayBatDau, ngayKetthuc, maMonHoc, maGiangVien));
+                            lopHocPhanList.add(new LopHocPhan(maLop, tenLop, ngayBatDau, ngayKetthuc, maMonHoc, maGiangVien));
+                            lopHocPhanAdapter.setData(lopHocPhanList,bool);
                             lopHocPhanAdapter.notifyDataSetChanged();
                             Toast.makeText(QuanLyLopHocActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                            txtThongBao.setText("");
                             edtMaLop.setText("");
                             edtTenLop.setText("");
                             edtNgayBatDau.setText("");
@@ -241,7 +268,19 @@ public class QuanLyLopHocActivity extends AppCompatActivity {
                 });
             }
         });
+        if(lopHocPhanManager.getAllLopHocPhan() != null){
+            lopHocPhanList = lopHocPhanManager.getAllLopHocPhan();
+        }else{
+            txtThongBao.setText("Danh sách lớp học trống");
+        }
+        lopHocPhanAdapter.notifyDataSetChanged();
+        lopHocPhanAdapter.setData(lopHocPhanList, bool);
+        recycleHocPhan.setAdapter(lopHocPhanAdapter);
+
+
     }
+
+
 
     private void showDatePickerDialog(final EditText edtNgay, final Boolean isStartDay) {
         final Calendar calendar = Calendar.getInstance();

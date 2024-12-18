@@ -15,6 +15,9 @@
         android:theme="@style/Theme.QLSinhVien"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.QuanLyGiangVienActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity_edit_sinhvien"
             android:exported="false" />
         <activity

@@ -29,7 +29,7 @@
                 android:layout_marginEnd="5sp"
                 android:text="@string/Name"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -41,10 +41,16 @@
                 android:layout_weight="1"
                 android:text="@string/app_name"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
-
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/white"
+                android:contentDescription="buttonedit"
+                app:srcCompat="@drawable/editicon" />
 
             <ImageButton
                 android:id="@+id/btnDelete"
@@ -66,42 +72,42 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtMa"
+                android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5sp"
-                android:text="@string/MSSV"
+                android:text="@string/MSGV"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtMSSV"
+                android:id="@+id/txtMGV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textColor="@color/black"
                 android:layout_weight="1"
-                android:textSize="15sp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5sp"
+                android:text="@string/Khoa"
+                android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtKhoa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5sp"
-                android:text="@string/rClass"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtLopHanhChinh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text=":)"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

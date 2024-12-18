@@ -116,7 +116,12 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
             holder.txtNganh.setText(nganhManager.getNganh(
                     monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getMaNganh()).getTenNganh());
             holder.txtMonHoc.setText(monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getTenMonHoc());
-            holder.txtGVPhuTrach.setText(giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach()).getHoTen());
+            GiangVien giangVien = giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach());
+            if (giangVien != null) {
+                holder.txtGVPhuTrach.setText(giangVien.getHoTen());
+            } else {
+                holder.txtGVPhuTrach.setText("Giảng viên không xác định");
+            }
             holder.txtLop.setText(lopHocPhan.getTenLop());
             holder.layoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,7 +133,6 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
             holder.txtNganh.setText(nganhManager.getNganh(
                     monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getMaNganh()).getTenNganh());
             holder.txtMonHoc.setText(monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getTenMonHoc());
-            holder.txtGVPhuTrach.setText(giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach()).getHoTen());
             holder.txtLop.setText(lopHocPhan.getTenLop());
             holder.layoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -456,7 +460,6 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
 
         datePickerDialog.show();
     }
-
 
 
     private void onClickGoToSinhVien(LopHocPhan lopHocPhan, Boolean bool) {

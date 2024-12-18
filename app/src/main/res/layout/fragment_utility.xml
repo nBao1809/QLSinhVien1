@@ -52,14 +52,14 @@
             app:backgroundTint="@null" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btnQuanLyGiangVien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/settingshape"
             android:drawableEnd="@drawable/whiteschoolicon"
-            android:text="@string/StudentScoreManagement"
+            android:text="@string/StudentTeacherManagement"
             android:textAlignment="textStart"
             app:backgroundTint="@null" />
 

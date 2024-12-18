@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.qlsinhvien.Activities.DanhSachLopSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
+import com.example.qlsinhvien.Activities.QuanLyGiangVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
 import com.example.qlsinhvien.R;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -68,7 +69,7 @@ public class UtilityFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
-    Button btnQuanLyLopHoc,btnQuanLyDanhSachSinhVien;
+    Button btnQuanLyLopHoc, btnQuanLyDanhSachSinhVien, btnQuanLyGiangVien;
 
 
     @Override
@@ -90,19 +91,27 @@ public class UtilityFragment extends Fragment {
             }
         });
         Menu menu = toolbar.getMenu();
-        btnQuanLyLopHoc=view.findViewById(R.id.btnQuanLyLopHoc);
+        btnQuanLyLopHoc = view.findViewById(R.id.btnQuanLyLopHoc);
         btnQuanLyLopHoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(requireActivity(), QuanLyLopHocActivity.class);
+                Intent intent = new Intent(requireActivity(), QuanLyLopHocActivity.class);
                 startActivity(intent);
             }
         });
-        btnQuanLyDanhSachSinhVien= view.findViewById(R.id.btnQuanLyDanhSachSinhVien);
+        btnQuanLyDanhSachSinhVien = view.findViewById(R.id.btnQuanLyDanhSachSinhVien);
         btnQuanLyDanhSachSinhVien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), QuanLyDanhSachSinhVienActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnQuanLyGiangVien = view.findViewById(R.id.btnQuanLyGiangVien);
+        btnQuanLyGiangVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), QuanLyGiangVienActivity.class);
                 startActivity(intent);
             }
         });

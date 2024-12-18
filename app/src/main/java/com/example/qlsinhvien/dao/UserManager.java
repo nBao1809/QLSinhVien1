@@ -266,7 +266,7 @@ public class UserManager {
 
 
 
-    public void sendEmail(final String toEmail) {
+    public void sendEmail(final String toEmail,String OTP) {
         String fromEmail = "qlsinhvien0@gmail.com";
         String password = "zonb hknp gsxw autw";
         /*
@@ -275,7 +275,7 @@ public class UserManager {
         pass: qlsinhvien123
         */
 
-        String otp = generateOTP();
+        String otp = OTP;
         otpEditor.putString("otp", otp);
         otpEditor.putLong("otp_time", System.currentTimeMillis());
         String messageBody = "<!DOCTYPE html><html><head><style>"

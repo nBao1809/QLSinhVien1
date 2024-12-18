@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.qlsinhvien.Activities.LoginActivity;
+
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     //region tên cột
@@ -152,17 +154,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_USERS);
-        db.execSQL(CREATE_LOAIDIEM);
-        db.execSQL(CREATE_LOPHANHCHINH);
+        db.execSQL(CREATE_ROLE);
         db.execSQL(CREATE_NGANH);
-        db.execSQL(CREATE_SINHVIEN);
-        db.execSQL(CREATE_GIANGVIEN);
+        db.execSQL(CREATE_LOPHANHCHINH);
         db.execSQL(CREATE_MONHOC);
-        db.execSQL(CREATE_LOPHOCPHAN);
+        db.execSQL(CREATE_USERS);
+        db.execSQL(CREATE_GIANGVIEN);
+        db.execSQL(CREATE_SINHVIEN);
         db.execSQL(CREATE_HOCKY);
         db.execSQL(CREATE_LOPSINHVIEN);
+        db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
+        db.execSQL(CREATE_LOPHOCPHAN);
+
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC001', 'CS01')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC002', 'CS02')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC003', 'IT01')");
@@ -198,13 +202,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TB_DIEM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOPSINHVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_HOCKY);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHOCPHAN);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_MONHOC);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_GIANGVIEN);
         db.execSQL("DROP TABLE IF EXISTS " + TB_SINHVIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_GIANGVIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_MONHOC);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_HOCKY);
         db.execSQL("DROP TABLE IF EXISTS " + TB_NGANH);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHANHCHINH);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
         onCreate(db);

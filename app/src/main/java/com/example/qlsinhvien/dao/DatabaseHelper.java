@@ -175,27 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
         db.execSQL(CREATE_LOPHOCPHAN);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL("DROP TABLE IF EXISTS " + TB_DIEM);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_LOPSINHVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHOCPHAN);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_SINHVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_GIANGVIEN);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_MONHOC);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_HOCKY);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_NGANH);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHANHCHINH);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
-        onCreate(db);
-
-        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC001', 'CS01')");
+ db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC001', 'CS01')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC002', 'CS02')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC003', 'IT01')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC004', 'IT02')");
@@ -223,5 +203,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "VALUES ('MH007', 'Môi trường học', 3.0, 'MT')");
         db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
                 "VALUES ('MH008', 'Hệ thống thông tin', 3.0, 'HTTT')");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL("DROP TABLE IF EXISTS " + TB_DIEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOPSINHVIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHOCPHAN);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_SINHVIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_GIANGVIEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_MONHOC);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_HOCKY);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_NGANH);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHANHCHINH);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
+        onCreate(db);
+
+       
     }
 }

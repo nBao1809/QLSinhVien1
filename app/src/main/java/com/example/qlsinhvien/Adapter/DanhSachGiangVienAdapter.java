@@ -32,7 +32,9 @@ import com.example.qlsinhvien.Activities.DanhSachLopSinhVienActivity;
 import com.example.qlsinhvien.Activities.DiemSinhVien;
 import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDiemvaInforSinhVien;
+import com.example.qlsinhvien.Activities.QuanLyGiangVienActivity;
 import com.example.qlsinhvien.Activities.QuanLySinhVienActivity;
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHanhChinh;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
@@ -40,6 +42,7 @@ import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
+import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.LopHanhChinhManager;
 import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.NganhManager;
@@ -59,36 +62,36 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVienAdapter.DanhSachSinhVienViewHolder> implements Filterable {
+public class DanhSachGiangVienAdapter extends RecyclerView.Adapter<DanhSachGiangVienAdapter.DanhSachGiangVienViewHolder> implements Filterable {
     private UserManager userManager;
     private LopHanhChinhManager lopHanhChinhManager;
-    private SinhVienManager sinhVienManager;
+    private GiangVienManager giangVienManager;
     private LopSinhVienManager lopSinhVienManager;
     private Context context;
-    private List<SinhVien> sinhVienList, sinhVienListOld;
+    private List<GiangVien> giangVienList, giangVienListOld;
     NganhManager nganhManager;
     LopHanhChinhAdapter lopHanhChinhAdapter;
     NganhAdapter nganhAdapter;
-    String MSSV, hoTen, CCCD, maLopHanhChinh, maNganh;
+    String MGV, hoTen, CCCD, khoa;
     Double ngaySinh = 0.0;
     int ID;
-    QuanLyDanhSachSinhVienActivity quanLyDanhSachSinhVienActivity;
+    QuanLyGiangVienActivity quanLyGiangVienActivity;
 
 
-    public DanhSachSinhVienAdapter(Context context, QuanLyDanhSachSinhVienActivity quanLyDanhSachSinhVienActivity) {
+    public DanhSachGiangVienAdapter(Context context, QuanLyGiangVienActivity quanLyGiangVienActivity) {
         this.context = context;
-        this.quanLyDanhSachSinhVienActivity = quanLyDanhSachSinhVienActivity;
+        this.quanLyGiangVienActivity = quanLyGiangVienActivity;
         userManager = new UserManager(context);
-        sinhVienManager = new SinhVienManager(context);
+        giangVienManager = new GiangVienManager(context);
         lopSinhVienManager = new LopSinhVienManager(context);
         lopHanhChinhManager = new LopHanhChinhManager(context);
         nganhManager = new NganhManager(context);
     }
 
 
-    public void setData(List<SinhVien> sinhVienList) {
-        this.sinhVienList = sinhVienList;
-        this.sinhVienListOld = sinhVienList;
+    public void setData(List<GiangVien> giangVienList) {
+        this.giangVienList = giangVienList;
+        this.giangVienListOld = giangVienList;
         notifyDataSetChanged();
     }
 
@@ -103,67 +106,67 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
 
     @NonNull
     @Override
-    public DanhSachSinhVienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemquanlydanhsachsinhvien, parent, false);
+    public DanhSachGiangVienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemquanlygiangvien, parent, false);
 
 
-        return new DanhSachSinhVienViewHolder(view);
+        return new DanhSachGiangVienViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DanhSachSinhVienViewHolder holder, int position) {
-        SinhVien sinhVien = sinhVienList.get(position);
-        if (sinhVien == null)
+    public void onBindViewHolder(@NonNull DanhSachGiangVienViewHolder holder, int position) {
+        GiangVien giangVien = giangVienList.get(position);
+        if (giangVien == null)
             return;
-        holder.txtTen.setText(sinhVien.getHoTen());
-        holder.txtMSSV.setText(sinhVien.getMssv());
-        holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
+        holder.txtTen.setText(giangVien.getHoTen());
+        holder.txtMGV.setText(giangVien.getMaGiangVien());
+        holder.txtKhoa.setText(giangVien.getKhoa());
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickGoToLopSinhVien(sinhVien);
+                onClickGoToLopGiangVien(giangVien);
             }
         });
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickDelete(sinhVien);
+                onClickDelete(giangVien);
             }
         });
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickEdit(sinhVien);
+                onClickEdit(giangVien);
             }
         });
 
     }
 
-    public void onClickEdit(SinhVien sinhVien) {
+    public void onClickEdit(GiangVien giangVien) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.itemchinhsuasinhvien, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.itemchinhsuagiangvien, null);
         builder.setView(view);
 
-        EditText edtMSSV, edtHoten, edtCCCD, edtNgaySinh;
+        EditText edtMGV, edtHoten, edtCCCD, edtNgaySinh, edtKhoa;
         Button btnHuy, btnLuu;
         ImageButton ibtnBirthDay;
-        Spinner spinnerLopHanhChinh, spinnerNganh;
-        edtMSSV = view.findViewById(R.id.edtMSSV);
+        edtMGV = view.findViewById(R.id.edtMGV);
         edtHoten = view.findViewById(R.id.edtHoten);
         edtCCCD = view.findViewById(R.id.edtCCCD);
         edtNgaySinh = view.findViewById(R.id.edtNgaySinh);
+        edtKhoa=view.findViewById(R.id.edtKhoa);
         btnHuy = view.findViewById(R.id.btnHuy);
         btnLuu = view.findViewById(R.id.btnLuu);
         ibtnBirthDay = view.findViewById(R.id.ibtnBirthDay);
-        spinnerLopHanhChinh = view.findViewById(R.id.spinnerLopHanhChinh);
-        spinnerNganh = view.findViewById(R.id.spinnerNganh);
 
-        edtMSSV.setText(sinhVien.getMssv());
-        edtMSSV.setBackgroundColor(Color.TRANSPARENT);
-        edtHoten.setText(sinhVien.getHoTen());
-        edtCCCD.setText(sinhVien.getCccd());
-        ngaySinh = sinhVien.getNgaySinh();
-        String sNgaySinh = dateFormat(sinhVien.getNgaySinh());
+
+        edtMGV.setText(giangVien.getMaGiangVien());
+        edtMGV.setBackgroundColor(Color.TRANSPARENT);
+        edtHoten.setText(giangVien.getHoTen());
+        edtCCCD.setText(giangVien.getCccd());
+        edtKhoa.setText(giangVien.getKhoa());
+        ngaySinh = giangVien.getNgaySinh();
+        String sNgaySinh = dateFormat(giangVien.getNgaySinh());
         edtNgaySinh.setText(sNgaySinh);
 
         AlertDialog alertDialog = builder.create();
@@ -183,48 +186,24 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
                 showMaterialDatePicker(edtNgaySinh);
             }
         });
-        lopHanhChinhAdapter = new LopHanhChinhAdapter(context, R.layout.itemgiangvienselected, lopHanhChinhManager.getAllLopHanhChinh());
-        spinnerLopHanhChinh.setAdapter(lopHanhChinhAdapter);
-        spinnerLopHanhChinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                maLopHanhChinh = lopHanhChinhAdapter.getItem(position).getMaLopHanhChinh();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        nganhAdapter = new NganhAdapter(context, R.layout.itemgiangvienselected, nganhManager.getAllNganh());
-        spinnerNganh.setAdapter(nganhAdapter);
-        spinnerNganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                maNganh = nganhAdapter.getItem(position).getTenNganh();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ID = sinhVien.getId();
-                MSSV = sinhVien.getMssv();
+                ID = giangVien.getId();
+                MGV = giangVien.getMaGiangVien();
                 hoTen = edtHoten.getText().toString().trim();
                 CCCD = edtCCCD.getText().toString().trim();
-                if (MSSV.isEmpty() || hoTen.isEmpty() || CCCD.isEmpty() || ID == 0 || maLopHanhChinh == null || maNganh == null) {
+                khoa=edtKhoa.getText().toString().trim();
+                if (MGV.isEmpty() || hoTen.isEmpty() || CCCD.isEmpty() || ID == 0||khoa.isEmpty() ) {
                     Toast.makeText(context, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 } else {
-                    SinhVien sinhVienUpdate = new SinhVien(MSSV, hoTen, CCCD, ngaySinh, ID, maLopHanhChinh, maNganh);
-                    int ketqua = sinhVienManager.updateSinhVien(sinhVienUpdate);
+                    GiangVien giangVienUpdate = new GiangVien(MGV, hoTen, CCCD, ngaySinh, khoa, ID);
+                    int ketqua = giangVienManager.updateGiangVien(giangVienUpdate);
                     if (ketqua > 0) {
-                        for (int i = 0; i < sinhVienList.size(); i++) {
-                            if (sinhVienList.get(i).getMssv().equals(MSSV)) {
-                                sinhVienList.set(i, sinhVienUpdate);
+                        for (int i = 0; i < giangVienList.size(); i++) {
+                            if (giangVienList.get(i).getMaGiangVien().equals(MGV)) {
+                                giangVienList.set(i, giangVienUpdate);
                                 break;
                             }
                         }
@@ -304,28 +283,28 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
             ngaySinh = year + (month / 100.0) + (day / 10000.0); // Ví dụ: 2023.1212
         });
         // Hiển thị MaterialDatePicker
-        materialDatePicker.show(quanLyDanhSachSinhVienActivity.getSupportFragmentManager(), materialDatePicker.toString());
+        materialDatePicker.show(quanLyGiangVienActivity.getSupportFragmentManager(), materialDatePicker.toString());
     }
 
 
-    public void onClickDelete(SinhVien sinhvien) {
+    public void onClickDelete(GiangVien giangVien) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Xóa sinh viên " + sinhvien.getHoTen() + " ?");
-        builder.setMessage("Bạn có chắc muốn xóa sinh viên " + sinhvien.getHoTen() + " không");
+        builder.setTitle("Xóa giảng viên " + giangVien.getHoTen() + " ?");
+        builder.setMessage("Bạn có chắc muốn xóa sinh viên " + giangVien.getHoTen() + " không");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int ketquaSV = sinhVienManager.deleteSinhVien(sinhvien.getMssv());
+                int ketquaGV = giangVienManager.deleteGiangVien(giangVien.getMaGiangVien());
 
-                int ketquaUser = userManager.deleteUser(userManager.getUserByID(sinhvien.getId()).getID());
-                sinhVienList.remove(sinhvien);
-                if (sinhVienList.isEmpty()) {
-                    if (quanLyDanhSachSinhVienActivity != null) {
-                        quanLyDanhSachSinhVienActivity.setThongBaoVisibility(true);
+                int ketquaUser = userManager.deleteUser(userManager.getUserByID(giangVien.getId()).getID());
+                giangVienList.remove(giangVien);
+                if (giangVienList.isEmpty()) {
+                    if (quanLyGiangVienActivity != null) {
+                        quanLyGiangVienActivity.setThongBaoVisibility(true);
                     }
                 }
                 notifyDataSetChanged();
-                if (ketquaSV > 0 && ketquaUser > 0) {
+                if (ketquaGV > 0 && ketquaUser > 0) {
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);
@@ -337,7 +316,7 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
                         alertDialog.getWindow().setGravity(Gravity.CENTER);
                     }
                     alertDialog.show();
-                    successBelow.setText("Xóa sinh viên thành công!!!");
+                    successBelow.setText("Xóa giảng viên thành công!!!");
                     successDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -356,7 +335,7 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
                         alertDialog.getWindow().setGravity(Gravity.CENTER);
                     }
                     alertDialog.show();
-                    failBelow.setText("Xóa sinh viên thất bại");
+                    failBelow.setText("Xóa giảng viên thất bại");
                     failDone.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -376,20 +355,20 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
     }
 
 
-    private void onClickGoToLopSinhVien(SinhVien sinhVien) {
+    private void onClickGoToLopGiangVien(GiangVien giangVien) {
 
         Intent intent = new Intent(context, QuanLyDiemvaInforSinhVien.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("sinhVien", sinhVien);
+        bundle.putSerializable("giangVien", giangVien);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
     @Override
     public int getItemCount() {
-        if (sinhVienList != null) {
-            Log.d("test5", String.valueOf(sinhVienList.size()));
-            return sinhVienList.size();
+        if (giangVienList != null) {
+            Log.d("test5", String.valueOf(giangVienList.size()));
+            return giangVienList.size();
         }
         return 0;
     }
@@ -401,38 +380,38 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
             protected FilterResults performFiltering(CharSequence constraint) {
                 String searchString = StringUtility.removeMark(constraint.toString().toLowerCase());
                 if (searchString.isEmpty()) {
-                    sinhVienList = sinhVienListOld;
+                    giangVienList = giangVienListOld;
                 } else {
-                    List<SinhVien> list = new ArrayList<>();
-                    for (SinhVien sinhVien : sinhVienListOld) {
-                        String mssv =
-                                StringUtility.removeMark(sinhVien.getMssv().toLowerCase());
-                        String tenSinhVien =
-                                StringUtility.removeMark(sinhVien.getHoTen().toLowerCase());
-                        if (mssv.startsWith(searchString) || tenSinhVien.contains(searchString) || tenSinhVien.startsWith(searchString)) {
-                            list.add(sinhVien);
+                    List<GiangVien> list = new ArrayList<>();
+                    for (GiangVien giangVien : giangVienListOld) {
+                        String mgv =
+                                StringUtility.removeMark(giangVien.getMaGiangVien().toLowerCase());
+                        String tenGiangVien =
+                                StringUtility.removeMark(giangVien.getHoTen().toLowerCase());
+                        if (mgv.startsWith(searchString) || tenGiangVien.contains(searchString) || tenGiangVien.startsWith(searchString)) {
+                            list.add(giangVien);
                         }
 
                     }
-                    sinhVienList = list;
+                    giangVienList = list;
                 }
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = sinhVienList;
+                filterResults.values = giangVienList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                sinhVienList = (List<SinhVien>) results.values;
-                if (sinhVienList == null || sinhVienList.isEmpty()) {
+                giangVienList = (List<GiangVien>) results.values;
+                if (giangVienList == null || giangVienList.isEmpty()) {
                     // Hiển thị thông báo không tìm thấy sinh viên
-                    if (context instanceof QuanLyDanhSachSinhVienActivity) {
-                        ((QuanLyDanhSachSinhVienActivity) context).setThongBaoVisibility(true);
+                    if (context instanceof QuanLyGiangVienActivity) {
+                        ((QuanLyGiangVienActivity) context).setThongBaoVisibility(true);
                     }
                 } else {
                     // Ẩn thông báo
-                    if (context instanceof QuanLyDanhSachSinhVienActivity) {
-                        ((QuanLyDanhSachSinhVienActivity) context).setThongBaoVisibility(false);
+                    if (context instanceof QuanLyGiangVienActivity) {
+                        ((QuanLyGiangVienActivity) context).setThongBaoVisibility(false);
                     }
                 }
                 notifyDataSetChanged();
@@ -440,16 +419,16 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
         };
     }
 
-    public class DanhSachSinhVienViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTen, txtMSSV, txtLopHanhChinh;
+    public class DanhSachGiangVienViewHolder extends RecyclerView.ViewHolder {
+        TextView txtTen, txtMGV, txtKhoa;
         CardView itemLayout;
         ImageButton btnEdit, btnDelete;
 
-        public DanhSachSinhVienViewHolder(@NonNull View itemView) {
+        public DanhSachGiangVienViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTen = itemView.findViewById(R.id.txtTen);
-            txtMSSV = itemView.findViewById(R.id.txtMSSV);
-            txtLopHanhChinh = itemView.findViewById(R.id.txtLopHanhChinh);
+            txtMGV = itemView.findViewById(R.id.txtMGV);
+            txtKhoa = itemView.findViewById(R.id.txtKhoa);
             itemLayout = itemView.findViewById(R.id.layoutItem);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);

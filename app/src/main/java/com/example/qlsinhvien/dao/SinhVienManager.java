@@ -47,7 +47,7 @@ public class SinhVienManager {
         if (c != null && c.moveToFirst()) {
             do {
                 sinhVienList.add(new SinhVien(c.getString(0), c.getString(1), c.getString(2),
-                        c.getInt(3), c.getInt(4), c.getString(5), c.getString(6)));
+                        c.getDouble(3), c.getInt(4), c.getString(5), c.getString(6)));
             } while (c.moveToNext());
             c.close();
             return sinhVienList;
@@ -71,7 +71,7 @@ public class SinhVienManager {
 
         if (c != null && c.moveToFirst()) {
             sinhVien = new SinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getInt(4), c.getString(5), c.getString(6));
+                    c.getDouble(3), c.getInt(4), c.getString(5), c.getString(6));
             c.close();
             return sinhVien;
         }

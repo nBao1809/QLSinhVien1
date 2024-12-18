@@ -48,7 +48,7 @@ public class GiangVienManager {
                         c.getString(0),
                         c.getString(1),
                         c.getString(2),
-                        c.getInt(3),
+                        c.getDouble(3),
                         c.getString(4),
                         c.getInt(5)
                 ));
@@ -77,7 +77,7 @@ public class GiangVienManager {
 
         if (c != null && c.moveToFirst()) {
             giangVien = new GiangVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getString(4), c.getInt(5));
+                    c.getDouble(3), c.getString(4), c.getInt(5));
             c.close();
             return giangVien;
         }

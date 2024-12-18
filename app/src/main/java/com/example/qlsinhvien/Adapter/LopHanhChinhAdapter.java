@@ -54,6 +54,7 @@ public class LopHanhChinhAdapter extends ArrayAdapter<LopHanhChinh> {
         {
             if(lopHanhChinh!=null){
                 txtSelected.setText(lopHanhChinh.getTenLopHanhChinh());
+
             }
         }
         return convertView;

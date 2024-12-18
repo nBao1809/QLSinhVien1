@@ -37,6 +37,7 @@ public class UserManager {
         otpRefs = context.getSharedPreferences("OTP",
                 MODE_PRIVATE);
         otpEditor = otpRefs.edit();
+
     }
 
     public long addUser(User user) {
@@ -124,6 +125,29 @@ public class UserManager {
         return null;
     }
 
+    public List<User> getUsersByRole(String Role) {
+        userList = new ArrayList<>();
+        db=dbHelper.getReadableDatabase();
+        String[] selection = new String[]{Role};
+        Cursor c = db.query(DatabaseHelper.TB_USERS, null,
+                DatabaseHelper.ROLE + "= ?",
+                selection, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            do {
+                byte[] imageBytes = c.getBlob(3);
+                Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                userList.add(new User(c.getInt(0), c.getString(1), c.getString(2),
+                        image, c.getString(4), c.getString(5)));
+            } while (c.moveToNext());
+            c.close();
+            return userList;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+
     public int updateUser(User user) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -155,20 +179,19 @@ public class UserManager {
         return rowsUpdated;
     }
 
-    public int updatePhoto(int ID, Bitmap photo) {
+
+    public int updatePhoto(int userID, Bitmap bitmap) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        if (photo != null) {
-            byte[] imageBytes = getBitmapAsByteArray(resizeImage(photo));
-            values.put(DatabaseHelper.PHOTO, imageBytes);
-        }
-
+        if (bitmap == null)
+            return -1;
+        byte[] imageBytes = getBitmapAsByteArray(resizeImage(bitmap));
+        values.put(DatabaseHelper.PHOTO, imageBytes);
         int rowsUpdated = db.update(
                 DatabaseHelper.TB_USERS,
                 values,
                 DatabaseHelper.ID + " = ?",
-                new String[]{String.valueOf(ID)}
+                new String[]{String.valueOf(userID)}
         );
         db.close();//>0 thành công =0 ko thành công
         return rowsUpdated;
@@ -251,6 +274,7 @@ public class UserManager {
         app-pass mail:zonb hknp gsxw autw
         pass: qlsinhvien123
         */
+
         String otp = generateOTP();
         otpEditor.putString("otp", otp);
         otpEditor.putLong("otp_time", System.currentTimeMillis());
@@ -280,6 +304,7 @@ public class UserManager {
                 + "</body></html>";
 
         String subject = "Mã xác minh của bạn là " + otp;
+
         // Tạo một AsyncTask để gửi email không làm treo UI thread
         AsyncTask.execute(new Runnable() {
             @Override
@@ -307,6 +332,7 @@ public class UserManager {
                     message.setSubject(subject);
                     message.setContent(messageBody, "text/html;charset=UTF-8");
 
+
                     // Gửi email
                     Transport.send(message);
 
@@ -324,19 +350,16 @@ public class UserManager {
 
     }
 
-    public boolean changePassword(String password, String inputOTP) {
-        long currentTime = System.currentTimeMillis();
-        String otp = otpRefs.getString("otp", "");
-        long otpTime = otpRefs.getLong("otp_time", 0);
-        long timeElapsed = currentTime - otpTime;
-        if (timeElapsed <= 300000) {
-            if (otp.equals(inputOTP)) {
-                // đổi pass o day
-            } else {
-//                nhap sai otp
-            }
-        }
-        return false;
+    public boolean changePassword(String password, User user) {
+
+        user.setPassword(password);
+        db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.PASSWORD, user.getPassword());
+        int rowUpdated = db.update(DatabaseHelper.TB_USERS, values, "ID= ?", new String[]{
+                String.valueOf(user.getID())
+        });
+        return rowUpdated > 0;
     }
 
     private Bitmap resizeImage(Bitmap originalBitmap) {
@@ -365,7 +388,7 @@ public class UserManager {
 
     public byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
         return outputStream.toByteArray();
     }
 }

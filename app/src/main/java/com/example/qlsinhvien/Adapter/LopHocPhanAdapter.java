@@ -39,6 +39,7 @@ import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.LopSinhVien;
 import com.example.qlsinhvien.Models.MonHoc;
+import com.example.qlsinhvien.Models.Nganh;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
 import com.example.qlsinhvien.dao.GiangVienManager;
@@ -476,7 +477,6 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
             intent.putExtras(bundle);
             context.startActivity(intent);
         }
-
     }
 
     @Override

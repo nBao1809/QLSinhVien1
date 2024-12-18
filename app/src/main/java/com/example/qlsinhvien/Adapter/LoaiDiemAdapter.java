@@ -22,16 +22,17 @@ import java.util.List;
 
 public class LoaiDiemAdapter extends RecyclerView.Adapter<LoaiDiemAdapter.ClassViewHolder> implements Filterable {
 
-    private Context context;
+
     private List<LoaiDiem> loaiDiemList, loaiDiemListOld;
 
 
-    public LoaiDiemAdapter(Context context) {
-        this.context = context;
+    public LoaiDiemAdapter() {
 
     }
 
     public void setData(List<LoaiDiem> loaiDiemList) {
+        if(loaiDiemList==null)
+            return;
         this.loaiDiemList = loaiDiemList;
         this.loaiDiemListOld = loaiDiemList;
         notifyDataSetChanged();
@@ -77,7 +78,7 @@ public class LoaiDiemAdapter extends RecyclerView.Adapter<LoaiDiemAdapter.ClassV
                             list.add(loaiDiem);
                         }
                     }
-                    loaiDiemListOld = list;
+                    loaiDiemList = list;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = loaiDiemList;

@@ -252,9 +252,6 @@ public class QuanLyUserActivity extends AppCompatActivity {
                 });
 
 
-//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP1","LOP1"));
-//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP2","LOP2"));
-//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP3","LOP3"));
                 roleAdapter = new RoleAdapter(QuanLyUserActivity.this, R.layout.itemgiangvienselected,
                         roleManager.getAllRole());
                 spinnerRole.setAdapter(roleAdapter);
@@ -269,8 +266,7 @@ public class QuanLyUserActivity extends AppCompatActivity {
 
                     }
                 });
-//                nganhManager.addNganh(new Nganh("nganh1","nganh1"));
-//                nganhManager.addNganh(new Nganh("nganh2","nganh2"));
+
 
                 btnThem.setOnClickListener(new View.OnClickListener() {
                     @Override

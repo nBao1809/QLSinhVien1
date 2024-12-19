@@ -114,32 +114,16 @@ public class AccountFragment extends Fragment {
             myIntent.putExtra("ID",currentUser.getID());
             startActivity(myIntent);
         });
-        Button btn = view.findViewById(R.id.button2);
+        ImageButton btn = view.findViewById(R.id.btnEdit);
         ImageView imageView = view.findViewById(R.id.imageView);
-        ImageButton imageButton = view.findViewById(R.id.edtImage);
         btn.setOnClickListener(new View.OnClickListener() {
-            boolean isEditing = false;
 
             @Override
             public void onClick(View v) {
-                if (!isEditing) {
-                    // Bắt đầu chỉnh sửa
-                    imageButton.setVisibility(View.VISIBLE);
-                    btn.setText("Lưu");
-                    isEditing = true;
-                } else {
-                    // Lưu nội dung và hiển thị lại
-                    imageView.setVisibility(View.VISIBLE);
-                    imageButton.setVisibility(View.GONE);
-                    btn.setText("Chỉnh sửa");
-                    isEditing = false;
-                }
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                imagePicker.launch(intent);
             }
-        });
-        imageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imagePicker.launch(intent);
         });
 
         imagePicker = registerForActivityResult(

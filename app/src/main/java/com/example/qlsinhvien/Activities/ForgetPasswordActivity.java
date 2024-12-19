@@ -155,7 +155,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         super.onPause();
         // Lưu lại OTP và thời gian gửi OTP khi Activity bị tạm dừng
         otpEditor.putString("otp", otp);
-        otpEditor.putLong("otp_time", System.currentTimeMillis() + 30000);  // Lưu thời gian gửi
+        otpEditor.putLong("otp_time", System.currentTimeMillis() + remainingTime);  // Lưu thời gian gửi
         otpEditor.apply();
     }
 

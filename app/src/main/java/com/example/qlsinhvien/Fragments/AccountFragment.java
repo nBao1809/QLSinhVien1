@@ -111,6 +111,7 @@ public class AccountFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         toolbar.setNavigationOnClickListener(v -> {
             Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
+            myIntent.putExtra("ID",currentUser.getID());
             startActivity(myIntent);
         });
         Button btn = view.findViewById(R.id.button2);

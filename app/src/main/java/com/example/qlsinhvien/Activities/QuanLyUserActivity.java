@@ -1,7 +1,9 @@
 package com.example.qlsinhvien.Activities;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,9 +14,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -31,21 +33,34 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qlsinhvien.Adapter.DanhSachUserTamThoiAdapter;
+import com.example.qlsinhvien.Adapter.RoleAdapter;
 import com.example.qlsinhvien.Adapter.UserAdapter;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.RoleManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
-public class UserActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class QuanLyUserActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
     SearchView searchView;
     RecyclerView recycleUserAdmin, recycleUserMod, recycleUserGV, recycleUserSV;
     UserAdapter adminAdapter, modAdapter, gvAdapter, svAdapter;
     UserManager userManager;
     LinearLayout layoutAdmin, layoutMod, layoutGV, layoutSV;
-    SharedPreferences userRefs;
+
     User currentUser;
+    DanhSachUserTamThoiAdapter danhSachUserTamThoiAdapter;
+    ImageButton fbtnThem;
+    List<User> userAdminList, userModList, userGVList, userSVList, userListTemp;
+    RoleAdapter roleAdapter;
+    RoleManager roleManager;
+    int userID, idCuoi;
+    String role,taiKhoan,matKhau,xacNhan,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +73,16 @@ public class UserActivity extends AppCompatActivity {
             return insets;
         });
         userManager = new UserManager(this);
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
+        Intent intent = getIntent();
+        roleManager = new RoleManager(this);
+        currentUser = userManager.getUserByID(intent.getIntExtra("ID", -1));
         toolbar = findViewById(R.id.toolbaruser);
         toolbar.inflateMenu(R.menu.menuuser);
 
-        adminAdapter = new UserAdapter(this,currentUser);
-        modAdapter = new UserAdapter(this,currentUser);
-        gvAdapter = new UserAdapter(this,currentUser);
-        svAdapter = new UserAdapter(this,currentUser);
+        adminAdapter = new UserAdapter(this, currentUser);
+        modAdapter = new UserAdapter(this, currentUser);
+        gvAdapter = new UserAdapter(this, currentUser);
+        svAdapter = new UserAdapter(this, currentUser);
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
@@ -201,8 +217,8 @@ public class UserActivity extends AppCompatActivity {
         fbtnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
-                View view = LayoutInflater.from(UserActivity.this).inflate(R.layout.itemthemuser, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyUserActivity.this);
+                View view = LayoutInflater.from(QuanLyUserActivity.this).inflate(R.layout.itemthemuser, null);
                 builder.setView(view);
                 userListTemp = new ArrayList<>();
                 userID = (int) userManager.getLastUserID();
@@ -239,7 +255,7 @@ public class UserActivity extends AppCompatActivity {
 //                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP1","LOP1"));
 //                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP2","LOP2"));
 //                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP3","LOP3"));
-                roleAdapter = new RoleAdapter(UserActivity.this, R.layout.itemgiangvienselected,
+                roleAdapter = new RoleAdapter(QuanLyUserActivity.this, R.layout.itemgiangvienselected,
                         roleManager.getAllRole());
                 spinnerRole.setAdapter(roleAdapter);
                 spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -266,20 +282,20 @@ public class UserActivity extends AppCompatActivity {
 
 
                         if (taiKhoan.isEmpty() || matKhau.isEmpty() || xacNhan.isEmpty() || email.isEmpty() || role == null) {
-                            Toast.makeText(UserActivity.this, "Vui lòng nhập đầy đủ thông tin!",
+                            Toast.makeText(QuanLyUserActivity.this, "Vui lòng nhập đầy đủ thông tin!",
                                     Toast.LENGTH_SHORT).show();
                             return;
                         }
 
 
                         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                            Toast.makeText(UserActivity.this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuanLyUserActivity.this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
 
                         if (!matKhau.equals(xacNhan)) {
-                            Toast.makeText(UserActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuanLyUserActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -287,12 +303,12 @@ public class UserActivity extends AppCompatActivity {
                                 BitmapFactory.decodeResource(getResources(),
                                         R.drawable.avatarsample), email, role));
                         danhSachUserTamThoiAdapter =
-                                new DanhSachUserTamThoiAdapter(UserActivity.this);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserActivity.this, RecyclerView.VERTICAL, false);
+                                new DanhSachUserTamThoiAdapter(QuanLyUserActivity.this);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(QuanLyUserActivity.this, RecyclerView.VERTICAL, false);
                         recycleDSThem.setLayoutManager(linearLayoutManager);
                         danhSachUserTamThoiAdapter.setData(userListTemp);
                         recycleDSThem.setAdapter(danhSachUserTamThoiAdapter);
-                        Toast.makeText(UserActivity.this, "Thêm thành công", Toast.LENGTH_SHORT);
+                        Toast.makeText(QuanLyUserActivity.this, "Thêm thành công", Toast.LENGTH_SHORT);
                         danhSachUserTamThoiAdapter.notifyDataSetChanged();
                         idCuoi = userListTemp.get(userListTemp.size() - 1).getID();
                         edtUsername.setText("");
@@ -327,8 +343,8 @@ public class UserActivity extends AppCompatActivity {
                             svAdapter.notifyDataSetChanged();
 
                             View view =
-                                    LayoutInflater.from(UserActivity.this).inflate(R.layout.successdialog, null);
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(UserActivity.this);
+                                    LayoutInflater.from(QuanLyUserActivity.this).inflate(R.layout.successdialog, null);
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(QuanLyUserActivity.this);
                             builder1.setView(view);
                             Button successDone = view.findViewById(R.id.successDone);
                             TextView sucessBelow = view.findViewById(R.id.successBelow);
@@ -348,7 +364,7 @@ public class UserActivity extends AppCompatActivity {
                             userListTemp.clear();
                             danhSachUserTamThoiAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(UserActivity.this, "Bạn chưa thêm sinh viên", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuanLyUserActivity.this, "Bạn chưa thêm sinh viên", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

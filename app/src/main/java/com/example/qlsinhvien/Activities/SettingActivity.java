@@ -42,8 +42,8 @@ public class SettingActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarsetting);
         toolbar.inflateMenu(R.menu.menusetting);
         userManager = new UserManager(this);
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
+        Intent intent =getIntent();
+        currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         Menu menu = toolbar.getMenu();
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

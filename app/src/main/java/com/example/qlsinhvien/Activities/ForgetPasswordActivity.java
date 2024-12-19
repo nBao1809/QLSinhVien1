@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private SharedPreferences.Editor otpEditor;
     private String otp;
     private long remainingTime;
+    LinearLayout isSendedOTP, newPass, cfPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         btnChangePassword = findViewById(R.id.btnChangePassword);
         tvOTPStatus = findViewById(R.id.tvOTPStatus);
         tvCountdown = findViewById(R.id.tvCountdown);
+        isSendedOTP = findViewById(R.id.isSendOTP);
+        newPass = findViewById(R.id.newPass);
+        cfPass = findViewById(R.id.cfPass);
         // Khi nhấn nút gửi OTP
         btnSendOTP.setOnClickListener(v -> {
             String username = edtUsername.getText().toString().trim();
@@ -68,7 +73,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             tvOTPStatus.setVisibility(View.VISIBLE);
 
             // Hiển thị ô nhập mã OTP và nút xác thực
-            edtOTP.setVisibility(View.VISIBLE);
+            isSendedOTP.setVisibility(View.VISIBLE);
             btnVerifyOTP.setVisibility(View.VISIBLE);
             tvCountdown.setVisibility(View.VISIBLE);
 
@@ -95,8 +100,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
             if (enteredOTP.equals(otp)) {
                 // OTP đúng, hiển thị các ô nhập mật khẩu mới
-                edtNewPassword.setVisibility(View.VISIBLE);
-                edtConfirmPassword.setVisibility(View.VISIBLE);
+                newPass.setVisibility(View.VISIBLE);
+                cfPass.setVisibility(View.VISIBLE);
                 btnChangePassword.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(ForgetPasswordActivity.this, "Mã OTP không đúng", Toast.LENGTH_SHORT).show();
@@ -155,7 +160,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         super.onPause();
         // Lưu lại OTP và thời gian gửi OTP khi Activity bị tạm dừng
         otpEditor.putString("otp", otp);
-        otpEditor.putLong("otp_time", System.currentTimeMillis() + 30000);  // Lưu thời gian gửi
+        otpEditor.putLong("otp_time", System.currentTimeMillis() + remainingTime);  // Lưu thời gian gửi
         otpEditor.apply();
     }
 
@@ -165,7 +170,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         // Khi Activity được khôi phục, kiểm tra thời gian còn lại của OTP
         String otp = otpPrefs.getString("otp", "");
         long otpTime = otpPrefs.getLong("otp_time", 0);
-         remainingTime = otpTime - System.currentTimeMillis();
+        remainingTime = otpTime - System.currentTimeMillis();
 
         if (remainingTime > 0) {
             btnSendOTP.setEnabled(false);  // Vô hiệu hóa nút gửi OTP nếu thời gian chưa hết

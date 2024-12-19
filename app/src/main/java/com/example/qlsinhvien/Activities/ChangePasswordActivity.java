@@ -1,5 +1,6 @@
 package com.example.qlsinhvien.Activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,16 +17,17 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 
 public class ChangePasswordActivity extends AppCompatActivity {
     TextInputEditText oldPass, newPass, confirmPass;
-    Button btn;
+    Button btnDoi,btnHuy;
     UserManager userManager;
     SharedPreferences userRefs;
     User currentUser;
-
+MaterialToolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +37,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             userManager = new UserManager(this);
-            userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-            currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
+            Intent intent =getIntent();
+            currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
             oldPass = findViewById(R.id.edtOldPass);
             newPass = findViewById(R.id.edtNewPass);
             confirmPass = findViewById(R.id.edtConfirmPass);
-            btn = findViewById(R.id.Doi);
-            btn.setOnClickListener(v1 -> {
+            btnHuy=findViewById(R.id.btnHuy);
+            btnHuy.setOnClickListener(v1 -> {
+                finish();
+            });
+            toolbar=findViewById(R.id.toolbar);
+            toolbar.setNavigationOnClickListener(v1 -> {
+                finish();
+            });
+            btnDoi = findViewById(R.id.btnDoi);
+            btnDoi.setOnClickListener(v1 -> {
                 String oldPassString = oldPass.getText().toString().trim();
                 String newPassString = newPass.getText().toString().trim();
                 String confirmPassString = confirmPass.getText().toString().trim();
@@ -79,7 +89,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             return insets;
         });
-
     }
 
     ;

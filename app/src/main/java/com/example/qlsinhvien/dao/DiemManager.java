@@ -15,15 +15,14 @@ public class DiemManager {
     private SQLiteDatabase db;
     private List<Diem> diemList;
 
-public DiemManager(Context context) {
-    dbHelper = new DatabaseHelper(context);
-}
+    public DiemManager(Context context) {
+        dbHelper = new DatabaseHelper(context);
+    }
 
     public long addDiem(Diem diem) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.MA_DIEM, diem.getMaDiem());
         values.put(DatabaseHelper.DIEMSO, diem.getDiemSo());
         values.put(DatabaseHelper.MA_LOAIDIEM, diem.getMaLoaiDiem());
         values.put(DatabaseHelper.MA_LOPSINHVIEN, diem.getMaLopSinhVien());
@@ -53,6 +52,7 @@ public DiemManager(Context context) {
         return null;
 
     }
+
     public Diem getDiem(int maDiem) {
         db = dbHelper.getReadableDatabase();
         Diem diem = null;
@@ -74,6 +74,7 @@ public DiemManager(Context context) {
         }
         return null;
     }
+
     public Diem getDiemfromLopSinhVienID(String maLopSinhVien) {
         db = dbHelper.getReadableDatabase();
         Diem diem = null;
@@ -95,9 +96,10 @@ public DiemManager(Context context) {
         }
         return null;
     }
+
     public List<Diem> getDiemfromMalopsinhvien(String maLopSinhVien) {
         diemList = new ArrayList<>();
-        String query = "SELECT * "+" FROM " + DatabaseHelper.TB_DIEM +" WHERE "+DatabaseHelper.MA_LOPSINHVIEN+" =?";
+        String query = "SELECT * " + " FROM " + DatabaseHelper.TB_DIEM + " WHERE " + DatabaseHelper.MA_LOPSINHVIEN + " =?";
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, new String[]{maLopSinhVien});
 

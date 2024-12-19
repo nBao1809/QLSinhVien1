@@ -26,7 +26,7 @@ public class HocKyManager {
 
         values.put(DatabaseHelper.MA_HOCKY, HocKy.getMaHocKy());
         values.put(DatabaseHelper.TENHOCKY, HocKy.getTenHocKy());
-        values.put(DatabaseHelper.NAMHOC, HocKy.getNamHoc());
+
 
         long rowInserted = db.insert(DatabaseHelper.TB_HOCKY, null, values);
         db.close();
@@ -42,7 +42,7 @@ public class HocKyManager {
 
         if (c != null && c.moveToFirst()) {
             do {
-                HocKyList.add(new HocKy(c.getString(0), c.getString(1), c.getString(2)));
+                HocKyList.add(new HocKy(c.getString(0), c.getString(1)));
             } while (c.moveToNext());
             c.close();
             return HocKyList;
@@ -64,7 +64,7 @@ public class HocKyManager {
                 null);
 
         if (c != null && c.moveToFirst()) {
-            hocKy = new HocKy(c.getString(0), c.getString(1), c.getString(2));
+            hocKy = new HocKy(c.getString(0), c.getString(1));
             c.close();
             return hocKy;
         }
@@ -80,7 +80,6 @@ public class HocKyManager {
 
         values.put(DatabaseHelper.MA_HOCKY, HocKy.getMaHocKy());
         values.put(DatabaseHelper.TENHOCKY, HocKy.getTenHocKy());
-        values.put(DatabaseHelper.NAMHOC, HocKy.getNamHoc());
 
         int rowsUpdated = db.update(
                 DatabaseHelper.TB_HOCKY,

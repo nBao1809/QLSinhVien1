@@ -3,12 +3,12 @@ package com.example.qlsinhvien.Models;
 public class HocKy {
     private String maHocKy;
     private String tenHocKy;
-    private String namHoc;
 
-    public HocKy(String maHocKy, String tenHocKy, String namHoc) {
+
+    public HocKy(String maHocKy, String tenHocKy) {
         this.maHocKy = maHocKy;
         this.tenHocKy = tenHocKy;
-        this.namHoc = namHoc;
+
     }
 
     // Getter và Setter
@@ -28,11 +28,4 @@ public class HocKy {
         this.tenHocKy = tenHocKy;
     }
 
-    public String getNamHoc() {
-        return namHoc;
-    }
-
-    public void setNamHoc(String namHoc) {
-        this.namHoc = namHoc;
-    }
 }

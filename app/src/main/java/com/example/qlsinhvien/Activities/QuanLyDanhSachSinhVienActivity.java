@@ -150,7 +150,7 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDSSinhVien.setLayoutManager(linearLayoutManager);
         sinhVienList = new ArrayList<>();
-        txtThongBao.setText("Danh sách  viên trống");
+        txtThongBao.setText("Danh sách sinh viên trống");
         fbtnThem = findViewById(R.id.fbtnThem);
         fbtnThem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,7 +220,7 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                 spinnerNganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        maNganh = nganhAdapter.getItem(position).getTenNganh();
+                        maNganh = nganhAdapter.getItem(position).getMaNganh();
                     }
 
                     @Override

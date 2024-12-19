@@ -52,6 +52,7 @@ public class LoaiDiemManager {
         }
         return null;
     }
+
     public LoaiDiem getLoaiDiem(String maLoaiDiem) {
         db = dbHelper.getReadableDatabase();
         LoaiDiem loaiDiem = null;
@@ -72,6 +73,36 @@ public class LoaiDiemManager {
             c.close();
         }
         return null;
+    }
+
+    public String getNextLoaiDiemID() {
+        String query = "SELECT " + DatabaseHelper.MA_LOAIDIEM +
+                " FROM " + DatabaseHelper.TB_LOAIDIEM +
+                " ORDER BY " + DatabaseHelper.MA_LOAIDIEM + " DESC LIMIT 1";
+        Cursor cursor = null;
+        String nextID = "L01";
+
+        try {
+            cursor = db.rawQuery(query, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                String lastID = cursor.getString(0);
+                try {
+
+                    int number = Integer.parseInt(lastID.replace("L", ""));
+                    number++;
+                    nextID = String.format("L%02d", number);
+                } catch (NumberFormatException e) {
+                    nextID = "L01";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return nextID;
     }
 
     public int updateLoaiDiem(LoaiDiem loaiDiem) {

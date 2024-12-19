@@ -34,6 +34,8 @@ import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDiemvaInforSinhVien;
 import com.example.qlsinhvien.Activities.QuanLyGiangVienActivity;
 import com.example.qlsinhvien.Activities.QuanLySinhVienActivity;
+import com.example.qlsinhvien.Activities.ThongTinChiTietGiangVienActivity;
+import com.example.qlsinhvien.Activities.ThongTinChiTietSinhVien;
 import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHanhChinh;
 import com.example.qlsinhvien.Models.LopHocPhan;
@@ -297,14 +299,15 @@ public class DanhSachGiangVienAdapter extends RecyclerView.Adapter<DanhSachGiang
                 int ketquaGV = giangVienManager.deleteGiangVien(giangVien.getMaGiangVien());
 
                 int ketquaUser = userManager.deleteUser(userManager.getUserByID(giangVien.getId()).getID());
-                giangVienList.remove(giangVien);
-                if (giangVienList.isEmpty()) {
-                    if (quanLyGiangVienActivity != null) {
-                        quanLyGiangVienActivity.setThongBaoVisibility(true);
-                    }
-                }
-                notifyDataSetChanged();
+
                 if (ketquaGV > 0 && ketquaUser > 0) {
+                    giangVienList.remove(giangVien);
+                    if (giangVienList.isEmpty()) {
+                        if (quanLyGiangVienActivity != null) {
+                            quanLyGiangVienActivity.setThongBaoVisibility(true);
+                        }
+                    }
+                    notifyDataSetChanged();
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);
@@ -357,7 +360,7 @@ public class DanhSachGiangVienAdapter extends RecyclerView.Adapter<DanhSachGiang
 
     private void onClickGoToLopGiangVien(GiangVien giangVien) {
 
-        Intent intent = new Intent(context, QuanLyDiemvaInforSinhVien.class);
+        Intent intent = new Intent(context, ThongTinChiTietGiangVienActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("giangVien", giangVien);
         intent.putExtras(bundle);

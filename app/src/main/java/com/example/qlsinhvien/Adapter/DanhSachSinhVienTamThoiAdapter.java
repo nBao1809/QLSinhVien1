@@ -98,6 +98,7 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
         holder.txtTen.setText(sinhVien.getHoTen());
         holder.txtMSSV.setText(sinhVien.getMssv());
         holder.txtLopHanhChinh.setText(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh()).getTenLopHanhChinh());
+
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,14 +128,7 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
     }
 
 
-    private void onClickGoToLopSinhVien(SinhVien sinhVien) {
 
-        Intent intent = new Intent(context, QuanLyDiemvaInforSinhVien.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("sinhVien", sinhVien);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
-    }
 
     @Override
     public int getItemCount() {

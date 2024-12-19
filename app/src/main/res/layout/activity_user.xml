@@ -186,6 +186,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbtnThem"
+        android:layout_width="56dp"
+        android:layout_height="56dp" android:layout_margin="10dp"
+        android:backgroundTint="@color/fbuttoncolor"
+        android:clickable="true"
+        app:srcCompat="@drawable/addicon"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/main"
+        app:layout_constraintEnd_toEndOf="@+id/main"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

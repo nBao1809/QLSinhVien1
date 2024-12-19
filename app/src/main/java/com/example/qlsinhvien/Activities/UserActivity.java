@@ -1,13 +1,25 @@
 package com.example.qlsinhvien.Activities;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,22 +32,42 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qlsinhvien.Adapter.DanhSachSinhVienAdapter;
+import com.example.qlsinhvien.Adapter.DanhSachSinhVienTamThoiAdapter;
+import com.example.qlsinhvien.Adapter.DanhSachUserTamThoiAdapter;
+import com.example.qlsinhvien.Adapter.LopHanhChinhAdapter;
+import com.example.qlsinhvien.Adapter.RoleAdapter;
 import com.example.qlsinhvien.Adapter.UserAdapter;
+import com.example.qlsinhvien.Models.Role;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.RoleManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
     SearchView searchView;
+    private Context context;
     RecyclerView recycleUserAdmin, recycleUserMod, recycleUserGV, recycleUserSV;
+    List<User> userAdminList, userModList, userGVList, userSVList;
     UserAdapter adminAdapter, modAdapter, gvAdapter, svAdapter;
+    DanhSachUserTamThoiAdapter danhSachUserTamThoiAdapter;
     UserManager userManager;
     LinearLayout layoutAdmin, layoutMod, layoutGV, layoutSV;
     SharedPreferences userRefs;
     User currentUser;
+    FloatingActionButton fbtnThem;
+    List<User> userListTemp;
+    int userID, idCuoi;
+    RoleManager roleManager;
+    String role, taiKhoan, matKhau, xacNhan, email;
 
+RoleAdapter roleAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +88,7 @@ public class UserActivity extends AppCompatActivity {
         modAdapter = new UserAdapter();
         gvAdapter = new UserAdapter();
         svAdapter = new UserAdapter();
+        roleManager = new RoleManager(this);
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
@@ -71,22 +104,26 @@ public class UserActivity extends AppCompatActivity {
 
         recycleUserAdmin = findViewById(R.id.recycleUserAdmin);
         recycleUserAdmin.setLayoutManager(linearLayoutAdmin);
-        adminAdapter.setData(userManager.getUsersByRole("admin"));
+        userAdminList = userManager.getUsersByRole("admin");
+        adminAdapter.setData(userAdminList);
         recycleUserAdmin.setAdapter(adminAdapter);
 
         recycleUserMod = findViewById(R.id.recycleUserMod);
         recycleUserMod.setLayoutManager(linearLayoutMod);
-        modAdapter.setData(userManager.getUsersByRole("mod"));
+        userModList = userManager.getUsersByRole("mod");
+        modAdapter.setData(userModList);
         recycleUserMod.setAdapter(modAdapter);
 
         recycleUserGV = findViewById(R.id.recycleUserGiangVien);
         recycleUserGV.setLayoutManager(linearLayoutGV);
-        gvAdapter.setData(userManager.getUsersByRole("gv"));
+        userGVList = userManager.getUsersByRole("gv");
+        gvAdapter.setData(userGVList);
         recycleUserGV.setAdapter(gvAdapter);
 
         recycleUserSV = findViewById(R.id.recycleUserSinhVien);
         recycleUserSV.setLayoutManager(linearLayoutSV);
-        svAdapter.setData(userManager.getUsersByRole("sv"));
+        userSVList = userManager.getUsersByRole("sv");
+        svAdapter.setData(userSVList);
         recycleUserSV.setAdapter(svAdapter);
 
         layoutAdmin = findViewById(R.id.Admin);
@@ -181,6 +218,163 @@ public class UserActivity extends AppCompatActivity {
                 return false;
             }
 
+        });
+        fbtnThem = findViewById(R.id.fbtnThem);
+        fbtnThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                View view = LayoutInflater.from(UserActivity.this).inflate(R.layout.itemthemuser, null);
+                builder.setView(view);
+                userListTemp = new ArrayList<>();
+                userID = (int) userManager.getLastUserID();
+                idCuoi = 0;
+                Log.d("test1", String.valueOf(userID));
+                EditText edtUsername, edtPassWord, edtCommitPW, edtEmail;
+                Button btnHuy, btnThem, btnLuu;
+                RecyclerView recycleDSThem;
+                Spinner spinnerRole;
+
+                edtUsername = view.findViewById(R.id.edtUsername);
+                edtPassWord = view.findViewById(R.id.edtPassword);
+                edtCommitPW = view.findViewById(R.id.edtCommitPW);
+                edtEmail = view.findViewById(R.id.edtEmail);
+                btnHuy = view.findViewById(R.id.btnHuy);
+                btnThem = view.findViewById(R.id.btnThem);
+                btnLuu = view.findViewById(R.id.btnLuu);
+                recycleDSThem = view.findViewById(R.id.recycleDSThem);
+                spinnerRole = view.findViewById(R.id.spinnerRole);
+
+                AlertDialog alertDialog = builder.create();
+                if (alertDialog.getWindow() != null) {
+                    alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custom_themlophocphan);
+                }
+                alertDialog.show();
+                btnHuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP1","LOP1"));
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP2","LOP2"));
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP3","LOP3"));
+                roleAdapter = new RoleAdapter(UserActivity.this, R.layout.itemgiangvienselected,
+                        roleManager.getAllRole());
+                spinnerRole.setAdapter(roleAdapter);
+                spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        role = roleAdapter.getItem(position).getMaRole();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+//                nganhManager.addNganh(new Nganh("nganh1","nganh1"));
+//                nganhManager.addNganh(new Nganh("nganh2","nganh2"));
+
+                btnThem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        taiKhoan = edtUsername.getText().toString().trim();
+                        matKhau = edtPassWord.getText().toString().trim();
+                        xacNhan = edtCommitPW.getText().toString().trim();
+                        email = edtEmail.getText().toString().trim();
+
+
+                        if (taiKhoan.isEmpty() || matKhau.isEmpty() || xacNhan.isEmpty() || email.isEmpty() || role == null) {
+                            Toast.makeText(UserActivity.this, "Vui lòng nhập đầy đủ thông tin!",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+
+                        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                            Toast.makeText(UserActivity.this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+
+                        if (!matKhau.equals(xacNhan)) {
+                            Toast.makeText(UserActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        userListTemp.add(new User(taiKhoan, matKhau,
+                                BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.avatarsample), email, role));
+                        danhSachUserTamThoiAdapter =
+                                new DanhSachUserTamThoiAdapter(UserActivity.this);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserActivity.this, RecyclerView.VERTICAL, false);
+                        recycleDSThem.setLayoutManager(linearLayoutManager);
+                        danhSachUserTamThoiAdapter.setData(userListTemp);
+                        recycleDSThem.setAdapter(danhSachUserTamThoiAdapter);
+                        Toast.makeText(UserActivity.this, "Thêm thành công", Toast.LENGTH_SHORT);
+                        danhSachUserTamThoiAdapter.notifyDataSetChanged();
+                        idCuoi = userListTemp.get(userListTemp.size() - 1).getID();
+                        edtUsername.setText("");
+                        edtPassWord.setText("");
+                        edtCommitPW.setText("");
+                        edtEmail.setText("");
+
+                    }
+                });
+                btnLuu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (userListTemp.size() > 0) {
+                            userID = idCuoi;
+                            Log.d("test3", String.valueOf(userID));
+                            for (User user : userListTemp) {
+                                userManager.addUser(user);
+                                if (user.getRole().equals("admin")) {
+                                    userAdminList.add(user);
+                                } else if (user.getRole().equals("mod")) {
+                                    userModList.add(user);
+                                } else if (user.getRole().equals("gv")) {
+                                    userGVList.add(user);
+                                } else if (user.getRole().equals("sv")) {
+                                    userSVList.add(user);
+                                }
+
+                            }
+                            adminAdapter.notifyDataSetChanged();
+                            modAdapter.notifyDataSetChanged();
+                            gvAdapter.notifyDataSetChanged();
+                            svAdapter.notifyDataSetChanged();
+
+                            View view =
+                                    LayoutInflater.from(UserActivity.this).inflate(R.layout.successdialog, null);
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(UserActivity.this);
+                            builder1.setView(view);
+                            Button successDone = view.findViewById(R.id.successDone);
+                            TextView sucessBelow = view.findViewById(R.id.successBelow);
+                            AlertDialog alertDialog = builder1.create();
+                            if (alertDialog.getWindow() != null) {
+                                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
+                                alertDialog.getWindow().setGravity(Gravity.CENTER);
+                            }
+                            alertDialog.show();
+                            sucessBelow.setText("Lưu danh sách sinh viên thành công");
+                            successDone.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
+                            userListTemp.clear();
+                            danhSachUserTamThoiAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(UserActivity.this, "Bạn chưa thêm sinh viên", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
         });
     }
 }

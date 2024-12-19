@@ -57,7 +57,7 @@ public class HocKyManager {
         HocKy hocKy = null;
         String[] selection = new String[]{maHocKy};
         Cursor c = db.query(DatabaseHelper.TB_HOCKY, null,
-                DatabaseHelper.MA_HOCKY + "= ?",
+                    DatabaseHelper.MA_HOCKY + "= ?",
                 selection,
                 null,
                 null,

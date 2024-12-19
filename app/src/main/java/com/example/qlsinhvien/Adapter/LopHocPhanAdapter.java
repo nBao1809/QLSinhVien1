@@ -41,12 +41,15 @@ import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.LopSinhVien;
 import com.example.qlsinhvien.Models.MonHoc;
 import com.example.qlsinhvien.Models.Nganh;
+import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
 import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
+import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.MonHocManager;
 import com.example.qlsinhvien.dao.NganhManager;
+import com.example.qlsinhvien.dao.SinhVienManager;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -65,8 +68,10 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
     private NganhManager nganhManager;
     private Context context;
     private List<LopHocPhan> listHocPhan, listHocPhanOld;
+    private LopSinhVienManager lopSinhVienManager;
     private HomeFragment homeFragment;
     QuanLyLopHocActivity quanLyLopHocActivity;
+    private SinhVienManager sinhVienManager;
     Double ngayBatDau = 0.0;
     Double ngayKetthuc = 0.0;
     String maMonHoc, maGiangVien, maLop, tenLop;
@@ -360,21 +365,35 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
         builder.setTitle("Xóa lớp " + lopHocPhan.getTenLop() + " ?");
         builder.setMessage("Bạn có chắc muốn xóa lớp " + lopHocPhan.getTenLop() + " không");
 
+
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int ketqua = lopHocPhanManager.deleteLopHocPhan(lopHocPhan.getMaLop());
-                listHocPhan.remove(lopHocPhan);
-                if (listHocPhan.isEmpty()) {
-                    if (homeFragment != null) {
-                        homeFragment.setThongBaoVisibility(true);
-                    }
-                    if (quanLyLopHocActivity != null) {
-                        quanLyLopHocActivity.setThongBaoVisibility(true);
-                    }
-                }
+
                 notifyDataSetChanged();
                 if (ketqua > 0) {
+                    listHocPhan.remove(lopHocPhan);
+                    if (listHocPhan.isEmpty()) {
+                        if (homeFragment != null) {
+                            homeFragment.setThongBaoVisibility(true);
+                        }
+                        if (quanLyLopHocActivity != null) {
+                            quanLyLopHocActivity.setThongBaoVisibility(true);
+                        }
+                    }
+//                    List<String> maLopSinhVien = new ArrayList<>();
+//                    List<String> maSinhVienTemp = new ArrayList<>();
+//                    if (lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop()) != null) {
+//                        maSinhVienTemp = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
+//                    }
+//                    for (int i = 0; i < maSinhVienTemp.size(); i++) {
+//                        maLopSinhVien.add(lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), maSinhVienTemp.get(i)));
+//                    }
+//                    for (int i = 0; i < maLopSinhVien.size(); i++) {
+//                        lopSinhVienManager.deleteLopSinhVien(maLopSinhVien.get(i));
+//                    }
+
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);

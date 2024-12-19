@@ -51,8 +51,12 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     private LopHocPhan lopHocPhan;
     Boolean bool;
     QuanLySinhVienActivity quanLySinhVienActivity;
+    SinhVienbyMaLopHCAdapter sinhVienbyMaLopHCAdapter;
+    public interface OnStudentRemovedListener {
+        void onStudentRemoved(SinhVien sinhVien);
+    }
 
-
+    private OnStudentRemovedListener onStudentRemovedListener;
     public SinhVienAdapter(Context context, LopHocPhan lopHocPhan) {
         this.context = context;
         this.lopHocPhan = lopHocPhan;
@@ -69,6 +73,9 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         this.sinhVienListOld = sinhVienList;
         this.bool = bool;
         notifyDataSetChanged();
+    }
+    public void setOnStudentRemovedListener(OnStudentRemovedListener listener) {
+        this.onStudentRemovedListener = listener;
     }
 
     public String dateFormat(double ngaySinhDouble) {
@@ -130,7 +137,6 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         }
     }
 
-
     public void onClickDelete(SinhVien sinhvien) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Xóa sinh viên " + sinhvien.getHoTen() + " ?");
@@ -150,6 +156,9 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
                         }
                     }
                     notifyDataSetChanged();
+                    if (onStudentRemovedListener != null) {
+                        onStudentRemovedListener.onStudentRemoved(sinhvien);
+                    }
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);

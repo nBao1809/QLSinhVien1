@@ -302,7 +302,7 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
 
     public void setThongBaoVisibility(boolean isVisible) {
         if (isVisible) {
-            txtThongBao.setText("Không tìm thấy sinh viên");
+            txtThongBao.setText("Không tìm thấy giảng viên");
             txtThongBao.setVisibility(View.VISIBLE);
         } else {
             txtThongBao.setVisibility(View.GONE);

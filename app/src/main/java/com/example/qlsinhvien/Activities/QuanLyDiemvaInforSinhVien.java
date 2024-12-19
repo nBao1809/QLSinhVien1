@@ -72,8 +72,10 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
     Double trongSo = 0.0;
     Double diemSo = 0.0;
     Double trongSoTemp;
+    int diemID;
 
     LoaiDiemAdapter loaiDiemAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,8 +242,9 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
                             Toast.makeText(QuanLyDiemvaInforSinhVien.this, "Trọng số điểm của sinh viên đã vượt mức 1 vui lòng chọn loại điểm khác hoặc thêm mới loại điểm", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        diemID = diemManager.getNextDiemID();
                         String maLopSinhVien = lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), sinhVien.getMssv());
-                        int ketqua = (int) diemManager.addDiem(new Diem(diemSo, maLoaiDiem, maLopSinhVien));
+                        int ketqua = (int) diemManager.addDiem(new Diem(diemID,diemSo, maLoaiDiem, maLopSinhVien));
                         if (ketqua > 0) {
                             listDiem.add(new Diem(diemSo, maLoaiDiem, maLopSinhVien));
                             txtThongBao.setText("");

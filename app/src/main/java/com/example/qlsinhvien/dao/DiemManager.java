@@ -53,6 +53,40 @@ public class DiemManager {
 
     }
 
+    public int getNextDiemID() {
+        String query = "SELECT " + DatabaseHelper.MA_DIEM +
+                " FROM " + DatabaseHelper.TB_DIEM +
+                " ORDER BY " + DatabaseHelper.MA_DIEM + " DESC LIMIT 1";
+        Cursor cursor = null;
+        int nextID = 1; // ID mặc định ban đầu là 1
+
+        try {
+            db = dbHelper.getReadableDatabase();
+            cursor = db.rawQuery(query, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                String lastID = cursor.getString(0); // Lấy ID cuối cùng
+                try {
+                    // Lấy số từ ID và tăng lên 1
+                    int number = Integer.parseInt(lastID.replace("DIEM", ""));
+                    number++;
+                    nextID = number;
+                } catch (NumberFormatException e) {
+                    // Nếu không thể parse được số, đặt ID mặc định là 1
+                    nextID = 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return nextID; // Trả về ID tiếp theo dưới dạng số
+    }
+
+
     public Diem getDiem(int maDiem) {
         db = dbHelper.getReadableDatabase();
         Diem diem = null;

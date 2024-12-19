@@ -107,16 +107,17 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.d("test6",String.valueOf(diem.getMaDiem()));
                 int ketqua = diemManager.deleteDiem(diem.getMaDiem());
 
                 if (ketqua > 0) {
                     listDiem.remove(diem);
+                    notifyDataSetChanged();
                     if (listDiem.isEmpty()) {
                         if (quanLyDiemvaInforSinhVien != null) {
                             quanLyDiemvaInforSinhVien.setThongBaoVisibility(true);
                         }
                     }
-                    notifyDataSetChanged();
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);

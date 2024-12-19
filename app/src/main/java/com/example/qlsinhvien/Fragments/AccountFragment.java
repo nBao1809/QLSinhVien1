@@ -88,7 +88,7 @@ public class AccountFragment extends Fragment {
 
         imageView = view.findViewById(R.id.imageView);
 
-
+        userManager = new UserManager(requireContext());
 
         imageView.setImageBitmap(currentUser.getPhoto());
         txtUsername.setText(currentUser.getUsername());

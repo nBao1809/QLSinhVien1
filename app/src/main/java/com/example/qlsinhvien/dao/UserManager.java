@@ -124,6 +124,7 @@ public class UserManager {
         }
         return null;
     }
+
     public List<User> getUsersByRole(String Role) {
         userList = new ArrayList<>();
         db=dbHelper.getReadableDatabase();
@@ -178,7 +179,6 @@ public class UserManager {
         return rowsUpdated;
     }
 
-
     public int updatePhoto(int userID, Bitmap bitmap) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -196,7 +196,7 @@ public class UserManager {
         return rowsUpdated;
     }
 
-    public int deleteUser(int userID) {
+    public int deleteUser(long userID) {
         db = dbHelper.getWritableDatabase();
         String selection = DatabaseHelper.ID + " = ?";
         String[] selectionArgs = {String.valueOf(userID)};
@@ -234,8 +234,6 @@ public class UserManager {
     public long getNextUserId() {
         long nextUserId = -1;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-
         String query = "SELECT seq FROM sqlite_sequence WHERE name = ?";
         Cursor cursor = db.rawQuery(query, new String[]{"users"});
 
@@ -262,6 +260,8 @@ public class UserManager {
         }
         return -1;  // Trả về -1 nếu không tìm thấy người dùng nào
     }
+
+
 
 
 
@@ -360,10 +360,9 @@ public class UserManager {
         });
         return rowUpdated > 0;
     }
-
     private Bitmap resizeImage(Bitmap originalBitmap) {
-        int maxWidth, maxHeight;
-        maxWidth = maxHeight = 800;
+        int maxWidth,maxHeight;
+        maxWidth=maxHeight=800;
         int width = originalBitmap.getWidth();
         int height = originalBitmap.getHeight();
 

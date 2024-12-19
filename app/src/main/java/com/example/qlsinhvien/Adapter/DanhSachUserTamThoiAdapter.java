@@ -47,7 +47,7 @@ public class DanhSachUserTamThoiAdapter extends RecyclerView.Adapter<DanhSachUse
     @NonNull
     @Override
     public DanhSachUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdanhsachsinhvientemp, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdanhsachusertemp, parent, false);
 
 
         return new DanhSachUserViewHolder(view);

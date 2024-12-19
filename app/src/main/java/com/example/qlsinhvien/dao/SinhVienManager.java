@@ -122,13 +122,13 @@ public class SinhVienManager {
 
     public SinhVien getSinhVienFromUser(int userID) {
         db = dbHelper.getReadableDatabase();
+        SinhVien sinhVien = null;
         String query = "SELECT " + DatabaseHelper.MSSV + " FROM " +
                 DatabaseHelper.TB_SINHVIEN + " " +
                 "JOIN " + DatabaseHelper.TB_USERS + " ON " +
                 DatabaseHelper.TB_SINHVIEN + ".ID = " + DatabaseHelper.TB_USERS + ".ID " +
                 "WHERE " + DatabaseHelper.TB_USERS + ".ID = ?";
         Cursor c = db.rawQuery(query, new String[]{String.valueOf(userID)});
-        SinhVien sinhVien = null;
         if (c != null && c.moveToFirst()) {
             sinhVien = getSinhVien(c.getString(0));
             c.close();

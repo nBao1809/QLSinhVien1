@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.qlsinhvien.Adapter.DanhSachUserTamThoiAdapter;
 import com.example.qlsinhvien.Adapter.RoleAdapter;
 import com.example.qlsinhvien.Adapter.UserAdapter;
+import com.example.qlsinhvien.Models.Role;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.RoleManager;
@@ -43,6 +44,7 @@ import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QuanLyUserActivity extends AppCompatActivity {
@@ -60,7 +62,7 @@ public class QuanLyUserActivity extends AppCompatActivity {
     RoleAdapter roleAdapter;
     RoleManager roleManager;
     int userID, idCuoi;
-    String role,taiKhoan,matKhau,xacNhan,email;
+    String role, taiKhoan, matKhau, xacNhan, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class QuanLyUserActivity extends AppCompatActivity {
         modAdapter = new UserAdapter(this, currentUser);
         gvAdapter = new UserAdapter(this, currentUser);
         svAdapter = new UserAdapter(this, currentUser);
+        danhSachUserTamThoiAdapter=new DanhSachUserTamThoiAdapter(this);
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
@@ -214,6 +217,7 @@ public class QuanLyUserActivity extends AppCompatActivity {
 
         });
         fbtnThem = findViewById(R.id.fbtnThem);
+
         fbtnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,9 +255,14 @@ public class QuanLyUserActivity extends AppCompatActivity {
                     }
                 });
 
+                List<Role> roleList = roleManager.getAllRole();
 
-                roleAdapter = new RoleAdapter(QuanLyUserActivity.this, R.layout.itemgiangvienselected,
-                        roleManager.getAllRole());
+                roleList.removeIf(role -> role.getMaRole().equals("sv") || role.getMaRole().equals("gv")|| role.getMaRole().equals("superadmin"));
+
+
+                roleAdapter = new RoleAdapter(QuanLyUserActivity.this,
+                        R.layout.itemgiangvienselected,roleList
+                        );
                 spinnerRole.setAdapter(roleAdapter);
                 spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

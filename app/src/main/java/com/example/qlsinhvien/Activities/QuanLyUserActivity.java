@@ -2,6 +2,7 @@ package com.example.qlsinhvien.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -26,14 +27,14 @@ import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
-public class UserActivity extends AppCompatActivity {
+public class QuanLyUserActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
     SearchView searchView;
     RecyclerView recycleUserAdmin, recycleUserMod, recycleUserGV, recycleUserSV;
     UserAdapter adminAdapter, modAdapter, gvAdapter, svAdapter;
     UserManager userManager;
     LinearLayout layoutAdmin, layoutMod, layoutGV, layoutSV;
-    SharedPreferences userRefs;
+
     User currentUser;
 
     @Override
@@ -47,15 +48,15 @@ public class UserActivity extends AppCompatActivity {
             return insets;
         });
         userManager = new UserManager(this);
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
+        Intent intent=getIntent();
+        currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         toolbar = findViewById(R.id.toolbaruser);
         toolbar.inflateMenu(R.menu.menuuser);
 
-        adminAdapter = new UserAdapter();
-        modAdapter = new UserAdapter();
-        gvAdapter = new UserAdapter();
-        svAdapter = new UserAdapter();
+        adminAdapter = new UserAdapter(this,currentUser);
+        modAdapter = new UserAdapter(this,currentUser);
+        gvAdapter = new UserAdapter(this,currentUser);
+        svAdapter = new UserAdapter(this,currentUser);
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
@@ -175,12 +176,13 @@ public class UserActivity extends AppCompatActivity {
                     return true;
                 }
                 if (id == R.id.notification) {
-                    Toast.makeText(UserActivity.this, "Chưa có chức năng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QuanLyUserActivity.this, "Chưa có chức năng", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;
             }
 
         });
+
     }
 }

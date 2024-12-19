@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qlsinhvien.Activities.SettingActivity;
+import com.example.qlsinhvien.Models.Role;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.RoleManager;
@@ -86,7 +88,7 @@ public class AccountFragment extends Fragment {
 
         imageView = view.findViewById(R.id.imageView);
 
-        userManager = new UserManager(requireContext());
+
 
         imageView.setImageBitmap(currentUser.getPhoto());
         txtUsername.setText(currentUser.getUsername());

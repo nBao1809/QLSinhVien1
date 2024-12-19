@@ -10,7 +10,7 @@ import com.example.qlsinhvien.Activities.LoginActivity;
 public class DatabaseHelper extends SQLiteOpenHelper {
     //region tên cột
     public static final String DATABASE_NAME = "ql_sinhvien.db";
-    public static final int DATABASE_VERSION = 35;
+    public static final int DATABASE_VERSION = 1;
 
     public static final String TB_USERS = "USERS";
     public static final String ID = "ID";
@@ -20,9 +20,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String EMAIL = "EMAIL";
     public static final String ROLE = "ROLE";
 
-    public static final String TB_ROLE="ROLE";
-    public static final String MA_ROLE ="MA_ROLE";
-    public static final String TEN_ROLE="TEN_ROLE";
+    public static final String TB_ROLE = "ROLE";
+    public static final String MA_ROLE = "MA_ROLE";
+    public static final String TEN_ROLE = "TEN_ROLE";
 
 
     public static final String TB_SINHVIEN = "SINHVIEN";
@@ -79,22 +79,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_MONHOC = "CREATE TABLE " + TB_MONHOC + " (" +
             MA_MONHOC + " TEXT PRIMARY KEY , " +
             TENMONHOC + " TEXT NOT NULL, " +
-            TINCHI +" DOUBLE , " +
+            TINCHI + " DOUBLE , " +
             MA_NGANH + " TEXT, " +
             "FOREIGN KEY(" + MA_NGANH + ") REFERENCES " + TB_NGANH + " (" + MA_NGANH + "))";
-    public static final String CREATE_NGANH ="CREATE TABLE " + TB_NGANH + " (" +
-            MA_NGANH +" TEXT PRIMARY KEY, " +
+    public static final String CREATE_NGANH = "CREATE TABLE " + TB_NGANH + " (" +
+            MA_NGANH + " TEXT PRIMARY KEY, " +
             TEN_NGANH + " TEXT )";
     public static final String CREATE_LOPHANHCHINH = "CREATE TABLE " + TB_LOPHANHCHINH + " (" +
-            MA_LOPHANHCHINH +" TEXT PRIMARY KEY, " +
+            MA_LOPHANHCHINH + " TEXT PRIMARY KEY, " +
             TEN_LOPHANHCHINH + " TEXT NOT NULL)";
     public static final String CREATE_USERS = "CREATE TABLE " + TB_USERS + " (" +
-            ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             USERNAME + " TEXT , " +
             PASSWORD + " TEXT, " +
             PHOTO + " BLOB, " +
             EMAIL + " TEXT, " +
-            ROLE + " TEXT, "+"FOREIGN KEY(" + ROLE + ") REFERENCES " + TB_ROLE + "(" + MA_ROLE +
+            ROLE + " TEXT, " + "FOREIGN KEY(" + ROLE + ") REFERENCES " + TB_ROLE + "(" + MA_ROLE +
             "))";
     public static final String CREATE_GIANGVIEN = "CREATE TABLE " + TB_GIANGVIEN + " (" +
             MA_GIANGVIEN + " TEXT PRIMARY KEY, " +
@@ -115,15 +115,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "FOREIGN KEY(" + ID + ") REFERENCES " + TB_USERS + "(" + ID + "), " +
             "FOREIGN KEY(" + MA_LOPHANHCHINH + ") REFERENCES " + TB_LOPHANHCHINH + "(" + MA_LOPHANHCHINH + "), " +
             "FOREIGN KEY(" + MA_NGANH + ") REFERENCES " + TB_NGANH + "(" + MA_NGANH + "))";
-    public static final String CREATE_HOCKY ="CREATE TABLE " + TB_HOCKY + " (" +
+    public static final String CREATE_HOCKY = "CREATE TABLE " + TB_HOCKY + " (" +
             MA_HOCKY + " TEXT PRIMARY KEY, " +
-            TENHOCKY +" TEXT NOT NULL, " +
+            TENHOCKY + " TEXT NOT NULL, " +
             NAMHOC + " TEXT )";
-    public static final String CREATE_ROLE ="CREATE TABLE " + TB_ROLE + " (" +
+    public static final String CREATE_ROLE = "CREATE TABLE " + TB_ROLE + " (" +
             MA_ROLE + " TEXT PRIMARY KEY, " +
-            TEN_ROLE +" TEXT NOT NULL )";
+            TEN_ROLE + " TEXT NOT NULL )";
 
-    public static final String CREATE_LOPSINHVIEN ="CREATE TABLE " + TB_LOPSINHVIEN + " (" +
+    public static final String CREATE_LOPSINHVIEN = "CREATE TABLE " + TB_LOPSINHVIEN + " (" +
             MA_LOPSINHVIEN + " TEXT PRIMARY KEY, " +
             MA_LOP + " TEXT, " +
             MSSV + " TEXT, " +
@@ -134,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String CREATE_LOAIDIEM = "CREATE TABLE " + TB_LOAIDIEM + " (" +
-            MA_LOAIDIEM +" TEXT PRIMARY KEY , " +
+            MA_LOAIDIEM + " TEXT PRIMARY KEY , " +
             TEN_LOAIDIEM + " TEXT, " +
             TRONGSO + " REAL )";
     public static final String CREATE_DIEM = "CREATE TABLE " + TB_DIEM + " (" +
@@ -175,7 +175,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
         db.execSQL(CREATE_LOPHOCPHAN);
- db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC001', 'CS01')");
+        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES ('admin', 'Quản trị viên')," +
+                "('mod', 'Chuyên viên')," +
+                "('gv', 'Giảng viên')," +
+                "('sv', 'Sinh viên')");
+        db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC001', 'CS01')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC002', 'CS02')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC003', 'IT01')");
         db.execSQL("INSERT INTO " + TB_LOPHANHCHINH + " (" + MA_LOPHANHCHINH + ", " + TEN_LOPHANHCHINH + ") VALUES ('LHC004', 'IT02')");
@@ -222,6 +226,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
         onCreate(db);
 
-       
+
     }
 }

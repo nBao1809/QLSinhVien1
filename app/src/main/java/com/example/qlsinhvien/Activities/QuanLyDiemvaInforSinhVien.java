@@ -69,7 +69,7 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         hocKyManager = new HocKyManager(this);
         diemManager = new DiemManager(this);
         loaiDiemManager = new LoaiDiemManager(this);
-        userManager=new UserManager(this);
+        userManager = new UserManager(this);
         txtCCCD = findViewById(R.id.txtCCCD);
         txtMalop = findViewById(R.id.txtMalop);
         txtTenSinhVien = findViewById(R.id.txtTenSinhVien);
@@ -91,7 +91,7 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         });
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            return;
+
         }
         SinhVien sinhVien = (SinhVien) bundle.get("sinhVien");
         LopHocPhan lopHocPhan = (LopHocPhan) bundle.get("lopHocPhan");
@@ -119,13 +119,14 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         if (listDiem == null) {
             txtThongBao.setText("Giáo viên chưa nhập điểm");
             txtThongBao.setVisibility(View.VISIBLE);
-            return;
+
         }
         txtThongBao.setVisibility(View.GONE);
         lopSinhVienAdapter.setData(listDiem);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDiemSinhVien.setLayoutManager(linearLayoutManager);
         recycleDiemSinhVien.setAdapter(lopSinhVienAdapter);
+
 
 
     }

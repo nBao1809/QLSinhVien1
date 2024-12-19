@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -52,6 +53,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -213,26 +215,47 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
 
             }
         });
-        GiangVienAdapter adapter = new GiangVienAdapter(context, R.layout.itemgiangvienselected, giangVienManager.getAllGiangVien());
+        List<GiangVien> giangVienList = giangVienManager.getAllGiangVien();
 
-        spinnerGiangVien.setAdapter(adapter);
-        maGiangVien = lopHocPhan.getMaGiangVienPhuTrach();
+        if (giangVienList == null || giangVienList.isEmpty()) {
 
-        spinnerMonHoc.setSelection(adapter.getPosition(giangVienManager.getGiangVien(lopHocPhan.getMaMonHoc())));
+            ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(
+                    context,
+                    android.R.layout.simple_spinner_item,
+                    Collections.singletonList("Không có giảng viên")
+            );
+            emptyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerGiangVien.setAdapter(emptyAdapter);
+            spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                }
 
-        spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                maGiangVien = adapter.getItem(position).getMaGiangVien();
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
+                }
+            });
+        } else {
+            GiangVienAdapter adapter = new GiangVienAdapter(
+                    context,
+                    R.layout.itemgiangvienselected,
+                    giangVienList
+            );
+            spinnerGiangVien.setAdapter(adapter);
+            spinnerGiangVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    maGiangVien = adapter.getItem(position).getMaGiangVien();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        }
         MonHocAdapter monHocAdapter = new MonHocAdapter(context, R.layout.itemgiangvienselected, monHocManager.getAllMonHoc());
         spinnerMonHoc.setAdapter(monHocAdapter);
         maMonHoc = lopHocPhan.getMaMonHoc();

@@ -124,7 +124,6 @@ public class UserManager {
         }
         return null;
     }
-
     public List<User> getUsersByRole(String Role) {
         userList = new ArrayList<>();
         db=dbHelper.getReadableDatabase();

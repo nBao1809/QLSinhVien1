@@ -80,9 +80,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 //                    userManager.updatePhoto(1, BitmapFactory.decodeResource(getResources(),
 //                            R.drawable.avatarsample));
-                    userManager.addUser(new User("sinhvientester","123456",
-                            BitmapFactory.decodeResource(getResources(),R.drawable.avatarsample),
-                            "admin@ou.edu.vn","SinhVien"));
+//                    userManager.addUser(new User("h1","1",
+//                            BitmapFactory.decodeResource(getResources(),R.drawable.avatarsample),
+//                            "admin@ou.edu.vn","admin"));
 
 //                    userManager.addUser(new User("sv", "1",
 //                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
@@ -118,5 +118,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }

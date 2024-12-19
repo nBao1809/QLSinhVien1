@@ -98,7 +98,7 @@ public class DiemSinhVien extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            return;
+
         }
         SinhVien sinhVien = (SinhVien) bundle.get("sinhVien");
         LopHocPhan lopHocPhan = (LopHocPhan) bundle.get("lopHocPhan");
@@ -119,13 +119,14 @@ public class DiemSinhVien extends AppCompatActivity {
         if (listDiem == null) {
             txtThongBao.setText("Giáo viên chưa nhập điểm");
             txtThongBao.setVisibility(View.VISIBLE);
-            return;
+
         }
         txtThongBao.setVisibility(View.GONE);
         lopSinhVienAdapter.setData(listDiem);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDiemSinhVien.setLayoutManager(linearLayoutManager);
         recycleDiemSinhVien.setAdapter(lopSinhVienAdapter);
+
 
 
     }

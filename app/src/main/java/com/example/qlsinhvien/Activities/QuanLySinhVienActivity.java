@@ -87,7 +87,7 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
         });
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            return;
+
         }
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -126,12 +126,12 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
         mssvList = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
         if (mssvList == null || mssvList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-            return;
+
         }
         sinhVienList = sinhVienManager.getSinhVienByMSSVList(mssvList);
         if (sinhVienList == null || sinhVienList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-            return;
+
         }
         Boolean bool = Boolean.TRUE;
         recycleLopSinhVien = findViewById(R.id.recycleSinhVien);
@@ -140,6 +140,7 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
         recycleLopSinhVien.setLayoutManager(linearLayoutManager);
         sinhVienAdapter.setData(sinhVienList, bool);
         recycleLopSinhVien.setAdapter(sinhVienAdapter);
+
 
     }
 

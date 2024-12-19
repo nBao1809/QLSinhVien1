@@ -37,7 +37,7 @@ Runnable runnable ;
             };
             };
         handler.postDelayed(runnable,2070);
-        }
+    }
 
     @Override
     protected void onDestroy() {

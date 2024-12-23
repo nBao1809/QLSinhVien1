@@ -110,7 +110,9 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         roleList.removeIf(role -> role.getMaRole().equals("sv") || role.getMaRole().equals("gv") || role.getMaRole().equals("superadmin"));
 
-
+        if (user.getRole().equals("sv") || user.getRole().equals("gv")) {
+            spinnerRole.setVisibility(View.GONE);
+        }
         RoleAdapter roleAdapter = new RoleAdapter(context, R.layout.itemgiangvienselected, roleList
         );
         spinnerRole.setAdapter(roleAdapter);
@@ -135,16 +137,24 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 String password = edtPassword.getText().toString().trim();
                 String cfPassword = edtConfirm.getText().toString().trim();
                 String email = edtEmail.getText().toString().trim();
+                if (!user.getRole().equals(role)) {
+                    for (int i = 0; i < userList.size(); i++) {
+                        if (userList.get(i).getID() == ID) {
+                            userList.remove(i);
+                            break;
+                        }
+                    }
+                }
                 if (ID == 0 || userString.isEmpty() || password.isEmpty() || email.isEmpty() || role == null) {
                     Toast.makeText(context, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                } else if(password.equals(cfPassword)){
+                } else if (password.equals(cfPassword)) {
                     User userUpdate = new User(ID, userString, password,
                             null, email, role);
                     int ketqua = userManager.updateUser(userUpdate);
                     if (ketqua > 0) {
                         for (int i = 0; i < userList.size(); i++) {
                             if (userList.get(i).getID() == ID) {
-                                userList.set(i, userUpdate);
+                                userList.set(i, userManager.getUserByID(ID));
                                 break;
                             }
                         }
@@ -273,7 +283,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_MOD) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemuser_minmod, parent, false);
-            return new GiangVienViewHolder(view);
+            return new ModViewHolder(view);
         } else if (viewType == VIEW_TYPE_GIANGVIEN) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemuser_gv, parent, false);
             return new GiangVienViewHolder(view);
@@ -297,7 +307,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             viewHolder.txtEmail.setText(user.getEmail());
             viewHolder.txtRole.setText(user.getRole());
             viewHolder.photo.setImageBitmap(user.getPhoto());
-            if (currentUser.getRole().equals("admin") || currentUser.getRole().equals("mod")) {
+            if (currentUser.getRole().equals("mod")) {
                 viewHolder.btnEdit.setVisibility(View.GONE);
                 viewHolder.btnDelete.setVisibility(View.GONE);
             }
@@ -307,6 +317,18 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 holder.itemView.getContext().startActivity(intent);
             });
 
+            viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickDelete(user);
+                }
+            });
+            viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickEdit(user);
+                }
+            });
         }
         if (holder instanceof ModViewHolder) {
             ModViewHolder viewHolder = (ModViewHolder) holder;
@@ -355,6 +377,12 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 intent.putExtra("userID", user.getID());
                 holder.itemView.getContext().startActivity(intent);
             });
+            viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickEdit(user);
+                }
+            });
         }
         if (holder instanceof SinhVienViewHolder) {
             SinhVien sinhVien = sinhVienManager.getSinhVienFromUser(user.getID());
@@ -372,6 +400,12 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 Intent intent = new Intent(holder.itemView.getContext(), ThongTinChiTietUserActivity.class);
                 intent.putExtra("userID", user.getID());
                 holder.itemView.getContext().startActivity(intent);
+            });
+            viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickEdit(user);
+                }
             });
         }
     }

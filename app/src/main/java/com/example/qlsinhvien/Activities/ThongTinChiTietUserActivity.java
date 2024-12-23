@@ -33,6 +33,7 @@ public class ThongTinChiTietUserActivity extends AppCompatActivity {
     TextView txtID, txtUsername, txtRole, txtEmail, txtTenSinhVien, txtMSSV, txtNgaySinh, txtCCCD, txtLopHanhChinh, txtNganh, txtGiangVien, txtMaGiangVien, txtNgaySinhGv, txtCCCDGv, txtKhoa;
     LinearLayout layoutGiangVien, layoutSinhVien;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +43,6 @@ import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class QuanLyUserActivity extends AppCompatActivity {
@@ -85,7 +83,7 @@ public class QuanLyUserActivity extends AppCompatActivity {
         modAdapter = new UserAdapter(this, currentUser);
         gvAdapter = new UserAdapter(this, currentUser);
         svAdapter = new UserAdapter(this, currentUser);
-        danhSachUserTamThoiAdapter=new DanhSachUserTamThoiAdapter(this);
+        danhSachUserTamThoiAdapter = new DanhSachUserTamThoiAdapter(this);
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
@@ -257,12 +255,12 @@ public class QuanLyUserActivity extends AppCompatActivity {
 
                 List<Role> roleList = roleManager.getAllRole();
 
-                roleList.removeIf(role -> role.getMaRole().equals("sv") || role.getMaRole().equals("gv")|| role.getMaRole().equals("superadmin"));
+                roleList.removeIf(role -> role.getMaRole().equals("sv") || role.getMaRole().equals("gv") || role.getMaRole().equals("superadmin"));
 
 
                 roleAdapter = new RoleAdapter(QuanLyUserActivity.this,
-                        R.layout.itemgiangvienselected,roleList
-                        );
+                        R.layout.itemgiangvienselected, roleList
+                );
                 spinnerRole.setAdapter(roleAdapter);
                 spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -330,15 +328,15 @@ public class QuanLyUserActivity extends AppCompatActivity {
                             userID = idCuoi;
                             Log.d("test3", String.valueOf(userID));
                             for (User user : userListTemp) {
-                                userManager.addUser(user);
+                                int idInserted = (int) userManager.addUser(user);
                                 if (user.getRole().equals("admin")) {
-                                    userAdminList.add(user);
+                                    userAdminList.add(userManager.getUserByID(idInserted));
                                 } else if (user.getRole().equals("mod")) {
-                                    userModList.add(user);
+                                    userModList.add(userManager.getUserByID(idInserted));
                                 } else if (user.getRole().equals("gv")) {
-                                    userGVList.add(user);
+                                    userGVList.add(userManager.getUserByID(idInserted));
                                 } else if (user.getRole().equals("sv")) {
-                                    userSVList.add(user);
+                                    userSVList.add(userManager.getUserByID(idInserted));
                                 }
 
                             }
@@ -372,9 +370,11 @@ public class QuanLyUserActivity extends AppCompatActivity {
                             Toast.makeText(QuanLyUserActivity.this, "Bạn chưa thêm sinh viên", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
             }
         });
 
     }
+
 }

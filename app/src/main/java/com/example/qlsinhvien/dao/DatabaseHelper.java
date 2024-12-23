@@ -175,8 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
         db.execSQL(CREATE_LOPHOCPHAN);
-        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES " +
-                "('superadmin', 'Quản trị viên cao cấp'),('admin', 'Quản trị viên')," +
+        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES ('admin', 'Quản trị viên')," +
                 "('mod', 'Chuyên viên')," +
                 "('gv', 'Giảng viên')," +
                 "('sv', 'Sinh viên')");

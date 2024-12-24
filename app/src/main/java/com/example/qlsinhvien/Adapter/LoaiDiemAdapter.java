@@ -36,9 +36,9 @@ public class LoaiDiemAdapter extends ArrayAdapter<LoaiDiem> {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.itemsinhvienselected,parent,false);
-        TextView txtLoaiDiem = convertView.findViewById(R.id.txtMSSVselected);
-        TextView txtTrongSo =convertView.findViewById(R.id.txtTenSinhVienselected);
+        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.itemchonsinhvien,parent,false);
+        TextView txtLoaiDiem = convertView.findViewById(R.id.txtMSSV);
+        TextView txtTrongSo =convertView.findViewById(R.id.txtTenSinhVien);
 
         LoaiDiem loaiDiem= this.getItem(position);
         {

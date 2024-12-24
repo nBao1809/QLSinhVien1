@@ -48,15 +48,16 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     private LopSinhVienManager lopSinhVienManager;
     private Context context;
     private List<SinhVien> sinhVienList, sinhVienListOld;
+    List<String> mssvList;
     private LopHocPhan lopHocPhan;
     Boolean bool;
     QuanLySinhVienActivity quanLySinhVienActivity;
     SinhVienbyMaLopHCAdapter sinhVienbyMaLopHCAdapter;
+
     public interface OnStudentRemovedListener {
         void onStudentRemoved(SinhVien sinhVien);
     }
 
-    private OnStudentRemovedListener onStudentRemovedListener;
     public SinhVienAdapter(Context context, LopHocPhan lopHocPhan) {
         this.context = context;
         this.lopHocPhan = lopHocPhan;
@@ -74,9 +75,17 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         this.bool = bool;
         notifyDataSetChanged();
     }
-    public void setOnStudentRemovedListener(OnStudentRemovedListener listener) {
-        this.onStudentRemovedListener = listener;
+
+    public void setDataqlsv(List<SinhVien> sinhVienList, List<String> mssvList, Boolean bool,QuanLySinhVienActivity quanLySinhVienActivity) {
+        this.mssvList = mssvList;
+        this.sinhVienList = sinhVienList;
+        this.sinhVienListOld = sinhVienList;
+        this.quanLySinhVienActivity=quanLySinhVienActivity;
+        this.bool = bool;
+        notifyDataSetChanged();
     }
+
+
 
     public String dateFormat(double ngaySinhDouble) {
         int nam = (int) ngaySinhDouble;
@@ -144,21 +153,19 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String maLopSinhVien=lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), sinhvien.getMssv());
+                String maLopSinhVien = lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), sinhvien.getMssv());
                 int ketquaLSV = lopSinhVienManager.deleteLopSinhVien(maLopSinhVien);
-                Log.d("test10", maLopSinhVien);
+
 
                 if (ketquaLSV > 0) {
                     sinhVienList.remove(sinhvien);
+                    mssvList.remove(sinhvien.getMssv());
                     if (sinhVienList.isEmpty()) {
                         if (quanLySinhVienActivity != null) {
                             quanLySinhVienActivity.setThongBaoVisibility(true);
                         }
                     }
                     notifyDataSetChanged();
-                    if (onStudentRemovedListener != null) {
-                        onStudentRemovedListener.onStudentRemoved(sinhvien);
-                    }
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);

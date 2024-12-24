@@ -53,12 +53,12 @@ public class DiemManager {
 
     }
 
-    public int getNextDiemID() {
+    public int getDiemID() {
         String query = "SELECT " + DatabaseHelper.MA_DIEM +
                 " FROM " + DatabaseHelper.TB_DIEM +
                 " ORDER BY " + DatabaseHelper.MA_DIEM + " DESC LIMIT 1";
         Cursor cursor = null;
-        int nextID = 1; // ID mặc định ban đầu là 1
+        int ID = 1; // ID mặc định ban đầu là 1
 
         try {
             db = dbHelper.getReadableDatabase();
@@ -68,11 +68,10 @@ public class DiemManager {
                 try {
                     // Lấy số từ ID và tăng lên 1
                     int number = Integer.parseInt(lastID.replace("DIEM", ""));
-                    number++;
-                    nextID = number;
+                    ID = number;
                 } catch (NumberFormatException e) {
                     // Nếu không thể parse được số, đặt ID mặc định là 1
-                    nextID = 1;
+                    ID = 1;
                 }
             }
         } catch (Exception e) {
@@ -83,7 +82,7 @@ public class DiemManager {
             }
         }
 
-        return nextID; // Trả về ID tiếp theo dưới dạng số
+        return ID; // Trả về ID tiếp theo dưới dạng số
     }
 
 

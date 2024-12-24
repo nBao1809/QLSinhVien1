@@ -15,6 +15,9 @@
         android:theme="@style/Theme.QLSinhVien"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.AverageScoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ThongTinChiTietGiangVienActivity"
             android:exported="false" />
         <activity
@@ -35,7 +38,6 @@
         <activity
             android:name=".Activities.QuanLyGiangVienActivity"
             android:exported="false" />
-
         <activity
             android:name=".Activities.QuanLyDanhSachSinhVienActivity"
             android:exported="false" />

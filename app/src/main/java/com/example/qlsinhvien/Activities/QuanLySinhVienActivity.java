@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,21 +28,16 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qlsinhvien.Adapter.GiangVienAdapter;
 import com.example.qlsinhvien.Adapter.LopHanhChinhAdapter;
 import com.example.qlsinhvien.Adapter.SinhVienAdapter;
 import com.example.qlsinhvien.Adapter.SinhVienbyMaLopHCAdapter;
-import com.example.qlsinhvien.Models.LoaiDiem;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.LopSinhVien;
 import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
-import com.example.qlsinhvien.dao.DiemManager;
 import com.example.qlsinhvien.dao.HocKyManager;
-import com.example.qlsinhvien.dao.LoaiDiemManager;
 import com.example.qlsinhvien.dao.LopHanhChinhManager;
-import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.dao.SinhVienManager;
@@ -53,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class QuanLySinhVienActivity extends AppCompatActivity {
+public class QuanLySinhVienActivity extends AppCompatActivity  {
     MaterialToolbar toolbar;
     RecyclerView recycleLopSinhVien;
 
@@ -167,6 +163,7 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
                 btnHuy = view.findViewById(R.id.btnHuy);
                 btnThem = view.findViewById(R.id.btnThem);
 
+
                 AlertDialog alertDialog = builder.create();
                 if (alertDialog.getWindow() != null) {
                     alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custom_themlophocphan);
@@ -179,15 +176,56 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
+                    lopHanhChinhAdapter = new LopHanhChinhAdapter(QuanLySinhVienActivity.this, R.layout.itemgiangvienselected, lopHanhChinhManager.getAllLopHanhChinh());
+                    spinnerLopHanhChinh.setAdapter(lopHanhChinhAdapter);
+                    spinnerLopHanhChinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            maLopHanhChinh = lopHanhChinhAdapter.getItem(position).getMaLopHanhChinh();
+                            sinhVienListSpinner = sinhVienManager.getSinhVienByMaLopHanhChinh(maLopHanhChinh);
 
-                lopHanhChinhAdapter = new LopHanhChinhAdapter(QuanLySinhVienActivity.this, R.layout.itemgiangvienselected, lopHanhChinhManager.getAllLopHanhChinh());
-                spinnerLopHanhChinh.setAdapter(lopHanhChinhAdapter);
-                spinnerLopHanhChinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        maLopHanhChinh = lopHanhChinhAdapter.getItem(position).getMaLopHanhChinh();
-                        sinhVienListSpinner = sinhVienManager.getSinhVienByMaLopHanhChinh(maLopHanhChinh);
-                        if (sinhVienListSpinner == null || sinhVienListSpinner.isEmpty()) {
+                            if (sinhVienListSpinner == null || sinhVienListSpinner.isEmpty()) {
+                                setEmptyAdapter();
+                            } else {
+                                List<SinhVien> updatedList = new ArrayList<>();
+                                for (SinhVien sinhVien : sinhVienListSpinner) {
+                                    if (!mssvList.contains(sinhVien.getMssv())) {
+                                        updatedList.add(sinhVien);
+                                    }
+                                }
+
+                                if (updatedList.isEmpty()) {
+                                    setEmptyAdapter();
+                                } else {
+                                    sinhVienListSpinner = updatedList;
+                                    sinhVienbyMaLopHCAdapter = new SinhVienbyMaLopHCAdapter(
+                                            QuanLySinhVienActivity.this,
+                                            R.layout.itemsinhvienselected,
+                                            sinhVienListSpinner
+                                    );
+                                    spinnerSinhVien.setAdapter(sinhVienbyMaLopHCAdapter);
+                                    spinnerSinhVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                            maSinhVien = sinhVienbyMaLopHCAdapter.getItem(position).getMssv();
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parent) {
+                                            maSinhVien = null;
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            spinnerSinhVien.setAdapter(null);
+                            maSinhVien = null;
+                        }
+
+                        private void setEmptyAdapter() {
                             ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(
                                     QuanLySinhVienActivity.this,
                                     android.R.layout.simple_spinner_item,
@@ -198,173 +236,171 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
                             spinnerSinhVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                                    // Không làm gì cả
                                 }
 
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
-
+                                    // Không làm gì cả
                                 }
                             });
-                        } else {
-                            List<SinhVien> updatedList = new ArrayList<>();
-                            for (SinhVien sinhVien : sinhVienListSpinner) {
-                                if (!mssvList.contains(sinhVien.getMssv())) {
-                                    updatedList.add(sinhVien);
-                                }
+                            maSinhVien = null;
+                        }
+                    });
+                    btnThem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            lopSinhVienID = lopSinhVienManager.getNextLopSinhVienID();
+                            Log.d("test12", String.valueOf(lopSinhVienID));
+                            maHocKy = getMaHocKy(lopHocPhan.getNgayBatDau());
+                            if (maSinhVien == null || maSinhVien.isEmpty()) {
+                                Toast.makeText(QuanLySinhVienActivity.this, "Không xác định được sinh viên", Toast.LENGTH_SHORT).show();
+                                return;
                             }
-                            if (updatedList.isEmpty()) {
+                            if (mssvList.contains(maSinhVien)) {
+                                Toast.makeText(QuanLySinhVienActivity.this, "Sinh viên này đã có trong danh sách", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
-                                ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(QuanLySinhVienActivity.this,
-                                        android.R.layout.simple_spinner_item, Collections.singletonList("Không có sinh viên thuộc mã hành chính này"));
-                                emptyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                spinnerSinhVien.setAdapter(emptyAdapter);
-                            } else {
+                            int ketqua = (int) lopSinhVienManager.addLopSinhVien(new LopSinhVien(lopSinhVienID, lopHocPhan.getMaLop(), maSinhVien, maHocKy));
 
-                                sinhVienListSpinner = updatedList;
-                                sinhVienbyMaLopHCAdapter = new SinhVienbyMaLopHCAdapter(
-                                        QuanLySinhVienActivity.this,
-                                        R.layout.itemsinhvienselected,
-                                        sinhVienListSpinner
-                                );
-                                spinnerSinhVien.setAdapter(sinhVienbyMaLopHCAdapter);
-                                spinnerSinhVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        maSinhVien = sinhVienbyMaLopHCAdapter.getItem(position).getMssv();
+                            if (ketqua > 0) {
+                                // Thêm sinh viên vào danh sách
+                                mssvList.add(maSinhVien);
+                                sinhVienList.add(sinhVienManager.getSinhVien(maSinhVien));
+                                txtThongBao.setText("");
+                                sinhVienAdapter.notifyDataSetChanged();
+                                if (sinhVienbyMaLopHCAdapter != null) {
+                                    sinhVienListSpinner.removeIf(sinhVien -> sinhVien.getMssv().equals(maSinhVien));
+                                    sinhVienbyMaLopHCAdapter.notifyDataSetChanged();
+
+                                    if (sinhVienListSpinner.isEmpty()) {
+                                        ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(
+                                                QuanLySinhVienActivity.this,
+                                                android.R.layout.simple_spinner_item,
+                                                Collections.singletonList("Không có sinh viên thuộc mã hành chính này")
+                                        );
+                                        emptyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        spinnerSinhVien.setAdapter(emptyAdapter);
+                                        spinnerSinhVien.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                            @Override
+                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                // Không làm gì cả
+                                            }
+
+                                            @Override
+                                            public void onNothingSelected(AdapterView<?> parent) {
+                                                // Không làm gì cả
+                                            }
+                                        });
+                                        maSinhVien = null;
+                                    } else {
+                                        spinnerSinhVien.setAdapter(sinhVienbyMaLopHCAdapter);
                                     }
+                                }
 
+                                // Hiển thị dialog thành công
+                                View view = LayoutInflater.from(QuanLySinhVienActivity.this).inflate(R.layout.successdialog, null);
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(QuanLySinhVienActivity.this);
+                                builder1.setView(view);
+                                Button successDone = view.findViewById(R.id.successDone);
+                                TextView successBelow = view.findViewById(R.id.successBelow);
+                                AlertDialog alertDialog = builder1.create();
+                                if (alertDialog.getWindow() != null) {
+                                    alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
+                                    alertDialog.getWindow().setGravity(Gravity.CENTER);
+                                }
+                                alertDialog.show();
+                                successBelow.setText("Thêm thành công!!!");
+                                successDone.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+                            } else {
+                                // Hiển thị dialog thất bại
+                                View view = LayoutInflater.from(QuanLySinhVienActivity.this).inflate(R.layout.faildialog, null);
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(QuanLySinhVienActivity.this);
+                                builder1.setView(view);
+                                Button failDone = view.findViewById(R.id.failDone);
+                                TextView failBelow = view.findViewById(R.id.failBelow);
+                                AlertDialog alertDialog = builder1.create();
+                                if (alertDialog.getWindow() != null) {
+                                    alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
+                                    alertDialog.getWindow().setGravity(Gravity.CENTER);
+                                }
+                                alertDialog.show();
+                                failBelow.setText("Thêm thất bại!!");
+                                failDone.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
                                     }
                                 });
                             }
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                }
 
-                    }
-                });
-                btnThem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lopSinhVienID = lopSinhVienManager.getNextLopSinhVienID();
-                        maHocKy = getMaHocKy(lopHocPhan.getNgayBatDau());
-                        if(mssvList.contains(maSinhVien)){
-                            Toast.makeText(QuanLySinhVienActivity.this,"Sinh viên này đã có trong danh sách",Toast.LENGTH_SHORT).show();
-                        }
-                        int ketqua = (int) lopSinhVienManager.addLopSinhVien(new LopSinhVien(lopSinhVienID, lopHocPhan.getMaLop(), maSinhVien, maHocKy));
 
-                        if (ketqua > 0) {
-                            // Thêm sinh viên vào danh sách
-                            mssvList.add(maSinhVien);
-                            sinhVienList.add(sinhVienManager.getSinhVien(maSinhVien));
-                            txtThongBao.setText("");
-                            sinhVienAdapter.notifyDataSetChanged();
-                            if (sinhVienbyMaLopHCAdapter != null) {
-                                sinhVienListSpinner.removeIf(sinhVien -> sinhVien.getMssv().equals(maSinhVien));
-                                sinhVienbyMaLopHCAdapter.notifyDataSetChanged();
-                                spinnerSinhVien.setAdapter(sinhVienbyMaLopHCAdapter);
-                            }
+            });
 
-                            // Hiển thị dialog thành công
-                            View view = LayoutInflater.from(QuanLySinhVienActivity.this).inflate(R.layout.successdialog, null);
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(QuanLySinhVienActivity.this);
-                            builder1.setView(view);
-                            Button successDone = view.findViewById(R.id.successDone);
-                            TextView successBelow = view.findViewById(R.id.successBelow);
-                            AlertDialog alertDialog = builder1.create();
-                            if (alertDialog.getWindow() != null) {
-                                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
-                                alertDialog.getWindow().setGravity(Gravity.CENTER);
-                            }
-                            alertDialog.show();
-                            successBelow.setText("Thêm thành công!!!");
-                            successDone.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    alertDialog.dismiss();
-                                }
-                            });
-                        } else {
-                            // Hiển thị dialog thất bại
-                            View view = LayoutInflater.from(QuanLySinhVienActivity.this).inflate(R.layout.faildialog, null);
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(QuanLySinhVienActivity.this);
-                            builder1.setView(view);
-                            Button failDone = view.findViewById(R.id.failDone);
-                            TextView failBelow = view.findViewById(R.id.failBelow);
-                            AlertDialog alertDialog = builder1.create();
-                            if (alertDialog.getWindow() != null) {
-                                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
-                                alertDialog.getWindow().setGravity(Gravity.CENTER);
-                            }
-                            alertDialog.show();
-                            failBelow.setText("Thêm thất bại!!");
-                            failDone.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    alertDialog.dismiss();
-                                }
-                            });
-                        }
-                    }
-                });
+        if(lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop())!=null&&sinhVienManager.getSinhVienByMSSVList(mssvList)!=null)
 
+            {
+                mssvList = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
+                sinhVienList = sinhVienManager.getSinhVienByMSSVList(mssvList);
+                txtThongBao.setText("");
+            } else
+
+            {
+                txtThongBao.setText("Chưa có sinh viên trong lớp");
             }
 
-        });
-
-        if (lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop()) != null && sinhVienManager.getSinhVienByMSSVList(mssvList) != null) {
-            mssvList = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
-            sinhVienList = sinhVienManager.getSinhVienByMSSVList(mssvList);
-            txtThongBao.setText("");
-        } else {
-            txtThongBao.setText("Chưa có sinh viên trong lớp");
-        }
-
-        sinhVienAdapter.setData(sinhVienList, bool);
+        sinhVienAdapter.setDataqlsv(sinhVienList,mssvList,bool,QuanLySinhVienActivity.this);
         recycleLopSinhVien.setAdapter(sinhVienAdapter);
 
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (sinhVienAdapter != null) {
-            sinhVienAdapter.release();
         }
-    }
 
-    public String getMaHocKy(double ngayBatDau) {
-
-        int nam = (int) ngayBatDau;
-        double phanThapPhan = ngayBatDau - nam;
-
-
-        int thang = (int) (phanThapPhan * 100);
-        int ngay = (int) ((phanThapPhan * 10000) % 100);
-
-
-        if (thang >= 9 && thang <= 12) {
-            return "HK1";
-        } else if (thang >= 1 && thang <= 5) {
-            return "HK2";
-        } else if (thang >= 6 && thang <= 8) {
-            return "HK3";
+        @Override
+        protected void onDestroy () {
+            super.onDestroy();
+            if (sinhVienAdapter != null) {
+                sinhVienAdapter.release();
+            }
         }
-        return "Unknown";
-    }
 
-    public void setThongBaoVisibility(boolean isVisible) {
-        if (isVisible) {
-            txtThongBao.setText("Không tìm thấy sinh viên");
-            txtThongBao.setVisibility(View.VISIBLE);
-        } else {
-            txtThongBao.setVisibility(View.GONE);
+        public String getMaHocKy ( double ngayBatDau){
+
+            int nam = (int) ngayBatDau;
+            double phanThapPhan = ngayBatDau - nam;
+
+
+            int thang = (int) (phanThapPhan * 100);
+            int ngay = (int) ((phanThapPhan * 10000) % 100);
+
+
+            if (thang >= 9 && thang <= 12) {
+                return "HK1";
+            } else if (thang >= 1 && thang <= 5) {
+                return "HK2";
+            } else if (thang >= 6 && thang <= 8) {
+                return "HK3";
+            }
+            return "Unknown";
         }
-    }
 
-}
+        public void setThongBaoVisibility ( boolean isVisible){
+            if (isVisible) {
+                txtThongBao.setText("Không tìm thấy sinh viên");
+                txtThongBao.setVisibility(View.VISIBLE);
+            } else {
+                txtThongBao.setVisibility(View.GONE);
+            }
+        }
+
+
+    }

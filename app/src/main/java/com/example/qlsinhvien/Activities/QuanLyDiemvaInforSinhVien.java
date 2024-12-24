@@ -242,11 +242,12 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
                             Toast.makeText(QuanLyDiemvaInforSinhVien.this, "Trọng số điểm của sinh viên đã vượt mức 1 vui lòng chọn loại điểm khác hoặc thêm mới loại điểm", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        diemID = diemManager.getNextDiemID();
                         String maLopSinhVien = lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), sinhVien.getMssv());
-                        int ketqua = (int) diemManager.addDiem(new Diem(diemID,diemSo, maLoaiDiem, maLopSinhVien));
+                        int ketqua = (int) diemManager.addDiem(new Diem(diemSo, maLoaiDiem, maLopSinhVien));
                         if (ketqua > 0) {
-                            listDiem.add(new Diem(diemSo, maLoaiDiem, maLopSinhVien));
+                            diemID = diemManager.getDiemID();
+                            listDiem.add(new Diem(diemID,diemSo, maLoaiDiem, maLopSinhVien));
+                            Log.d("test",String.valueOf(diemID));
                             txtThongBao.setText("");
                             lopSinhVienAdapter.notifyDataSetChanged();
                             View view = LayoutInflater.from(QuanLyDiemvaInforSinhVien.this).inflate(R.layout.successdialog, null);

@@ -1,5 +1,6 @@
 package com.example.qlsinhvien.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -10,8 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.qlsinhvien.Activities.AverageScoreActivity;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
@@ -51,6 +54,7 @@ public class StatisticFragment extends Fragment {
     }
 
     MaterialToolbar toolbar;
+    Button btnAverageScore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +75,15 @@ public class StatisticFragment extends Fragment {
             }
         });
         Menu menu = toolbar.getMenu();
+        btnAverageScore = view.findViewById(R.id.btnAverageScore);
+        btnAverageScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), AverageScoreActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
+
 }

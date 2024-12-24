@@ -37,23 +37,16 @@ public class LopSinhVienManager {
     }
 
     public String getNextLopSinhVienID() {
-        String query = "SELECT " + DatabaseHelper.MA_LOPSINHVIEN +
-                " FROM " + DatabaseHelper.TB_LOPSINHVIEN +
-                " ORDER BY " + DatabaseHelper.MA_LOPSINHVIEN + " DESC LIMIT 1";
+        String query = "SELECT MAX(CAST(SUBSTR(" + DatabaseHelper.MA_LOPSINHVIEN + ", 4) AS INTEGER)) FROM " + DatabaseHelper.TB_LOPSINHVIEN;
         Cursor cursor = null;
-        String nextID = "LSV001";
+        int nextID = 1;
 
         try {
+            db = dbHelper.getReadableDatabase();
             cursor = db.rawQuery(query, null);
             if (cursor != null && cursor.moveToFirst()) {
-                String lastID = cursor.getString(0);
-                try {
-                    int number = Integer.parseInt(lastID.replace("LSV", ""));
-                    number++;
-                    nextID = String.format("LSV%03d", number);
-                } catch (NumberFormatException e) {
-                    nextID = "LSV001";
-                }
+                int maxID = cursor.getInt(0);
+                nextID = maxID + 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,9 +55,31 @@ public class LopSinhVienManager {
                 cursor.close();
             }
         }
-        return nextID;
+
+        return String.format("LSV%03d", nextID);
     }
 
+    public List<String> getMaLopFromMSSV(String mssv) {
+        db = dbHelper.getReadableDatabase();
+        List<String> maLopList = new ArrayList<>();
+        String query = "SELECT " + DatabaseHelper.MA_LOP + " FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE " + DatabaseHelper.MSSV + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{mssv});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                maLopList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return maLopList;
+    }
 
     public List<LopSinhVien> getAllLopSinhVien() {
         lopSinhVienList = new ArrayList<>();

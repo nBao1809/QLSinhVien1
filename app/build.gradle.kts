@@ -37,6 +37,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
     implementation(libs.appcompat)
@@ -52,7 +54,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.lottie)
     implementation(libs.android.mail)
-    implementation (libs.android.activation)
+    implementation(libs.android.activation)
+    implementation(libs.mpandroidchart)
 
 
 }

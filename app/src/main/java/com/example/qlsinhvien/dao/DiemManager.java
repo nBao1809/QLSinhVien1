@@ -15,15 +15,14 @@ public class DiemManager {
     private SQLiteDatabase db;
     private List<Diem> diemList;
 
-public DiemManager(Context context) {
-    dbHelper = new DatabaseHelper(context);
-}
+    public DiemManager(Context context) {
+        dbHelper = new DatabaseHelper(context);
+    }
 
     public long addDiem(Diem diem) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.MA_DIEM, diem.getMaDiem());
         values.put(DatabaseHelper.DIEMSO, diem.getDiemSo());
         values.put(DatabaseHelper.MA_LOAIDIEM, diem.getMaLoaiDiem());
         values.put(DatabaseHelper.MA_LOPSINHVIEN, diem.getMaLopSinhVien());
@@ -53,6 +52,40 @@ public DiemManager(Context context) {
         return null;
 
     }
+
+    public int getDiemID() {
+        String query = "SELECT " + DatabaseHelper.MA_DIEM +
+                " FROM " + DatabaseHelper.TB_DIEM +
+                " ORDER BY " + DatabaseHelper.MA_DIEM + " DESC LIMIT 1";
+        Cursor cursor = null;
+        int ID = 1; // ID mặc định ban đầu là 1
+
+        try {
+            db = dbHelper.getReadableDatabase();
+            cursor = db.rawQuery(query, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                String lastID = cursor.getString(0); // Lấy ID cuối cùng
+                try {
+                    // Lấy số từ ID và tăng lên 1
+                    int number = Integer.parseInt(lastID.replace("DIEM", ""));
+                    ID = number;
+                } catch (NumberFormatException e) {
+                    // Nếu không thể parse được số, đặt ID mặc định là 1
+                    ID = 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return ID; // Trả về ID tiếp theo dưới dạng số
+    }
+
+
     public Diem getDiem(int maDiem) {
         db = dbHelper.getReadableDatabase();
         Diem diem = null;
@@ -74,6 +107,7 @@ public DiemManager(Context context) {
         }
         return null;
     }
+
     public Diem getDiemfromLopSinhVienID(String maLopSinhVien) {
         db = dbHelper.getReadableDatabase();
         Diem diem = null;
@@ -95,9 +129,10 @@ public DiemManager(Context context) {
         }
         return null;
     }
+
     public List<Diem> getDiemfromMalopsinhvien(String maLopSinhVien) {
         diemList = new ArrayList<>();
-        String query = "SELECT * "+" FROM " + DatabaseHelper.TB_DIEM +" WHERE "+DatabaseHelper.MA_LOPSINHVIEN+" =?";
+        String query = "SELECT * " + " FROM " + DatabaseHelper.TB_DIEM + " WHERE " + DatabaseHelper.MA_LOPSINHVIEN + " =?";
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, new String[]{maLopSinhVien});
 

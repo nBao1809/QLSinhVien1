@@ -1,105 +1,56 @@
 package com.example.qlsinhvien.Adapter;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.Nullable;
 
 import com.example.qlsinhvien.Models.LoaiDiem;
 import com.example.qlsinhvien.R;
-import com.example.qlsinhvien.StringUtility;
 
-
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class LoaiDiemAdapter extends RecyclerView.Adapter<LoaiDiemAdapter.ClassViewHolder> implements Filterable {
+public class LoaiDiemAdapter extends ArrayAdapter<LoaiDiem> {
 
-
-    private List<LoaiDiem> loaiDiemList, loaiDiemListOld;
-
-
-    public LoaiDiemAdapter() {
-
-    }
-
-    public void setData(List<LoaiDiem> loaiDiemList) {
-        if(loaiDiemList==null)
-            return;
-        this.loaiDiemList = loaiDiemList;
-        this.loaiDiemListOld = loaiDiemList;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
-    public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemlophocphan, parent, false);
-        return new ClassViewHolder(view);
-    }
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.itemsinhvienselected,parent,false);
+        TextView txtLoaiDiemSelected = convertView.findViewById(R.id.txtMSSVselected);
+        TextView txtTrongSoSelected =convertView.findViewById(R.id.txtTenSinhVienselected);
 
-    @Override
-    public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
-        LoaiDiem loaiDiem = loaiDiemList.get(position);
-        if (loaiDiem == null)
-            return;
-        //holder.txtNganh.setText(diem.getMaMonHoc())
-    }
-
-    @Override
-    public int getItemCount() {
-        if (loaiDiemList != null)
-            return loaiDiemList.size();
-        return 0;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String searchString = StringUtility.removeMark(constraint.toString().toLowerCase());
-                if (searchString.isEmpty()) {
-                    loaiDiemList = loaiDiemListOld;
-                } else {
-                    List<LoaiDiem> list = new ArrayList<>();
-                    for (LoaiDiem loaiDiem : loaiDiemListOld) {
-                        String tenLoaiDiem =
-                                StringUtility.removeMark(loaiDiem.getTenLoaiDiem().toLowerCase());
-
-                        if (tenLoaiDiem.contains(searchString)) {
-                            list.add(loaiDiem);
-                        }
-                    }
-                    loaiDiemList = list;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = loaiDiemList;
-                return filterResults;
+        LoaiDiem loaiDiem= this.getItem(position);
+        {
+            if(loaiDiem!=null){
+                txtLoaiDiemSelected.setText(loaiDiem.getTenLoaiDiem());
+                txtTrongSoSelected.setText((String.valueOf(loaiDiem.getTrongSo())));
             }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                loaiDiemListOld = (List<LoaiDiem>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public class ClassViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNganh, txtMonHoc, txtGVPhuTrach, txtLop;
-
-        public ClassViewHolder(@NonNull View itemView) {
-            super(itemView);
-            //txtNganh = itemView.findViewById(R.id.txtNganh);
         }
+        return convertView;
     }
 
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.itemchonsinhvien,parent,false);
+        TextView txtLoaiDiem = convertView.findViewById(R.id.txtMSSV);
+        TextView txtTrongSo =convertView.findViewById(R.id.txtTenSinhVien);
+
+        LoaiDiem loaiDiem= this.getItem(position);
+        {
+            if(loaiDiem!=null){
+                txtLoaiDiem.setText(loaiDiem.getTenLoaiDiem());
+                txtTrongSo.setText(String.valueOf(loaiDiem.getTrongSo()));
+            }
+        }
+        return convertView;
+    }
+
+    public LoaiDiemAdapter(@NonNull Context context, int resource, @NonNull List<LoaiDiem> objects) {
+        super(context, resource, objects);
+    }
 }

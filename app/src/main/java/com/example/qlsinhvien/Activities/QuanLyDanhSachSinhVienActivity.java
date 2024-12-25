@@ -152,7 +152,7 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDSSinhVien.setLayoutManager(linearLayoutManager);
         sinhVienList = new ArrayList<>();
-        txtThongBao.setText("Danh sách  viên trống");
+        txtThongBao.setText("Danh sách sinh viên trống");
         fbtnThem = findViewById(R.id.fbtnThem);
         fbtnThem.setOnClickListener(new View.OnClickListener() {
             @Override

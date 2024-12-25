@@ -80,9 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 //                    userManager.updatePhoto(1, BitmapFactory.decodeResource(getResources(),
 //                            R.drawable.avatarsample));
-//                    userManager.addUser(new User("nhatbao","1",
-//                            BitmapFactory.decodeResource(getResources(),R.drawable.avatarsample),
-//                            "2251010011bao@gmail.com","sv"));
+//
 
 //                    userManager.addUser(new User("sv", "1",
 //                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),

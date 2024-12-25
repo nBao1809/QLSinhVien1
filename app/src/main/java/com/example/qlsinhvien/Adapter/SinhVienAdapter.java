@@ -1,11 +1,16 @@
 package com.example.qlsinhvien.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -43,9 +48,15 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     private LopSinhVienManager lopSinhVienManager;
     private Context context;
     private List<SinhVien> sinhVienList, sinhVienListOld;
+    List<String> mssvList;
     private LopHocPhan lopHocPhan;
     Boolean bool;
+    QuanLySinhVienActivity quanLySinhVienActivity;
+    SinhVienbyMaLopHCAdapter sinhVienbyMaLopHCAdapter;
 
+    public interface OnStudentRemovedListener {
+        void onStudentRemoved(SinhVien sinhVien);
+    }
 
     public SinhVienAdapter(Context context, LopHocPhan lopHocPhan) {
         this.context = context;
@@ -64,6 +75,17 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         this.bool = bool;
         notifyDataSetChanged();
     }
+
+    public void setDataqlsv(List<SinhVien> sinhVienList, List<String> mssvList, Boolean bool,QuanLySinhVienActivity quanLySinhVienActivity) {
+        this.mssvList = mssvList;
+        this.sinhVienList = sinhVienList;
+        this.sinhVienListOld = sinhVienList;
+        this.quanLySinhVienActivity=quanLySinhVienActivity;
+        this.bool = bool;
+        notifyDataSetChanged();
+    }
+
+
 
     public String dateFormat(double ngaySinhDouble) {
         int nam = (int) ngaySinhDouble;
@@ -115,12 +137,6 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
                     onClickGoToLopSinhVien(sinhVien, bool);
                 }
             });
-            holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickEdit(sinhVien);
-                }
-            });
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,11 +146,73 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         }
     }
 
-    public void onClickEdit(SinhVien sinhVien) {
-
-    }
-
     public void onClickDelete(SinhVien sinhvien) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Xóa sinh viên " + sinhvien.getHoTen() + " ?");
+        builder.setMessage("Bạn có chắc muốn xóa sinh viên " + sinhvien.getHoTen() + " ra khỏi lớp " + lopHocPhan.getTenLop() + " không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String maLopSinhVien = lopSinhVienManager.getMaLopSinhVienfromMalopMSSV(lopHocPhan.getMaLop(), sinhvien.getMssv());
+                int ketquaLSV = lopSinhVienManager.deleteLopSinhVien(maLopSinhVien);
+
+
+                if (ketquaLSV > 0) {
+                    sinhVienList.remove(sinhvien);
+                    mssvList.remove(sinhvien.getMssv());
+                    if (sinhVienList.isEmpty()) {
+                        if (quanLySinhVienActivity != null) {
+                            quanLySinhVienActivity.setThongBaoVisibility(true);
+                        }
+                    }
+                    notifyDataSetChanged();
+                    View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                    builder1.setView(view);
+                    Button successDone = view.findViewById(R.id.successDone);
+                    TextView successBelow = view.findViewById(R.id.successBelow);
+                    AlertDialog alertDialog = builder1.create();
+                    if (alertDialog.getWindow() != null) {
+                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
+                        alertDialog.getWindow().setGravity(Gravity.CENTER);
+                    }
+                    alertDialog.show();
+                    successBelow.setText("Xóa sinh viên ra khỏi lớp thành công!!!");
+                    successDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+                } else {
+                    View view = LayoutInflater.from(context).inflate(R.layout.faildialog, null);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                    builder1.setView(view);
+                    Button failDone = view.findViewById(R.id.failDone);
+                    TextView failBelow = view.findViewById(R.id.failBelow);
+                    AlertDialog alertDialog = builder1.create();
+                    if (alertDialog.getWindow() != null) {
+                        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.custome_success);
+                        alertDialog.getWindow().setGravity(Gravity.CENTER);
+                    }
+                    alertDialog.show();
+                    failBelow.setText("Xóa sinh viên ra khỏi lớp thất bại");
+                    failDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
 
     }
 
@@ -179,7 +257,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
                                 StringUtility.removeMark(sinhVien.getMssv().toLowerCase());
                         String tenSinhVien =
                                 StringUtility.removeMark(sinhVien.getHoTen().toLowerCase());
-                        if (mssv.startsWith(searchString) || tenSinhVien.contains(searchString)  || tenSinhVien.startsWith(searchString)) {
+                        if (mssv.startsWith(searchString) || tenSinhVien.contains(searchString) || tenSinhVien.startsWith(searchString)) {
                             list.add(sinhVien);
                         }
 
@@ -225,7 +303,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     public class SinhVienViewHolder extends RecyclerView.ViewHolder {
         TextView txtTen, txtMSSV, txtNgaySinh, txtLopHanhChinh;
         CardView itemLayout;
-        ImageButton btnEdit, btnDelete;
+        ImageButton btnDelete;
 
         public SinhVienViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -234,7 +312,6 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
             txtNgaySinh = itemView.findViewById(R.id.txtNgaySinh);
             txtLopHanhChinh = itemView.findViewById(R.id.txtLopHanhChinh);
             itemLayout = itemView.findViewById(R.id.layoutItem);
-            btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
 
         }

@@ -79,6 +79,42 @@ public class SinhVienManager {
         return null;
 
     }
+    public List<SinhVien> getSinhVienByMaLopHanhChinh(String maLopHanhChinh) {
+        List<SinhVien> sinhVienList = new ArrayList<>();
+        if (maLopHanhChinh.isEmpty()) return sinhVienList;
+
+        db = dbHelper.getReadableDatabase();
+        String selection = DatabaseHelper.MA_LOPHANHCHINH + " = ? " ;
+        String[] selectionArgs = new String[]{maLopHanhChinh} ;
+
+        Cursor c = db.query(
+                DatabaseHelper.TB_SINHVIEN,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                SinhVien sinhVien = new SinhVien(
+                        c.getString(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getDouble(3),
+                        c.getInt(4),
+                        c.getString(5),
+                        c.getString(6)
+                );
+                sinhVienList.add(sinhVien);
+            } while (c.moveToNext());
+            c.close();
+        }
+        Log.d("SQL_Query", "sinhvienList: " + sinhVienList);
+        return sinhVienList;
+    }
 
 
     public List<SinhVien> getSinhVienByMSSVList(List<String> mssvList) {
@@ -88,8 +124,7 @@ public class SinhVienManager {
         db = dbHelper.getReadableDatabase();
         String selection = DatabaseHelper.MSSV + " IN (" + makePlaceholders(mssvList.size()) + ")";
         String[] selectionArgs = mssvList.toArray(new String[0]);
-        Log.d("SQL_Query", "Selection: " + selection);
-        Log.d("SQL_Query", "SelectionArgs: " + Arrays.toString(selectionArgs));
+
 
         Cursor c = db.query(
                 DatabaseHelper.TB_SINHVIEN,

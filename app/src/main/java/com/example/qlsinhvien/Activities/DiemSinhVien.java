@@ -63,6 +63,7 @@ public class DiemSinhVien extends AppCompatActivity {
             return insets;
         });
         sinhVienManager = new SinhVienManager(this);
+        userManager= new UserManager(this);
         lopSinhVienManager = new LopSinhVienManager(this);
         lopHanhChinhManager = new LopHanhChinhManager(this);
         nganhManager = new NganhManager(this);

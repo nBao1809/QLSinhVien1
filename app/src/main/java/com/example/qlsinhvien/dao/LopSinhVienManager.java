@@ -16,8 +16,9 @@ public class LopSinhVienManager {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private List<LopSinhVien> lopSinhVienList;
-    public LopSinhVienManager(Context context){
-        dbHelper=new DatabaseHelper(context);
+
+    public LopSinhVienManager(Context context) {
+        dbHelper = new DatabaseHelper(context);
     }
 
     public long addLopSinhVien(LopSinhVien lopSinhVien) {
@@ -33,6 +34,51 @@ public class LopSinhVienManager {
         db.close();
 
         return rowInserted; // >0 nếu thêm thành công, -1 nếu thất bại
+    }
+
+    public String getNextLopSinhVienID() {
+        String query = "SELECT MAX(CAST(SUBSTR(" + DatabaseHelper.MA_LOPSINHVIEN + ", 4) AS INTEGER)) FROM " + DatabaseHelper.TB_LOPSINHVIEN;
+        Cursor cursor = null;
+        int nextID = 1;
+
+        try {
+            db = dbHelper.getReadableDatabase();
+            cursor = db.rawQuery(query, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int maxID = cursor.getInt(0);
+                nextID = maxID + 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return String.format("LSV%03d", nextID);
+    }
+
+    public List<String> getMaLopFromMSSV(String mssv) {
+        db = dbHelper.getReadableDatabase();
+        List<String> maLopList = new ArrayList<>();
+        String query = "SELECT " + DatabaseHelper.MA_LOP + " FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE " + DatabaseHelper.MSSV + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{mssv});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                maLopList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return maLopList;
     }
 
     public List<LopSinhVien> getAllLopSinhVien() {
@@ -53,9 +99,10 @@ public class LopSinhVienManager {
         }
         return null;
     }
+
     public List<String> getMSSVfromMalop(String maLop) {
         List<String> mssvList = new ArrayList<>();
-        String query = "SELECT "+DatabaseHelper.MSSV+" FROM " + DatabaseHelper.TB_LOPSINHVIEN +" WHERE "+DatabaseHelper.MA_LOP+" =?";
+        String query = "SELECT " + DatabaseHelper.MSSV + " FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE " + DatabaseHelper.MA_LOP + " =?";
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, new String[]{maLop});
 
@@ -71,11 +118,12 @@ public class LopSinhVienManager {
         }
         return null;
     }
+
     public String getMaHocKyfromMalop(String maLop) {
         db = dbHelper.getReadableDatabase();
-        String maHocKy ;
-        String query = "SELECT "+DatabaseHelper.MA_HOCKY+" FROM " + DatabaseHelper.TB_LOPSINHVIEN +" WHERE " +DatabaseHelper.MA_LOP+" =?";
-        Cursor c = db.rawQuery(query,new String[]{maLop});
+        String maHocKy;
+        String query = "SELECT " + DatabaseHelper.MA_HOCKY + " FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE " + DatabaseHelper.MA_LOP + " =?";
+        Cursor c = db.rawQuery(query, new String[]{maLop});
 
         if (c != null && c.moveToFirst()) {
             maHocKy = c.getString(0);
@@ -87,11 +135,12 @@ public class LopSinhVienManager {
         }
         return null;
     }
+
     public String getMaLopSinhVienfromMalopMSSV(String maLop, String MSSV) {
         db = dbHelper.getReadableDatabase();
-        String maLopSinhVien ;
-        String query = "SELECT "+DatabaseHelper.MA_LOPSINHVIEN+" FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE "+ DatabaseHelper.MA_LOP +" =? " +" AND " +DatabaseHelper.MSSV+" =? ";
-        Cursor c = db.rawQuery(query,new String[]{maLop,MSSV});
+        String maLopSinhVien;
+        String query = "SELECT " + DatabaseHelper.MA_LOPSINHVIEN + " FROM " + DatabaseHelper.TB_LOPSINHVIEN + " WHERE " + DatabaseHelper.MA_LOP + " =? " + " AND " + DatabaseHelper.MSSV + " =? ";
+        Cursor c = db.rawQuery(query, new String[]{maLop, MSSV});
 
         if (c != null && c.moveToFirst()) {
             maLopSinhVien = c.getString(0);
@@ -103,6 +152,7 @@ public class LopSinhVienManager {
         }
         return null;
     }
+
     public LopSinhVien getLopSinhVien(String maLopSinhVien) {
         db = dbHelper.getReadableDatabase();
         LopSinhVien lopSinhVien = null;
@@ -147,7 +197,7 @@ public class LopSinhVienManager {
 
     public int deleteLopSinhVien(String maLopSinhVien) {
         db = dbHelper.getWritableDatabase();
-        String selection = DatabaseHelper.MA_LOP + " = ?";
+        String selection = DatabaseHelper.MA_LOPSINHVIEN + " = ?";
         String[] selectionArgs = {maLopSinhVien};
 
         int rowsDeleted = db.delete(DatabaseHelper.TB_LOPSINHVIEN, selection, selectionArgs);

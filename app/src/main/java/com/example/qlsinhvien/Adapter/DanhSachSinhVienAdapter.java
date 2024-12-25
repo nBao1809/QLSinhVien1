@@ -33,6 +33,7 @@ import com.example.qlsinhvien.Activities.DiemSinhVien;
 import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDiemvaInforSinhVien;
 import com.example.qlsinhvien.Activities.QuanLySinhVienActivity;
+import com.example.qlsinhvien.Activities.ThongTinChiTietSinhVien;
 import com.example.qlsinhvien.Models.LopHanhChinh;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
@@ -185,6 +186,7 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
         });
         lopHanhChinhAdapter = new LopHanhChinhAdapter(context, R.layout.itemgiangvienselected, lopHanhChinhManager.getAllLopHanhChinh());
         spinnerLopHanhChinh.setAdapter(lopHanhChinhAdapter);
+        spinnerLopHanhChinh.setSelection(lopHanhChinhAdapter.getPosition(lopHanhChinhManager.getLopHanhChinh(sinhVien.getMaLopHanhChinh())));
         spinnerLopHanhChinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -198,10 +200,11 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
         });
         nganhAdapter = new NganhAdapter(context, R.layout.itemgiangvienselected, nganhManager.getAllNganh());
         spinnerNganh.setAdapter(nganhAdapter);
+        spinnerNganh.setSelection(nganhAdapter.getPosition(nganhManager.getNganh(sinhVien.getMaNganh())));
         spinnerNganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                maNganh = nganhAdapter.getItem(position).getTenNganh();
+                maNganh = nganhAdapter.getItem(position).getMaNganh();
             }
 
             @Override
@@ -318,14 +321,14 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
                 int ketquaSV = sinhVienManager.deleteSinhVien(sinhvien.getMssv());
 
                 int ketquaUser = userManager.deleteUser(userManager.getUserByID(sinhvien.getId()).getID());
-                sinhVienList.remove(sinhvien);
-                if (sinhVienList.isEmpty()) {
-                    if (quanLyDanhSachSinhVienActivity != null) {
-                        quanLyDanhSachSinhVienActivity.setThongBaoVisibility(true);
-                    }
-                }
-                notifyDataSetChanged();
                 if (ketquaSV > 0 && ketquaUser > 0) {
+                    sinhVienList.remove(sinhvien);
+                    if (sinhVienList.isEmpty()) {
+                        if (quanLyDanhSachSinhVienActivity != null) {
+                            quanLyDanhSachSinhVienActivity.setThongBaoVisibility(true);
+                        }
+                    }
+                    notifyDataSetChanged();
                     View view = LayoutInflater.from(context).inflate(R.layout.successdialog, null);
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                     builder1.setView(view);
@@ -378,7 +381,7 @@ public class DanhSachSinhVienAdapter extends RecyclerView.Adapter<DanhSachSinhVi
 
     private void onClickGoToLopSinhVien(SinhVien sinhVien) {
 
-        Intent intent = new Intent(context, QuanLyDiemvaInforSinhVien.class);
+        Intent intent = new Intent(context, ThongTinChiTietSinhVien.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("sinhVien", sinhVien);
         intent.putExtras(bundle);

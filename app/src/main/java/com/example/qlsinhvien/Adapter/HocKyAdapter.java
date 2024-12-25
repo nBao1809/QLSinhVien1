@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.qlsinhvien.Models.HocKy;
 
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
-
 
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class HocKyAdapter extends RecyclerView.Adapter<HocKyAdapter.ClassViewHol
     }
 
     public void setData(List<HocKy> hocKyList) {
-        if(hocKyList==null)
+        if (hocKyList == null)
             return;
         this.hocKyList = hocKyList;
         this.hocKyListOld = hocKyList;
@@ -74,14 +74,11 @@ public class HocKyAdapter extends RecyclerView.Adapter<HocKyAdapter.ClassViewHol
                     for (HocKy hocKy : hocKyListOld) {
                         String tenHocKy =
                                 StringUtility.removeMark(hocKy.getTenHocKy().toLowerCase());
-                        String namHoc =
-                                StringUtility.removeMark(hocKy.getNamHoc().toLowerCase());
+
                         if (tenHocKy.contains(searchString)) {
                             list.add(hocKy);
                         }
-                        if (namHoc.contains(searchString)) {
-                            list.add(hocKy);
-                        }
+
                     }
                     hocKyList = list;
                 }

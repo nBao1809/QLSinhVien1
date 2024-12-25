@@ -152,10 +152,7 @@ public class HomeFragment extends Fragment {
         });
         Menu menu = toolbar.getMenu();
 
-//        nganhManager.addNganh(new Nganh("N2", "Khoa Hoc May Tinh"));
-//        giangVienManager.addGiangVien(new GiangVien("GV2", "nguyen van a", "123456", 31, "CNTT", 8));
-//        monHocManager.addMonHoc(new MonHoc("ITEC101", "Data Structure", 2, "N2"));
-//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP2","DH22CS01",1,2,"ITEC101","GV2"));
+
         lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recycleHocPhan.setLayoutManager(linearLayoutManager);

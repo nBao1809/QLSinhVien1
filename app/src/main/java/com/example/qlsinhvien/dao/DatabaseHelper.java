@@ -1,5 +1,7 @@
 package com.example.qlsinhvien.dao;
 
+import static com.example.qlsinhvien.dao.UserManager.getBitmapAsByteArray;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -231,11 +233,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "VALUES ('L02', 'Giữa kỳ', 0.4)");
         db.execSQL("INSERT INTO " + TB_LOAIDIEM + " (" + MA_LOAIDIEM + ", " + TEN_LOAIDIEM + ", " + TRONGSO + ") " +
                 "VALUES ('L03', 'Thường xuyên', 0.1)");
-        UserManager userManager;
-        userManager =new UserManager(context);
-        userManager.addUser(new User("superadmin", "1",
-                BitmapFactory.decodeResource(context.getResources(), R.drawable.avatarsample),
-                "superadmin@ou.edu.vn", "superadmin"));
+
     }
 
     @Override

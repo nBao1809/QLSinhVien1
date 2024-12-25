@@ -1,8 +1,10 @@
 package com.example.qlsinhvien.Activities;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +32,8 @@ public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     SharedPreferences userRefs;
     int idc = R.id.home;
+    User currentUser;
+    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,35 +57,40 @@ public class InteractActivity extends AppCompatActivity {
                         .show();
             }
         });
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-
+        userManager = new UserManager(this);
+        Intent intent=getIntent();
+        User currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         replaceFragment(new HomeFragment());
         bottomNavigationView = findViewById(R.id.bottomBar);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            int isDisplay = -1;
+        if(currentUser.getRole().equals("gv")||currentUser.getRole().equals("sv")){
+            bottomNavigationView.getMenu().removeItem(R.id.utility);
+            bottomNavigationView.getMenu().removeItem(R.id.stat);
+        }
 
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
                 if (id == R.id.home && id != idc) {
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment().newInstance(currentUser.getID()));
 
 
                 } else if (id == R.id.utility && id != idc) {
-                    replaceFragment(new UtilityFragment());
+                    replaceFragment(new UtilityFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.stat && id != idc) {
-                    replaceFragment(new StatisticFragment());
+                    replaceFragment(new StatisticFragment().newInstance(currentUser.getID()));
 
                 } else if (id == R.id.account && id != idc) {
-                    replaceFragment(new AccountFragment().newInstance(userRefs.getInt("ID", -1)));
+                    replaceFragment(new AccountFragment().newInstance(currentUser.getID()));
 
                 }
                 idc =id;
                 return true;
             }
         });
+
     }
 
 

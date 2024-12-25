@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.UserActivity">
+    tools:context=".Activities.QuanLyUserActivity">
 
     <!-- Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
@@ -23,11 +23,8 @@
     <!-- NestedScrollView to handle scrolling -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbaruser">
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp">
 
         <!-- Main LinearLayout containing all sections -->
         <LinearLayout
@@ -64,7 +61,7 @@
                         android:layout_height="50dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/chevron_down"
-                        app:backgroundTint="@null"></ImageView>
+                        app:backgroundTint="@null" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -186,6 +183,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbtnThem"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/fbuttoncolor"
+        android:clickable="true"
+        android:contentDescription="themLopHocPhan"
+        app:srcCompat="@drawable/addicon"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

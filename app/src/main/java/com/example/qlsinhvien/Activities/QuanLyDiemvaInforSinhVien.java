@@ -1,6 +1,8 @@
 package com.example.qlsinhvien.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.example.qlsinhvien.Adapter.LopSinhVienAdapter;
 import com.example.qlsinhvien.Models.Diem;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DiemManager;
 import com.example.qlsinhvien.dao.HocKyManager;
@@ -25,6 +28,7 @@ import com.example.qlsinhvien.dao.LopHocPhanManager;
 import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.dao.SinhVienManager;
+import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
@@ -33,6 +37,7 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
     TextView txtTenSinhVien, txtMSSV, txtNgaySinh, txtCCCD, txtLopHanhChinh, txtNganh, txtTenLop, txtMalop, txtHocky, txtThongBao;
     RecyclerView recycleDiemSinhVien;
     LopSinhVienAdapter lopSinhVienAdapter;
+    UserManager userManager;
     SinhVienManager sinhVienManager;
     LopHanhChinhManager lopHanhChinhManager;
     LopHocPhanManager lopHocPhanManager;
@@ -43,6 +48,8 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
     NganhManager nganhManager;
     MaterialToolbar toolbar;
     List<Diem> listDiem;
+    SharedPreferences userRefs;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,7 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         hocKyManager = new HocKyManager(this);
         diemManager = new DiemManager(this);
         loaiDiemManager = new LoaiDiemManager(this);
+        userManager = new UserManager(this);
         txtCCCD = findViewById(R.id.txtCCCD);
         txtMalop = findViewById(R.id.txtMalop);
         txtTenSinhVien = findViewById(R.id.txtTenSinhVien);
@@ -73,6 +81,8 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         txtTenLop = findViewById(R.id.txtTenLop);
         recycleDiemSinhVien = findViewById(R.id.recycleDiemSinhVien);
         toolbar = findViewById(R.id.toolbar);
+        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,12 +91,19 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         });
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            return;
+
         }
         SinhVien sinhVien = (SinhVien) bundle.get("sinhVien");
         LopHocPhan lopHocPhan = (LopHocPhan) bundle.get("lopHocPhan");
         txtTenSinhVien.setText(sinhVien.getHoTen());
         txtMSSV.setText(sinhVien.getMssv());
+        if (lopHocPhan != null) {
+            String maLop = lopHocPhan.getMaLop();
+            // Tiếp tục xử lý
+        } else {
+            Log.e("ERROR", "Đối tượng LopHocPhan là null");
+        }
+        assert lopHocPhan != null;
         String tenHocKy = hocKyManager.getHocKy(lopSinhVienManager.getMaHocKyfromMalop(lopHocPhan.getMaLop())).getTenHocKy();
         txtHocky.setText(tenHocKy);
         String formattedDate = dateFormat(sinhVien.getNgaySinh());
@@ -102,13 +119,14 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         if (listDiem == null) {
             txtThongBao.setText("Giáo viên chưa nhập điểm");
             txtThongBao.setVisibility(View.VISIBLE);
-            return;
+
         }
         txtThongBao.setVisibility(View.GONE);
         lopSinhVienAdapter.setData(listDiem);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDiemSinhVien.setLayoutManager(linearLayoutManager);
         recycleDiemSinhVien.setAdapter(lopSinhVienAdapter);
+
 
 
     }

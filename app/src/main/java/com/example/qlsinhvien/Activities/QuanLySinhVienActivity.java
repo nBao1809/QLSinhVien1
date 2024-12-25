@@ -2,6 +2,7 @@ package com.example.qlsinhvien.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.qlsinhvien.Adapter.SinhVienAdapter;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
+import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DiemManager;
 import com.example.qlsinhvien.dao.HocKyManager;
@@ -50,6 +52,8 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
     TextView txtLop, txtThongBao;
     List<String> mssvList;
     List<SinhVien> sinhVienList;
+    User currentUser;
+    SharedPreferences userRefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
         userManager = new UserManager(this);
         hocKyManager = new HocKyManager(this);
         lopHanhChinhManager = new LopHanhChinhManager(this);
+        userRefs = getSharedPreferences("currentUser", MODE_PRIVATE);
+        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
         txtLop = findViewById(R.id.txtLop);
         txtThongBao = findViewById(R.id.txtThongBao);
 
@@ -81,7 +87,7 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
         });
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            return;
+
         }
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -120,20 +126,21 @@ public class QuanLySinhVienActivity extends AppCompatActivity {
         mssvList = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
         if (mssvList == null || mssvList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-            return;
+
         }
         sinhVienList = sinhVienManager.getSinhVienByMSSVList(mssvList);
         if (sinhVienList == null || sinhVienList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-            return;
+
         }
         Boolean bool = Boolean.TRUE;
         recycleLopSinhVien = findViewById(R.id.recycleSinhVien);
         sinhVienAdapter = new SinhVienAdapter(this, lopHocPhan);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleLopSinhVien.setLayoutManager(linearLayoutManager);
-        sinhVienAdapter.setData(sinhVienList,bool);
+        sinhVienAdapter.setData(sinhVienList, bool);
         recycleLopSinhVien.setAdapter(sinhVienAdapter);
+
 
     }
 

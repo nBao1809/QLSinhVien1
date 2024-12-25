@@ -16,6 +16,8 @@
     <string name="Statistic">Thống kê</string>
     <string name="Account">Tài khoản</string>
     <string name="List">Danh sách lớp học phần</string>
+    <string name="ListSV">Danh sách sinh viên</string>
+    <string name="ListGV">Danh sách giảng viên </string>
     <string name="infor">Thông tin cá nhân</string>
     <string name="change">Chỉnh sửa</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -24,6 +26,7 @@
     <string name="exit">Thoát </string>
     <string name="manage">Quản lý </string>
     <string name="UserManagement">Quản lý user</string>
+    <string name="StudentTeacherManagement">Quản lý giảng viên</string>
     <string name="StudentScoreManagement">Quản lý điểm sinh viên</string>
     <string name="StudentListManagement">Quản lý danh sách sinh viên</string>
     <string name="ClassManagement">Quản lý lớp học </string>
@@ -43,8 +46,10 @@
     <string name="Email">Email </string>
     <string name="Name">Tên:</string>
     <string name="MSSV">MSSV:</string>
-    <string name="Birth">Ngày Sinh:</string>
+    <string name="MSGV">Mã Giảng Viên:</string>
+    <string name="Birth">Ngày sinh:</string>
     <string name="rClass">Lớp hành chính:</string>
+    <string name="Khoa">Khoa:</string>
     <string name="scoreType">Loại Điểm</string>
     <string name="score">Điểm</string>
     <string name="weight">Trọng số</string>

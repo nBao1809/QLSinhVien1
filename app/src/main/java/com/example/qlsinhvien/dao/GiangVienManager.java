@@ -15,6 +15,7 @@ public class GiangVienManager {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private List<GiangVien> giangVienList;
+
     public GiangVienManager(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
@@ -23,7 +24,7 @@ public class GiangVienManager {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.MA_GIANGVIEN,giangVien.getMaGiangVien());
+        values.put(DatabaseHelper.MA_GIANGVIEN, giangVien.getMaGiangVien());
         values.put(DatabaseHelper.HOTEN, giangVien.getHoTen());
         values.put(DatabaseHelper.CCCD, giangVien.getCccd());
         values.put(DatabaseHelper.NGAYSINH, giangVien.getNgaySinh());
@@ -48,7 +49,7 @@ public class GiangVienManager {
                         c.getString(0),
                         c.getString(1),
                         c.getString(2),
-                        c.getInt(3),
+                        c.getDouble(3),
                         c.getString(4),
                         c.getInt(5)
                 ));
@@ -64,6 +65,7 @@ public class GiangVienManager {
         return null;
 
     }
+
     public GiangVien getGiangVien(String maGiangVien) {
         db = dbHelper.getReadableDatabase();
         GiangVien giangVien = null;
@@ -77,7 +79,7 @@ public class GiangVienManager {
 
         if (c != null && c.moveToFirst()) {
             giangVien = new GiangVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getString(4), c.getInt(5));
+                    c.getDouble(3), c.getString(4), c.getInt(5));
             c.close();
             return giangVien;
         }
@@ -87,11 +89,32 @@ public class GiangVienManager {
         return null;
 
     }
+
+    public GiangVien getGiangVienFromUser(int userID) {
+        db = dbHelper.getReadableDatabase();
+        String query = "SELECT " + DatabaseHelper.MA_GIANGVIEN + " FROM " +
+                DatabaseHelper.TB_GIANGVIEN + " " +
+                "JOIN " + DatabaseHelper.TB_USERS + " ON " +
+                DatabaseHelper.TB_GIANGVIEN + ".ID = " + DatabaseHelper.TB_USERS + ".ID " +
+                "WHERE " + DatabaseHelper.TB_USERS + ".ID = ?";
+        Cursor c = db.rawQuery(query, new String[]{String.valueOf(userID)});
+        GiangVien giangVien = null;
+        if (c != null && c.moveToFirst()) {
+            giangVien = getGiangVien(c.getString(0));
+            c.close();
+            return giangVien;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
+
     public int updateGiangVien(GiangVien giangVien) {
         db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.MA_GIANGVIEN,giangVien.getMaGiangVien());
+        values.put(DatabaseHelper.MA_GIANGVIEN, giangVien.getMaGiangVien());
         values.put(DatabaseHelper.HOTEN, giangVien.getHoTen());
         values.put(DatabaseHelper.CCCD, giangVien.getCccd());
         values.put(DatabaseHelper.NGAYSINH, giangVien.getNgaySinh());
@@ -107,10 +130,11 @@ public class GiangVienManager {
         db.close();//>0 thành công =0 ko thành công
         return rowsUpdated;
     }
+
     public int deleteGiangVien(String maGiangVien) {
         db = dbHelper.getWritableDatabase();
         String selection = DatabaseHelper.MA_GIANGVIEN + " = ?";
-        String[] selectionArgs = { maGiangVien};
+        String[] selectionArgs = {maGiangVien};
 
         int rowsDeleted = db.delete(DatabaseHelper.TB_GIANGVIEN, selection, selectionArgs);
         db.close();

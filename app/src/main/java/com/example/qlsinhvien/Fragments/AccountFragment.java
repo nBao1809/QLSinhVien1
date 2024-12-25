@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,8 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qlsinhvien.Activities.SettingActivity;
+import com.example.qlsinhvien.Models.Role;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.RoleManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -41,6 +44,7 @@ import java.io.IOException;
 public class AccountFragment extends Fragment {
     private ActivityResultLauncher<Intent> imagePicker;
     private UserManager userManager;
+    private RoleManager roleManager;
     ImageView imageView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,6 +66,7 @@ public class AccountFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userManager = new UserManager(requireContext());
+        roleManager = new RoleManager(requireContext());
         if (getArguments() != null) {
             currentUser = userManager.getUserByID(getArguments().getInt(ARG_CURRENTUSER));
         }
@@ -89,7 +94,7 @@ public class AccountFragment extends Fragment {
         txtUsername.setText(currentUser.getUsername());
         txtMail.setText(currentUser.getEmail());
         txtName.setText(currentUser.getUsername());
-        txtRole.setText(currentUser.getRole());
+        txtRole.setText(roleManager.getRole(currentUser.getRole()).getTenRole());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuaccount);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -106,34 +111,19 @@ public class AccountFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         toolbar.setNavigationOnClickListener(v -> {
             Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
+            myIntent.putExtra("ID",currentUser.getID());
             startActivity(myIntent);
         });
-        Button btn = view.findViewById(R.id.button2);
+        ImageButton btn = view.findViewById(R.id.btnEdit);
         ImageView imageView = view.findViewById(R.id.imageView);
-        ImageButton imageButton = view.findViewById(R.id.edtImage);
         btn.setOnClickListener(new View.OnClickListener() {
-            boolean isEditing = false;
 
             @Override
             public void onClick(View v) {
-                if (!isEditing) {
-                    // Bắt đầu chỉnh sửa
-                    imageButton.setVisibility(View.VISIBLE);
-                    btn.setText("Lưu");
-                    isEditing = true;
-                } else {
-                    // Lưu nội dung và hiển thị lại
-                    imageView.setVisibility(View.VISIBLE);
-                    imageButton.setVisibility(View.GONE);
-                    btn.setText("Chỉnh sửa");
-                    isEditing = false;
-                }
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                imagePicker.launch(intent);
             }
-        });
-        imageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imagePicker.launch(intent);
         });
 
         imagePicker = registerForActivityResult(

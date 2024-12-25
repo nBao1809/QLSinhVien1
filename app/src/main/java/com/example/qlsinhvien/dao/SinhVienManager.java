@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.SinhVien;
 
 import java.util.ArrayList;
@@ -45,12 +46,12 @@ public class SinhVienManager {
         db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
         if (c != null && c.moveToFirst()) {
-
-            sinhVienList.add(new SinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getInt(4), c.getString(5), c.getString(6)));
+            do {
+                sinhVienList.add(new SinhVien(c.getString(0), c.getString(1), c.getString(2),
+                        c.getDouble(3), c.getInt(4), c.getString(5), c.getString(6)));
+            } while (c.moveToNext());
             c.close();
             return sinhVienList;
-
         }
         if (c != null) {
             c.close();
@@ -71,7 +72,7 @@ public class SinhVienManager {
 
         if (c != null && c.moveToFirst()) {
             sinhVien = new SinhVien(c.getString(0), c.getString(1), c.getString(2),
-                    c.getInt(3), c.getInt(4), c.getString(5), c.getString(6));
+                    c.getDouble(3), c.getInt(4), c.getString(5), c.getString(6));
             c.close();
             return sinhVien;
         }
@@ -119,6 +120,25 @@ public class SinhVienManager {
         return sinhVienList;
     }
 
+    public SinhVien getSinhVienFromUser(int userID) {
+        db = dbHelper.getReadableDatabase();
+        SinhVien sinhVien = null;
+        String query = "SELECT " + DatabaseHelper.MSSV + " FROM " +
+                DatabaseHelper.TB_SINHVIEN + " " +
+                "JOIN " + DatabaseHelper.TB_USERS + " ON " +
+                DatabaseHelper.TB_SINHVIEN + ".ID = " + DatabaseHelper.TB_USERS + ".ID " +
+                "WHERE " + DatabaseHelper.TB_USERS + ".ID = ?";
+        Cursor c = db.rawQuery(query, new String[]{String.valueOf(userID)});
+        if (c != null && c.moveToFirst()) {
+            sinhVien = getSinhVien(c.getString(0));
+            c.close();
+            return sinhVien;
+        }
+        if (c != null) {
+            c.close();
+        }
+        return null;
+    }
     // Hàm tạo placeholders
     private String makePlaceholders(int count) {
         if (count <= 0) return "";

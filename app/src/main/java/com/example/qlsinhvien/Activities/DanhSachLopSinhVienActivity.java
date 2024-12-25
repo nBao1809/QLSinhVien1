@@ -56,11 +56,12 @@ public class DanhSachLopSinhVienActivity extends AppCompatActivity {
     HocKyManager hocKyManager;
     LopHanhChinhManager lopHanhChinhManager;
     SinhVienManager sinhVienManager;
-    TextView txtLop,txtThongBao;
+    TextView txtLop, txtThongBao;
     List<String> mssvList;
     List<SinhVien> sinhVienList;
     User currentUser;
-SharedPreferences userRefs;
+    SharedPreferences userRefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ SharedPreferences userRefs;
 //        lopSinhVienManager.addLopSinhVien(new LopSinhVien("1","LOP1","223","1"));
 
         txtLop = findViewById(R.id.txtLop);
-        txtThongBao=findViewById(R.id.txtThongBao);
+        txtThongBao = findViewById(R.id.txtThongBao);
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menutoolbar);
@@ -100,7 +101,7 @@ SharedPreferences userRefs;
         });
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            return;
+
         }
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -145,32 +146,26 @@ SharedPreferences userRefs;
         mssvList = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
         if (mssvList == null || mssvList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-            return;
+
         }
         sinhVienList = sinhVienManager.getSinhVienByMSSVList(mssvList);
         if (sinhVienList == null || sinhVienList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-            return;
+
+            recycleLopSinhVien = findViewById(R.id.recycleSinhVien);
+            sinhVienAdapter = new SinhVienAdapter(this, lopHocPhan);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+            recycleLopSinhVien.setLayoutManager(linearLayoutManager);
+            Boolean bool = Boolean.FALSE;
+            sinhVienAdapter.setData(sinhVienList, bool);
+            recycleLopSinhVien.setAdapter(sinhVienAdapter);
+
+
         }
-        recycleLopSinhVien = findViewById(R.id.recycleSinhVien);
-        sinhVienAdapter = new SinhVienAdapter(this,lopHocPhan);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        recycleLopSinhVien.setLayoutManager(linearLayoutManager);
-        Boolean bool = Boolean.FALSE;
-        sinhVienAdapter.setData(sinhVienList,bool);
-        recycleLopSinhVien.setAdapter(sinhVienAdapter);
 
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(sinhVienAdapter!=null){
-            sinhVienAdapter.release();
-        }
-    }
 
-    public void setThongBaoVisibility(boolean isVisible) {
+    } public void setThongBaoVisibility( boolean isVisible){
         if (isVisible) {
             txtThongBao.setText("Không tìm thấy sinh viên");
             txtThongBao.setVisibility(View.VISIBLE);

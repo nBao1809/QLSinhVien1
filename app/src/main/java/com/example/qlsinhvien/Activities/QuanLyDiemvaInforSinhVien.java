@@ -24,7 +24,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qlsinhvien.Adapter.GiangVienAdapter;
 import com.example.qlsinhvien.Adapter.LoaiDiemAdapter;
 import com.example.qlsinhvien.Adapter.LopSinhVienAdapter;
 import com.example.qlsinhvien.Models.Diem;
@@ -95,7 +94,7 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         hocKyManager = new HocKyManager(this);
         diemManager = new DiemManager(this);
         loaiDiemManager = new LoaiDiemManager(this);
-        userManager = new UserManager(this);
+        userManager=new UserManager(this);
         txtCCCD = findViewById(R.id.txtCCCD);
         txtMalop = findViewById(R.id.txtMalop);
         ibtnThem = findViewById(R.id.ibtnThem);

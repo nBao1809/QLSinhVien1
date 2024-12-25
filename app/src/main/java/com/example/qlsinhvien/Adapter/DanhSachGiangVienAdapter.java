@@ -297,7 +297,6 @@ public class DanhSachGiangVienAdapter extends RecyclerView.Adapter<DanhSachGiang
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int ketquaGV = giangVienManager.deleteGiangVien(giangVien.getMaGiangVien());
-
                 int ketquaUser = userManager.deleteUser(userManager.getUserByID(giangVien.getId()).getID());
 
                 if (ketquaGV > 0 && ketquaUser > 0) {

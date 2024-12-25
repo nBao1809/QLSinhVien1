@@ -42,8 +42,8 @@ public class SettingActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarsetting);
         toolbar.inflateMenu(R.menu.menusetting);
         userManager = new UserManager(this);
-        userRefs = this.getSharedPreferences("currentUser", MODE_PRIVATE);
-        currentUser = userManager.getUserByID(userRefs.getInt("ID", -1));
+        Intent intent =getIntent();
+        currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
         Menu menu = toolbar.getMenu();
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -65,6 +65,7 @@ public class SettingActivity extends AppCompatActivity {
         buttonpasschange = findViewById(R.id.buttonpasschange);
         buttonpasschange.setOnClickListener(v -> {
             Intent myinIntent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
+            myinIntent.putExtra("ID",currentUser.getID());
             startActivity(myinIntent);
         });
         buttonexit = findViewById(R.id.buttonexit);
@@ -87,5 +88,6 @@ public class SettingActivity extends AppCompatActivity {
             startActivity(myinIntent);
             finish();
         });
+
     }
 }

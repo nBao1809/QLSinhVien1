@@ -38,6 +38,8 @@ import com.example.qlsinhvien.Adapter.DanhSachSinhVienTamThoiAdapter;
 import com.example.qlsinhvien.Adapter.LopHanhChinhAdapter;
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 import com.example.qlsinhvien.Adapter.NganhAdapter;
+import com.example.qlsinhvien.Models.LopHanhChinh;
+import com.example.qlsinhvien.Models.Nganh;
 import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
@@ -202,6 +204,10 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                         showMaterialDatePicker2(edtNgaySinh);
                     }
                 });
+
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP1","LOP1"));
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP2","LOP2"));
+//                lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("LOP3","LOP3"));
                 lopHanhChinhAdapter = new LopHanhChinhAdapter(QuanLyDanhSachSinhVienActivity.this, R.layout.itemgiangvienselected, lopHanhChinhManager.getAllLopHanhChinh());
                 spinnerLopHanhChinh.setAdapter(lopHanhChinhAdapter);
                 spinnerLopHanhChinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -215,6 +221,8 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
 
                     }
                 });
+//                nganhManager.addNganh(new Nganh("nganh1","nganh1"));
+//                nganhManager.addNganh(new Nganh("nganh2","nganh2"));
                 nganhAdapter = new NganhAdapter(QuanLyDanhSachSinhVienActivity.this, R.layout.itemgiangvienselected, nganhManager.getAllNganh());
                 spinnerNganh.setAdapter(nganhAdapter);
                 spinnerNganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -257,8 +265,24 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                             Toast.makeText(QuanLyDanhSachSinhVienActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-                        userListTemp.add(new User(taiKhoan, matKhau, BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample), email, "SinhVien"));
+                        SinhVien svTamThoi = sinhVienManager.getSinhVien(MSSV);
+                        User userTamThoi = userManager.getUserByUserName(taiKhoan);
+                        if (svTamThoi != null) {
+                            Toast.makeText(QuanLyDanhSachSinhVienActivity.this, "Sinh viên đã " +
+                                            "tồn" +
+                                            " tại!",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (userTamThoi != null) {
+                            Toast.makeText(QuanLyDanhSachSinhVienActivity.this, "Tài khoản đã tồn" +
+                                            " tại!",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        userListTemp.add(new User(taiKhoan, matKhau,
+                                BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.avatarsample), email, "sv"));
                         sinhVienListTemp.add(new SinhVien(MSSV, hoTen, CCCD, ngaySinh, ++userID, maLopHanhChinh, maNganh));
                         Log.d("test", String.valueOf(sinhVienListTemp.get(sinhVienListTemp.size() - 1).getId()));
                         danhSachSinhVienTamThoiAdapter = new DanhSachSinhVienTamThoiAdapter(QuanLyDanhSachSinhVienActivity.this);
@@ -330,12 +354,13 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
         if (sinhVienManager.getAllSinhVien() != null) {
             sinhVienList = sinhVienManager.getAllSinhVien();
             txtThongBao.setText("");
-        }else{
-            txtThongBao.setText("Danh sách sinh viên trống" );
+        } else {
+            txtThongBao.setText("Danh sách sinh viên trống");
         }
         danhSachSinhVienAdapter.notifyDataSetChanged();
         danhSachSinhVienAdapter.setData(sinhVienList);
         recycleDSSinhVien.setAdapter(danhSachSinhVienAdapter);
+
     }
 
     public void setThongBaoVisibility(boolean isVisible) {

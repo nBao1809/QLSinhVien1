@@ -219,8 +219,30 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
                             Toast.makeText(QuanLyGiangVienActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-                        userListTemp.add(new User(taiKhoan, matKhau, BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample), email, "GiangVien"));
+                        GiangVien giangVienTamThoi = giangVienManager.getGiangVien(MGV);
+                        User userTamThoi = userManager.getUserByUserName(taiKhoan);
+                        if (giangVienTamThoi != null) {
+                            Toast.makeText(QuanLyGiangVienActivity.this, "Giảng viên đã " +
+                                            "tồn" +
+                                            " tại!",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (userTamThoi != null) {
+                            Toast.makeText(QuanLyGiangVienActivity.this, "Tài khoản đã tồn" +
+                                            " tại!",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (userManager.getUserByUserName(taiKhoan) != null) {
+                            Toast.makeText(QuanLyGiangVienActivity.this, "Tài khoản đã tồn" +
+                                            " tại!",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        userListTemp.add(new User(taiKhoan, matKhau,
+                                BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.avatarsample), email, "gv"));
                         giangVienListTemp.add(new GiangVien(MGV, hoTen, CCCD, ngaySinh, khoa, ++userID));
                         Log.d("test", String.valueOf(giangVienListTemp.get(giangVienListTemp.size() - 1).getId()));
                         danhSachGiangVienTamThoiAdapter = new DanhSachGiangVienTamThoiAdapter(QuanLyGiangVienActivity.this);
@@ -298,6 +320,7 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
         danhSachGiangVienAdapter.notifyDataSetChanged();
         danhSachGiangVienAdapter.setData(giangVienList);
         recycleDSGiangVien.setAdapter(danhSachGiangVienAdapter);
+
     }
 
     public void setThongBaoVisibility(boolean isVisible) {

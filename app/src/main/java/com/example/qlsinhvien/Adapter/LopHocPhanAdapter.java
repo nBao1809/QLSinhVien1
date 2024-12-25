@@ -41,7 +41,6 @@ import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.LopSinhVien;
 import com.example.qlsinhvien.Models.MonHoc;
 import com.example.qlsinhvien.Models.Nganh;
-import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.StringUtility;
 import com.example.qlsinhvien.dao.GiangVienManager;
@@ -364,7 +363,6 @@ public class LopHocPhanAdapter extends RecyclerView.Adapter<LopHocPhanAdapter.Cl
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Xóa lớp " + lopHocPhan.getTenLop() + " ?");
         builder.setMessage("Bạn có chắc muốn xóa lớp " + lopHocPhan.getTenLop() + " không");
-
 
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override

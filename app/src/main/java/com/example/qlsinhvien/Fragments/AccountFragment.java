@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qlsinhvien.Activities.SettingActivity;
+import com.example.qlsinhvien.Models.Role;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.RoleManager;
@@ -109,34 +111,19 @@ public class AccountFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         toolbar.setNavigationOnClickListener(v -> {
             Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
+            myIntent.putExtra("ID",currentUser.getID());
             startActivity(myIntent);
         });
-        Button btn = view.findViewById(R.id.button2);
+        ImageButton btn = view.findViewById(R.id.btnEdit);
         ImageView imageView = view.findViewById(R.id.imageView);
-        ImageButton imageButton = view.findViewById(R.id.edtImage);
         btn.setOnClickListener(new View.OnClickListener() {
-            boolean isEditing = false;
 
             @Override
             public void onClick(View v) {
-                if (!isEditing) {
-                    // Bắt đầu chỉnh sửa
-                    imageButton.setVisibility(View.VISIBLE);
-                    btn.setText("Lưu");
-                    isEditing = true;
-                } else {
-                    // Lưu nội dung và hiển thị lại
-                    imageView.setVisibility(View.VISIBLE);
-                    imageButton.setVisibility(View.GONE);
-                    btn.setText("Chỉnh sửa");
-                    isEditing = false;
-                }
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                imagePicker.launch(intent);
             }
-        });
-        imageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            imagePicker.launch(intent);
         });
 
         imagePicker = registerForActivityResult(

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
@@ -30,8 +31,9 @@ import com.google.android.material.navigation.NavigationBarView;
 public class InteractActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     SharedPreferences userRefs;
-    UserManager userManager;
     int idc = R.id.home;
+    User currentUser;
+    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,6 @@ public class InteractActivity extends AppCompatActivity {
         }
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
@@ -85,10 +86,11 @@ public class InteractActivity extends AppCompatActivity {
                     replaceFragment(new AccountFragment().newInstance(currentUser.getID()));
 
                 }
-                idc = id;
+                idc =id;
                 return true;
             }
         });
+
     }
 
 

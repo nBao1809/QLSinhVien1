@@ -14,12 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.qlsinhvien.Activities.DanhSachLopSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyGiangVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
 
-import com.example.qlsinhvien.Activities.UserActivity;
+import com.example.qlsinhvien.Activities.QuanLyUserActivity;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
@@ -55,14 +54,16 @@ public class UtilityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         userManager = new UserManager(requireContext());
         if (getArguments() != null) {
-            currentUser = userManager.getUserByID(getArguments().getInt(ARG_CURRENTUSER));
+            int currentUserID = getArguments().getInt(ARG_CURRENTUSER);
+
+            // Sử dụng currentUserID để lấy thông tin user
+            currentUser = userManager.getUserByID(currentUserID);
         }
     }
 
     MaterialToolbar toolbar;
 
     Button btnQuanLyLopHoc, btnQuanLyDanhSachSinhVien, btnQuanLyGiangVien;
-
 
 
     @Override
@@ -72,9 +73,10 @@ public class UtilityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_utility, container, false);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuutility);
-        btnUser=view.findViewById(R.id.btnQuanLiUser);
+        btnUser = view.findViewById(R.id.btnQuanLiUser);
         btnUser.setOnClickListener(v -> {
-            Intent intent=new Intent(requireContext(), UserActivity.class);
+            Intent intent = new Intent(requireContext(), QuanLyUserActivity.class);
+            intent.putExtra("ID", currentUser.getID());
             startActivity(intent);
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

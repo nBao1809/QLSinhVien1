@@ -78,30 +78,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (edtLoginString.isEmpty() && !edtPasswordString.isEmpty()) {
                     edtLogin.requestFocus();
                 } else {
-//                    userManager.updatePhoto(1, BitmapFactory.decodeResource(getResources(),
-//                            R.drawable.avatarsample));
-//
-
-//                    userManager.addUser(new User("sv", "1",
-//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
-//                            "deptrai@ou.edu.vn", "sv"));
-//                    userManager.addUser(new User("gv", "1",
-//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
-//                            "deptrai@ou.edu.vn", "gv"));
-//                    userManager.addUser(new User("1", "1",
-//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
-//                            "deptrai@ou.edu.vn", "mod"));
-//                    userManager.addUser(new User("2", "1",
-//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
-//                            "deptrai@ou.edu.vn", "gv"));
-//                    userManager.addUser(new User("3", "1",
-//                            BitmapFactory.decodeResource(getResources(), R.drawable.avatarsample),
-//                            "deptrai@ou.edu.vn", "sv"));
-                    //        lopHanhChinhManager.addLopHanhChinh(new LopHanhChinh("1","CS2202"));
-//        nganhManager.addNganh(new Nganh("1","Khoa hoc may tinh"));
-//         sinhVienManager.addSinhVien(new SinhVien("223","Tester","225101",2004.0102,2,"1","1"));
-//        hocKyManager.addHocKy(new HocKy("1","2","2024"));
-//        lopSinhVienManager.addLopSinhVien(new LopSinhVien("1","LOP1","223","1"));
                     User isUserValid = userManager.checkLogin(edtLoginString,
                             edtPasswordString);
 

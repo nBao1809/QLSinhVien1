@@ -15,18 +15,14 @@
         android:theme="@style/Theme.QLSinhVien"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.ThongTinChiTietUserActivity"
-            android:name=".Activities.AverageScoreActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activities.ThongTinChiTietGiangVienActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.ThongTinChiTietSinhVien"
             android:exported="false" />
-        <activity
-            android:name=".Activities.SingleUserActivity"
-            android:exported="false" />
+        <activity android:name=".Activities.ThongTinChiTietUserActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".Activities.QuanLyUserActivity"
             android:exported="false" />
@@ -45,6 +41,8 @@
         <activity
             android:name=".Activities.QuanLyDiemvaInforSinhVien"
             android:exported="false" />
+        <activity android:name=".Activities.AverageScoreActivity"
+            android:exported="false"/>
         <activity
             android:name=".Activities.QuanLySinhVienActivity"
             android:exported="false" />

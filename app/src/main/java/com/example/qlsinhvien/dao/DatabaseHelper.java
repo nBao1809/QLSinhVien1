@@ -3,11 +3,15 @@ package com.example.qlsinhvien.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.BitmapFactory;
 
 import com.example.qlsinhvien.Activities.LoginActivity;
+import com.example.qlsinhvien.Models.User;
+import com.example.qlsinhvien.R;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private Context context;
     //region tên cột
     public static final String DATABASE_NAME = "ql_sinhvien.db";
     public static final int DATABASE_VERSION = 37;
@@ -160,6 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
     }
 
     @Override
@@ -176,7 +181,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
         db.execSQL(CREATE_LOPHOCPHAN);
-        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES ('admin', 'Quản trị viên')," +
+        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES" +
+                "('superadmin', 'Quản trị viên tối cao'), ('admin', 'Quản trị viên')," +
                 "('mod', 'Chuyên viên')," +
                 "('gv', 'Giảng viên')," +
                 "('sv', 'Sinh viên')");
@@ -225,7 +231,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "VALUES ('L02', 'Giữa kỳ', 0.4)");
         db.execSQL("INSERT INTO " + TB_LOAIDIEM + " (" + MA_LOAIDIEM + ", " + TEN_LOAIDIEM + ", " + TRONGSO + ") " +
                 "VALUES ('L03', 'Thường xuyên', 0.1)");
-
+        UserManager userManager;
+        userManager =new UserManager(context);
+        userManager.addUser(new User("superadmin", "1",
+                BitmapFactory.decodeResource(context.getResources(), R.drawable.avatarsample),
+                "superadmin@ou.edu.vn", "superadmin"));
     }
 
     @Override

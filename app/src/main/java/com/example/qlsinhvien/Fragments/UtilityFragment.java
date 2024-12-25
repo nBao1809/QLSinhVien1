@@ -63,7 +63,7 @@ public class UtilityFragment extends Fragment {
 
     MaterialToolbar toolbar;
 
-    Button btnQuanLyLopHoc, btnQuanLyDanhSachSinhVien, btnQuanLyGiangVien, btnUser;
+    Button btnQuanLyLopHoc, btnQuanLyDanhSachSinhVien, btnQuanLyGiangVien;
 
 
     @Override

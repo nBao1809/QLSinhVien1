@@ -24,8 +24,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qlsinhvien.Adapter.LoaiDiemAdapter;
 import com.example.qlsinhvien.Adapter.LopSinhVienAdapter;
 import com.example.qlsinhvien.Models.Diem;
+import com.example.qlsinhvien.Models.LoaiDiem;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;

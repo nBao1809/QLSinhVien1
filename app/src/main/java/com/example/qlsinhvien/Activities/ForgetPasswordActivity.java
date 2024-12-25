@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
     User user;
@@ -31,7 +32,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private String otp;
     private long remainingTime;
     LinearLayout isSendedOTP, newPass, cfPass;
-
+MaterialToolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,10 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         isSendedOTP = findViewById(R.id.isSendOTP);
         newPass = findViewById(R.id.newPass);
         cfPass = findViewById(R.id.cfPass);
+        toolbar=findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
         // Khi nhấn nút gửi OTP
         btnSendOTP.setOnClickListener(v -> {
             String username = edtUsername.getText().toString().trim();

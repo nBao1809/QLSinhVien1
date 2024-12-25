@@ -85,6 +85,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         EditText edtUsername, edtPassword, edtConfirm, edtEmail;
         Button btnHuy, btnLuu;
         Spinner spinnerRole;
+        TextView vaiTro;
         edtUsername = view.findViewById(R.id.edtUsername);
         edtPassword = view.findViewById(R.id.edtPassword);
         edtConfirm = view.findViewById(R.id.edtConfirmPassword);
@@ -92,6 +93,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         btnHuy = view.findViewById(R.id.btnHuy);
         btnLuu = view.findViewById(R.id.btnLuu);
         spinnerRole = view.findViewById(R.id.spinnerRole);
+        vaiTro=view.findViewById(R.id.txtVaitro);
         edtUsername.setText(user.getUsername());
         edtEmail.setText(user.getEmail());
 
@@ -111,8 +113,10 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         roleList.removeIf(role -> role.getMaRole().equals("sv") || role.getMaRole().equals("gv") || role.getMaRole().equals("superadmin"));
 
         if (user.getRole().equals("sv") || user.getRole().equals("gv")) {
+            vaiTro.setVisibility(View.GONE);
             spinnerRole.setVisibility(View.GONE);
         }
+
         RoleAdapter roleAdapter = new RoleAdapter(context, R.layout.itemgiangvienselected, roleList
         );
         spinnerRole.setAdapter(roleAdapter);
@@ -307,7 +311,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             viewHolder.txtEmail.setText(user.getEmail());
             viewHolder.txtRole.setText(user.getRole());
             viewHolder.photo.setImageBitmap(user.getPhoto());
-            if (currentUser.getRole().equals("mod")) {
+            if (currentUser.getRole().equals("mod")||currentUser.getRole().equals("admin")) {
                 viewHolder.btnEdit.setVisibility(View.GONE);
                 viewHolder.btnDelete.setVisibility(View.GONE);
             }

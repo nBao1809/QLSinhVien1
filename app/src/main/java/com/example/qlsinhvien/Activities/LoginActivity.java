@@ -78,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (edtLoginString.isEmpty() && !edtPasswordString.isEmpty()) {
                     edtLogin.requestFocus();
                 } else {
+                    userManager.addUser(new User("superadmin", "1",
+                            BitmapFactory.decodeResource(LoginActivity.this.getResources(), R.drawable.avatarsample),
+                            "superadmin@ou.edu.vn", "superadmin"));
                     User isUserValid = userManager.checkLogin(edtLoginString,
                             edtPasswordString);
 

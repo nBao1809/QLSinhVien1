@@ -76,7 +76,8 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
     @NonNull
     @Override
     public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdiem_lopsinhvien, parent, false);
+        View view =
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdiem_lopsinhvien, parent, false);
         return new ClassViewHolder(view);
     }
 

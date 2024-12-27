@@ -24,17 +24,23 @@ import android.widget.Toast;
 
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 
+import com.example.qlsinhvien.Adapter.SinhVienMonHocAdapter;
 import com.example.qlsinhvien.Models.LopHocPhan;
+import com.example.qlsinhvien.Models.LopSinhVien;
+import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.dao.GiangVienManager;
+import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.MonHocManager;
 import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DatabaseHelper;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
+import com.example.qlsinhvien.dao.SinhVienManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,6 +85,9 @@ public class HomeFragment extends Fragment {
     MonHocManager monHocManager;
     GiangVienManager giangVienManager;
     NganhManager nganhManager;
+    SinhVienMonHocAdapter sinhVienMonHocAdapter;
+    SinhVienManager sinhVienManager;
+    LopSinhVienManager lopSinhVienManager;
 
 
     @Override
@@ -92,16 +101,19 @@ public class HomeFragment extends Fragment {
         giangVienManager = new GiangVienManager(getContext());
         monHocManager = new MonHocManager(getContext());
         nganhManager = new NganhManager(getContext());
+        sinhVienManager = new SinhVienManager(getContext());
+        lopSinhVienManager = new LopSinhVienManager(getContext());
         toolbar = view.findViewById(R.id.toolbar);
         OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
         onBackPressedDispatcher.addCallback(requireActivity(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(searchView!=null){
+                if (searchView != null) {
                     if (!searchView.isIconified()) {
                         searchView.setIconified(true);
                         return;
-                    }}
+                    }
+                }
                 new AlertDialog.Builder(requireActivity())
                         .setTitle("Xác nhận").setIcon(R.drawable.checkicon)
                         .setMessage("Bạn có muốn đăng xuất không?")
@@ -153,16 +165,30 @@ public class HomeFragment extends Fragment {
         Menu menu = toolbar.getMenu();
 
 
-        lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recycleHocPhan.setLayoutManager(linearLayoutManager);
         List<LopHocPhan> lopHocPhan = lopHocPhanManager.getAllLopHocPhan();
         if (lopHocPhan == null || lopHocPhan.isEmpty()) {
             setThongBaoVisibility(true);
         }
-        Boolean bool = Boolean.FALSE;
-        lopHocPhanAdapter.setData(lopHocPhan,bool);
-        recycleHocPhan.setAdapter(lopHocPhanAdapter);
+
+
+        if (currentUser.getRole().equals("sv")) {
+            sinhVienMonHocAdapter = new SinhVienMonHocAdapter(getContext());
+            SinhVien sinhVien = sinhVienManager.getSinhVienFromUser(currentUser.getID());
+            List<String> maLopList =
+                    lopSinhVienManager.getMaLopFromMSSV(sinhVien.getMssv());
+            List<LopHocPhan> lopHocPhanList = new ArrayList<>();
+            for (String i : maLopList) {
+                lopHocPhanList.add(lopHocPhanManager.getLopHocPhan(i));
+            }
+            sinhVienMonHocAdapter.setData(lopHocPhanList,sinhVien);
+            recycleHocPhan.setAdapter(sinhVienMonHocAdapter);
+        }else {
+            lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
+            Boolean bool = Boolean.FALSE;
+            lopHocPhanAdapter.setData(lopHocPhan, bool);
+            recycleHocPhan.setAdapter(lopHocPhanAdapter);}
         return view;
     }
 

@@ -1,5 +1,7 @@
 package com.example.qlsinhvien.dao;
 
+import static com.example.qlsinhvien.dao.UserManager.getBitmapAsByteArray;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

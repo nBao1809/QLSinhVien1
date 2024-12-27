@@ -53,6 +53,7 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
     private Context context;
 
     private List<Diem> listDiem;
+    Boolean bool;
     QuanLyDiemvaInforSinhVien quanLyDiemvaInforSinhVien;
 
 
@@ -67,8 +68,9 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
     }
 
 
-    public void setData(List<Diem> listDiem) {
+    public void setData(List<Diem> listDiem, Boolean bool) {
         this.listDiem = listDiem;
+        this.bool = bool;
         notifyDataSetChanged();
     }
 
@@ -76,8 +78,14 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
     @NonNull
     @Override
     public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdiem_lopsinhvien, parent, false);
+        View view;
+        if (bool) {
+            view =
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdiem_lopsinhvien, parent, false);
+        } else {
+            view =
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.itemxemdiem_lopsinhvien, parent, false);
+        }
         return new ClassViewHolder(view);
     }
 
@@ -87,17 +95,24 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
 
         if (diem == null)
             return;
-        LoaiDiem loaiDiem = loaiDiemManager.getLoaiDiem(diem.getMaLoaiDiem());
-        holder.txtLoaiDiem.setText(loaiDiem.getTenLoaiDiem());
-        holder.txtDiem.setText(String.valueOf(diem.getDiemSo()));
-        holder.txtTrongSo.setText(String.valueOf(loaiDiem.getTrongSo()));
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("test69", "buttonclick");
-                onClickDelete(diem);
-            }
-        });
+        if (bool) {
+            LoaiDiem loaiDiem = loaiDiemManager.getLoaiDiem(diem.getMaLoaiDiem());
+            holder.txtLoaiDiem.setText(loaiDiem.getTenLoaiDiem());
+            holder.txtDiem.setText(String.valueOf(diem.getDiemSo()));
+            holder.txtTrongSo.setText(String.valueOf(loaiDiem.getTrongSo()));
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("test69", "buttonclick");
+                    onClickDelete(diem);
+                }
+            });
+        } else {
+            LoaiDiem loaiDiem = loaiDiemManager.getLoaiDiem(diem.getMaLoaiDiem());
+            holder.txtLoaiDiem.setText(loaiDiem.getTenLoaiDiem());
+            holder.txtDiem.setText(String.valueOf(diem.getDiemSo()));
+            holder.txtTrongSo.setText(String.valueOf(loaiDiem.getTrongSo()));
+        }
 
     }
 
@@ -108,7 +123,7 @@ public class LopSinhVienAdapter extends RecyclerView.Adapter<LopSinhVienAdapter.
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.d("test6",String.valueOf(diem.getMaDiem()));
+                Log.d("test6", String.valueOf(diem.getMaDiem()));
                 int ketqua = diemManager.deleteDiem(diem.getMaDiem());
 
                 if (ketqua > 0) {

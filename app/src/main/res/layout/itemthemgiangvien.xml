@@ -59,7 +59,7 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Nhập mã số sinh viên"
+                    android:hint="Nhập mã giảng viên"
                     android:inputType="text"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
@@ -89,7 +89,7 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Nhập họ tên sinh viên"
+                    android:hint="Nhập họ tên giảng viên"
                     android:inputType="text"
                     android:textColor="@color/black"
                     android:textSize="18sp" />

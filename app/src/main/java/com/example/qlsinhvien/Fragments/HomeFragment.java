@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 
 import com.example.qlsinhvien.Adapter.SinhVienMonHocAdapter;
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
 import com.example.qlsinhvien.Models.LopSinhVien;
 import com.example.qlsinhvien.Models.SinhVien;
@@ -36,6 +37,7 @@ import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DatabaseHelper;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
+import com.example.qlsinhvien.dao.RoleManager;
 import com.example.qlsinhvien.dao.SinhVienManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -82,12 +84,15 @@ public class HomeFragment extends Fragment {
     SearchView searchView;
     MaterialToolbar toolbar;
     LopHocPhanManager lopHocPhanManager;
+    RoleManager roleManager;
     MonHocManager monHocManager;
     GiangVienManager giangVienManager;
     NganhManager nganhManager;
     SinhVienMonHocAdapter sinhVienMonHocAdapter;
     SinhVienManager sinhVienManager;
     LopSinhVienManager lopSinhVienManager;
+    List<LopHocPhan> lopHocPhanList;
+    Boolean bool = Boolean.FALSE;
 
 
     @Override
@@ -100,6 +105,7 @@ public class HomeFragment extends Fragment {
         lopHocPhanManager = new LopHocPhanManager(getContext());
         giangVienManager = new GiangVienManager(getContext());
         monHocManager = new MonHocManager(getContext());
+        roleManager = new RoleManager(getContext());
         nganhManager = new NganhManager(getContext());
         sinhVienManager = new SinhVienManager(getContext());
         lopSinhVienManager = new LopSinhVienManager(getContext());
@@ -172,23 +178,34 @@ public class HomeFragment extends Fragment {
             setThongBaoVisibility(true);
         }
 
-
         if (currentUser.getRole().equals("sv")) {
             sinhVienMonHocAdapter = new SinhVienMonHocAdapter(getContext());
             SinhVien sinhVien = sinhVienManager.getSinhVienFromUser(currentUser.getID());
             List<String> maLopList =
                     lopSinhVienManager.getMaLopFromMSSV(sinhVien.getMssv());
-            List<LopHocPhan> lopHocPhanList = new ArrayList<>();
+            lopHocPhanList = new ArrayList<>();
             for (String i : maLopList) {
                 lopHocPhanList.add(lopHocPhanManager.getLopHocPhan(i));
             }
-            sinhVienMonHocAdapter.setData(lopHocPhanList,sinhVien);
+            sinhVienMonHocAdapter.setData(lopHocPhanList, sinhVien,bool);
             recycleHocPhan.setAdapter(sinhVienMonHocAdapter);
-        }else {
+        } else if (currentUser.getRole().equals("gv")) {
+            sinhVienMonHocAdapter = new SinhVienMonHocAdapter(getContext());
+            String maGV = giangVienManager.getGiangVienFromUser(currentUser.getID()).getMaGiangVien();
+            lopHocPhanList = new ArrayList<>();
+            if (lopHocPhanManager.getLopHocPhanByMaGiangVien(maGV) != null
+                    || !lopHocPhanManager.getLopHocPhanByMaGiangVien(maGV).isEmpty()) {
+                lopHocPhanList = lopHocPhanManager.getLopHocPhanByMaGiangVien(maGV);
+            }
+             bool = Boolean.TRUE;
+            sinhVienMonHocAdapter.setDataGV(lopHocPhanList, bool);
+            recycleHocPhan.setAdapter(sinhVienMonHocAdapter);
+        } else {
             lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
-            Boolean bool = Boolean.FALSE;
+             bool = Boolean.FALSE;
             lopHocPhanAdapter.setData(lopHocPhan, bool);
-            recycleHocPhan.setAdapter(lopHocPhanAdapter);}
+            recycleHocPhan.setAdapter(lopHocPhanAdapter);
+        }
         return view;
     }
 

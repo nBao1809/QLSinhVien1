@@ -60,7 +60,7 @@ public class InteractActivity extends AppCompatActivity {
         userManager = new UserManager(this);
         Intent intent=getIntent();
         User currentUser = userManager.getUserByID(intent.getIntExtra("ID",-1));
-        replaceFragment(new HomeFragment());
+        replaceFragment(new HomeFragment().newInstance(currentUser.getID()));
         bottomNavigationView = findViewById(R.id.bottomBar);
         if(currentUser.getRole().equals("gv")||currentUser.getRole().equals("sv")){
             bottomNavigationView.getMenu().removeItem(R.id.utility);

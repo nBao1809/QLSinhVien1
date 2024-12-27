@@ -38,6 +38,7 @@ import com.example.qlsinhvien.Adapter.DanhSachSinhVienTamThoiAdapter;
 import com.example.qlsinhvien.Adapter.LopHanhChinhAdapter;
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 import com.example.qlsinhvien.Adapter.NganhAdapter;
+import com.example.qlsinhvien.Adapter.SinhVienAdapter;
 import com.example.qlsinhvien.Models.LopHanhChinh;
 import com.example.qlsinhvien.Models.Nganh;
 import com.example.qlsinhvien.Models.SinhVien;
@@ -82,6 +83,7 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
     Double ngaySinh = 0.0;
     List<User> userListTemp;
     DanhSachSinhVienTamThoiAdapter danhSachSinhVienTamThoiAdapter;
+    SinhVienAdapter sinhVienAdapter;
     int userID, idCuoi;
 
 
@@ -267,6 +269,15 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                         }
                         SinhVien svTamThoi = sinhVienManager.getSinhVien(MSSV);
                         User userTamThoi = userManager.getUserByUserName(taiKhoan);
+                        for (SinhVien sinhVien : sinhVienListTemp) {
+                            if (sinhVien.getMssv().equals(MSSV)) {
+                                Toast.makeText(QuanLyDanhSachSinhVienActivity.this, "Mã sinh viên đã " +
+                                                "tồn" +
+                                                " tại!",
+                                        Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
                         if (svTamThoi != null) {
                             Toast.makeText(QuanLyDanhSachSinhVienActivity.this, "Sinh viên đã " +
                                             "tồn" +
@@ -284,7 +295,6 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                                 BitmapFactory.decodeResource(getResources(),
                                         R.drawable.avatarsample), email, "sv"));
                         sinhVienListTemp.add(new SinhVien(MSSV, hoTen, CCCD, ngaySinh, ++userID, maLopHanhChinh, maNganh));
-                        Log.d("test", String.valueOf(sinhVienListTemp.get(sinhVienListTemp.size() - 1).getId()));
                         danhSachSinhVienTamThoiAdapter = new DanhSachSinhVienTamThoiAdapter(QuanLyDanhSachSinhVienActivity.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(QuanLyDanhSachSinhVienActivity.this, RecyclerView.VERTICAL, false);
                         recycleDSThem.setLayoutManager(linearLayoutManager);
@@ -320,6 +330,8 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
                                 danhSachSinhVienAdapter.setData(sinhVienList);
                             }
                             danhSachSinhVienAdapter.notifyDataSetChanged();
+
+
                             txtThongBao.setText("");
 
 
@@ -443,6 +455,10 @@ public class QuanLyDanhSachSinhVienActivity extends AppCompatActivity {
 
         // Hiển thị MaterialDatePicker
         materialDatePicker.show(QuanLyDanhSachSinhVienActivity.this.getSupportFragmentManager(), materialDatePicker.toString());
+    }
+
+    public void minusUserID() {
+        userID--;
     }
 
     @Override

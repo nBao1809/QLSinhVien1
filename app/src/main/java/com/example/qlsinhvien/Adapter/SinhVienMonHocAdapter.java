@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qlsinhvien.Activities.DanhSachLopSinhVienActivity;
 import com.example.qlsinhvien.Activities.DiemSinhVien;
 import com.example.qlsinhvien.Activities.QuanLyLopHocActivity;
 import com.example.qlsinhvien.Activities.QuanLySinhVienActivity;
@@ -45,7 +46,7 @@ public class SinhVienMonHocAdapter extends RecyclerView.Adapter<SinhVienMonHocAd
     private NganhManager nganhManager;
     private Context context;
     private List<LopHocPhan> listHocPhan, listHocPhanOld;
-
+    private Boolean bool;
 
     private SinhVien sinhVien;
 
@@ -57,10 +58,18 @@ public class SinhVienMonHocAdapter extends RecyclerView.Adapter<SinhVienMonHocAd
         nganhManager = new NganhManager(context);
     }
 
-    public void setData(List<LopHocPhan> listHocPhan, SinhVien sinhVien) {
+    public void setData(List<LopHocPhan> listHocPhan, SinhVien sinhVien,Boolean bool) {
         this.listHocPhan = listHocPhan;
         this.listHocPhanOld = listHocPhan;
         this.sinhVien = sinhVien;
+        this.bool=bool;
+        notifyDataSetChanged();
+    }
+
+    public void setDataGV(List<LopHocPhan> listHocPhan, Boolean bool) {
+        this.listHocPhan = listHocPhan;
+        this.listHocPhanOld = listHocPhan;
+        this.bool = bool;
         notifyDataSetChanged();
     }
 
@@ -76,7 +85,7 @@ public class SinhVienMonHocAdapter extends RecyclerView.Adapter<SinhVienMonHocAd
     @Override
     public SinhVienMonHocAdapter.ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdiem_lopsinhvien, parent, false);
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.itemlophocphan, parent, false);
         return new ClassViewHolder(view);
     }
 
@@ -85,27 +94,56 @@ public class SinhVienMonHocAdapter extends RecyclerView.Adapter<SinhVienMonHocAd
         LopHocPhan lopHocPhan = listHocPhan.get(position);
         if (lopHocPhan == null)
             return;
-        holder.txtNganh.setText(nganhManager.getNganh(
-                monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getMaNganh()).getTenNganh());
-        holder.txtMonHoc.setText(monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getTenMonHoc());
-        GiangVien giangVien = giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach());
-        if (giangVien != null) {
-            holder.txtGVPhuTrach.setText(giangVien.getHoTen());
-        } else {
-            holder.txtGVPhuTrach.setText("Giảng viên không xác định");
-        }
-        holder.txtLop.setText(lopHocPhan.getTenLop());
-        holder.layoutItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DiemSinhVien.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("lopHocPhan", lopHocPhan);
-                bundle.putSerializable("sinhVien", sinhVien);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+        if (!bool) {
+            holder.txtNganh.setText(nganhManager.getNganh(
+                    monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getMaNganh()).getTenNganh());
+            holder.txtMonHoc.setText(monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getTenMonHoc());
+            GiangVien giangVien = giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach());
+            if (giangVien != null) {
+                holder.txtGVPhuTrach.setText(giangVien.getHoTen());
+            } else {
+                holder.txtGVPhuTrach.setText("Giảng viên không xác định");
             }
-        });
+            holder.txtLop.setText(lopHocPhan.getTenLop());
+            holder.layoutItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DiemSinhVien.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("lopHocPhan", lopHocPhan);
+                    bundle.putSerializable("sinhVien", sinhVien);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            holder.txtNganh.setText(nganhManager.getNganh(
+                    monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getMaNganh()).getTenNganh());
+            holder.txtMonHoc.setText(monHocManager.getMonHoc(lopHocPhan.getMaMonHoc()).getTenMonHoc());
+            GiangVien giangVien = giangVienManager.getGiangVien(lopHocPhan.getMaGiangVienPhuTrach());
+            if (giangVien != null) {
+                holder.txtGVPhuTrach.setText(giangVien.getHoTen());
+            } else {
+                holder.txtGVPhuTrach.setText("Giảng viên không xác định");
+            }
+            holder.txtLop.setText(lopHocPhan.getTenLop());
+            holder.layoutItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickGoToSinhVien(lopHocPhan);
+                }
+            });
+        }
+    }
+
+    private void onClickGoToSinhVien(LopHocPhan lopHocPhan) {
+        Intent intent = new Intent(context, DanhSachLopSinhVienActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("lopHocPhan", lopHocPhan);
+        bundle.putSerializable("3",3);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+
     }
 
     public class ClassViewHolder extends RecyclerView.ViewHolder {

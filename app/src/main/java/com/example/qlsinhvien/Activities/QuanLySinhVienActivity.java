@@ -71,6 +71,7 @@ public class QuanLySinhVienActivity extends AppCompatActivity  {
     SinhVienbyMaLopHCAdapter sinhVienbyMaLopHCAdapter;
     String maLopHanhChinh, maSinhVien, maHocKy;
     String lopSinhVienID;
+    Integer i=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -359,7 +360,7 @@ public class QuanLySinhVienActivity extends AppCompatActivity  {
                 txtThongBao.setText("Chưa có sinh viên trong lớp");
             }
 
-        sinhVienAdapter.setDataqlsv(sinhVienList,mssvList,bool,QuanLySinhVienActivity.this);
+        sinhVienAdapter.setDataqlsv(sinhVienList,mssvList,i,QuanLySinhVienActivity.this);
         recycleLopSinhVien.setAdapter(sinhVienAdapter);
 
 

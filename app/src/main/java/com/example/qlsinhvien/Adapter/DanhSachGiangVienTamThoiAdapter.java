@@ -22,6 +22,7 @@ import com.example.qlsinhvien.Activities.DanhSachLopSinhVienActivity;
 import com.example.qlsinhvien.Activities.DiemSinhVien;
 import com.example.qlsinhvien.Activities.QuanLyDanhSachSinhVienActivity;
 import com.example.qlsinhvien.Activities.QuanLyDiemvaInforSinhVien;
+import com.example.qlsinhvien.Activities.QuanLyGiangVienActivity;
 import com.example.qlsinhvien.Activities.QuanLySinhVienActivity;
 import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHanhChinh;
@@ -54,6 +55,7 @@ public class DanhSachGiangVienTamThoiAdapter extends RecyclerView.Adapter<DanhSa
     private Context context;
     private List<GiangVien> giangVienList, giangVienListOld;
     private List<User> userList;
+    int userID;
 
 
     public DanhSachGiangVienTamThoiAdapter(Context context) {
@@ -68,6 +70,7 @@ public class DanhSachGiangVienTamThoiAdapter extends RecyclerView.Adapter<DanhSa
         this.giangVienList = giangVienList;
         this.giangVienListOld = giangVienList;
         this.userList = userList;
+        this.userID=userID;
         notifyDataSetChanged();
     }
 
@@ -107,7 +110,8 @@ public class DanhSachGiangVienTamThoiAdapter extends RecyclerView.Adapter<DanhSa
                     giangVienList.remove(positionTam);
                     userList.remove(positionTam);
                     updateGiangVienList(idBiXoa);
-                    notifyItemRemoved(positionTam);
+                    ((QuanLyGiangVienActivity) context).minusUserID();
+                    notifyDataSetChanged();
                 }
             }
         });
@@ -123,6 +127,7 @@ public class DanhSachGiangVienTamThoiAdapter extends RecyclerView.Adapter<DanhSa
                 idBiXoa = giangVienList.get(i).getId();
             }
         }
+
     }
 
 

@@ -50,13 +50,9 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     private List<SinhVien> sinhVienList, sinhVienListOld;
     List<String> mssvList;
     private LopHocPhan lopHocPhan;
-    Boolean bool;
+    Integer i;
     QuanLySinhVienActivity quanLySinhVienActivity;
-    SinhVienbyMaLopHCAdapter sinhVienbyMaLopHCAdapter;
 
-    public interface OnStudentRemovedListener {
-        void onStudentRemoved(SinhVien sinhVien);
-    }
 
     public SinhVienAdapter(Context context, LopHocPhan lopHocPhan) {
         this.context = context;
@@ -68,23 +64,23 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     }
 
 
-    public void setData(List<SinhVien> sinhVienList, Boolean bool) {
+    public void setData(List<SinhVien> sinhVienList, Integer i) {
 
         this.sinhVienList = sinhVienList;
         this.sinhVienListOld = sinhVienList;
-        this.bool = bool;
+        this.i = i;
         notifyDataSetChanged();
     }
 
-    public void setDataqlsv(List<SinhVien> sinhVienList, List<String> mssvList, Boolean bool,QuanLySinhVienActivity quanLySinhVienActivity) {
+
+    public void setDataqlsv(List<SinhVien> sinhVienList, List<String> mssvList, Integer i, QuanLySinhVienActivity quanLySinhVienActivity) {
         this.mssvList = mssvList;
         this.sinhVienList = sinhVienList;
         this.sinhVienListOld = sinhVienList;
-        this.quanLySinhVienActivity=quanLySinhVienActivity;
-        this.bool = bool;
+        this.quanLySinhVienActivity = quanLySinhVienActivity;
+        this.i = i;
         notifyDataSetChanged();
     }
-
 
 
     public String dateFormat(double ngaySinhDouble) {
@@ -100,7 +96,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
     @Override
     public SinhVienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (!bool) {
+        if (i!=2) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemsinhvien, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemquanlysinhvien, parent, false);
@@ -113,7 +109,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         SinhVien sinhVien = sinhVienList.get(position);
         if (sinhVien == null)
             return;
-        if (!bool) {
+        if (i != 2) {
             holder.txtTen.setText(sinhVien.getHoTen());
             holder.txtMSSV.setText(sinhVien.getMssv());
             String formattedDate = dateFormat(sinhVien.getNgaySinh());
@@ -122,7 +118,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
             holder.itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickGoToLopSinhVien(sinhVien, bool);
+                    onClickGoToLopSinhVien(sinhVien, i);
                 }
             });
         } else {
@@ -134,7 +130,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
             holder.itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickGoToLopSinhVien(sinhVien, bool);
+                    onClickGoToLopSinhVien(sinhVien, i);
                 }
             });
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -216,8 +212,8 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
 
     }
 
-    private void onClickGoToLopSinhVien(SinhVien sinhVien, Boolean bool) {
-        if (bool) {
+    private void onClickGoToLopSinhVien(SinhVien sinhVien, Integer i) {
+        if (i != 1) {
             Intent intent = new Intent(context, QuanLyDiemvaInforSinhVien.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("sinhVien", sinhVien);

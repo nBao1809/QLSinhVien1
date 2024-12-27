@@ -93,7 +93,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         btnHuy = view.findViewById(R.id.btnHuy);
         btnLuu = view.findViewById(R.id.btnLuu);
         spinnerRole = view.findViewById(R.id.spinnerRole);
-        vaiTro=view.findViewById(R.id.txtVaitro);
+        vaiTro = view.findViewById(R.id.txtVaitro);
         edtUsername.setText(user.getUsername());
         edtEmail.setText(user.getEmail());
 
@@ -121,7 +121,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         );
         spinnerRole.setAdapter(roleAdapter);
 
-        spinnerRole.setAdapter(roleAdapter);
         spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -130,7 +129,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                role = user.getRole();
             }
         });
         btnLuu.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +148,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         }
                     }
                 }
-                if (ID == 0 || userString.isEmpty() || password.isEmpty() || email.isEmpty() || role == null) {
+                if (ID == 0 || cfPassword.isEmpty() || userString.isEmpty() || password.isEmpty() || email.isEmpty()) {
                     Toast.makeText(context, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 } else if (password.equals(cfPassword)) {
                     User userUpdate = new User(ID, userString, password,
@@ -311,7 +310,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             viewHolder.txtEmail.setText(user.getEmail());
             viewHolder.txtRole.setText(user.getRole());
             viewHolder.photo.setImageBitmap(user.getPhoto());
-            if (currentUser.getRole().equals("mod")||currentUser.getRole().equals("admin")) {
+            if (currentUser.getRole().equals("mod") || currentUser.getRole().equals("admin")) {
                 viewHolder.btnEdit.setVisibility(View.GONE);
                 viewHolder.btnDelete.setVisibility(View.GONE);
             }
@@ -365,7 +364,6 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
         if (holder instanceof GiangVienViewHolder) {
             GiangVien giangVien = giangVienManager.getGiangVienFromUser(user.getID());
-            Log.d("test", giangVien.getMaGiangVien());
             GiangVienViewHolder viewHolder = (GiangVienViewHolder) holder;
             viewHolder.txtID.setText(String.valueOf(user.getID()));
             viewHolder.txtUsername.setText(user.getUsername());

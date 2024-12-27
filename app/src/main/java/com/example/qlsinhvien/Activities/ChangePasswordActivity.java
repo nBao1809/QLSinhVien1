@@ -76,8 +76,7 @@ MaterialToolbar toolbar;
                     Toast.makeText(ChangePasswordActivity.this, "Mật khẩu mới và xác nhận mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
                     confirmPass.requestFocus(); // Đặt focus vào Xác nhận mật khẩu mới
                 } else {
-                    User user = userManager.getUserByID(userRefs.getInt("ID", -1));
-                    boolean isChange = userManager.changePassword(newPassString, user);
+                    boolean isChange = userManager.changePassword(newPassString, currentUser);
                     if (isChange) {
                         Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thành công",
                                 Toast.LENGTH_SHORT).show();

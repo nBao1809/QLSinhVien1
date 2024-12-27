@@ -123,7 +123,8 @@ public class DiemSinhVien extends AppCompatActivity {
 
         }
         txtThongBao.setVisibility(View.GONE);
-        lopSinhVienAdapter.setData(listDiem);
+        Boolean bool = Boolean.FALSE;
+        lopSinhVienAdapter.setData(listDiem,bool);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDiemSinhVien.setLayoutManager(linearLayoutManager);
         recycleDiemSinhVien.setAdapter(lopSinhVienAdapter);

@@ -150,7 +150,7 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
                 giangVienListTemp = new ArrayList<>();
                 userID = (int) userManager.getLastUserID();
                 idCuoi = 0;
-                Log.d("test1", String.valueOf(userID));
+                Log.d("gvcode", String.valueOf(userID));
                 EditText edtMGV, edtHoten, edtCCCD, edtNgaySinh, edtUsername, edtPassWord, edtCommitPW, edtEmail, edtKhoa;
                 Button btnHuy, btnThem, btnLuu;
                 ImageButton ibtnBirthDay;
@@ -219,6 +219,12 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
                             Toast.makeText(QuanLyGiangVienActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        for(GiangVien giangVien:giangVienListTemp){
+                            if(giangVien.getMaGiangVien().equals(MGV)){
+                                Toast.makeText(QuanLyGiangVienActivity.this, "Mã giảng viên đã tồn tại", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
                         GiangVien giangVienTamThoi = giangVienManager.getGiangVien(MGV);
                         User userTamThoi = userManager.getUserByUserName(taiKhoan);
                         if (giangVienTamThoi != null) {
@@ -244,11 +250,12 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
                                 BitmapFactory.decodeResource(getResources(),
                                         R.drawable.avatarsample), email, "gv"));
                         giangVienListTemp.add(new GiangVien(MGV, hoTen, CCCD, ngaySinh, khoa, ++userID));
-                        Log.d("test", String.valueOf(giangVienListTemp.get(giangVienListTemp.size() - 1).getId()));
+                        Log.d("gvcode2", String.valueOf(giangVienListTemp.get(giangVienListTemp.size() - 1).getId()));
                         danhSachGiangVienTamThoiAdapter = new DanhSachGiangVienTamThoiAdapter(QuanLyGiangVienActivity.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(QuanLyGiangVienActivity.this, RecyclerView.VERTICAL, false);
                         recycleDSThem.setLayoutManager(linearLayoutManager);
                         danhSachGiangVienTamThoiAdapter.setData(giangVienListTemp, userListTemp);
+                        Log.d("gvcode3", String.valueOf(userID));
                         recycleDSThem.setAdapter(danhSachGiangVienTamThoiAdapter);
                         Toast.makeText(QuanLyGiangVienActivity.this, "Thêm thành công", Toast.LENGTH_SHORT);
                         danhSachGiangVienTamThoiAdapter.notifyDataSetChanged();
@@ -368,6 +375,9 @@ public class QuanLyGiangVienActivity extends AppCompatActivity {
 
         // Hiển thị MaterialDatePicker
         materialDatePicker.show(QuanLyGiangVienActivity.this.getSupportFragmentManager(), materialDatePicker.toString());
+    }
+    public void minusUserID(){
+        userID--;
     }
 
     @Override

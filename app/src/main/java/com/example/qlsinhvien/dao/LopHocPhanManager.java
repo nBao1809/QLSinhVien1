@@ -64,6 +64,32 @@ public class LopHocPhanManager {
         return null;
     }
 
+    public List<LopHocPhan> getLopHocPhanByMaGiangVien(String maGiangVien) {
+        lopHocPhanList = new ArrayList<>();
+        String query = "SELECT * FROM " + DatabaseHelper.TB_LOPHOCPHAN +
+                " WHERE " + DatabaseHelper.MA_GIANGVIEN + " = ?";
+        db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(query, new String[]{maGiangVien});
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                lopHocPhanList.add(new LopHocPhan(
+                        c.getString(0),
+                        c.getString(1),
+                        c.getDouble(2),
+                        c.getDouble(3),
+                        c.getString(4),
+                        c.getString(5)
+                ));
+            } while (c.moveToNext());
+            c.close();
+        }
+        if (c != null) {
+            c.close();
+        }
+        return lopHocPhanList.isEmpty() ? null : lopHocPhanList;
+    }
+
 
     public LopHocPhan getLopHocPhan(String maLopHocPhan) {
         db = dbHelper.getReadableDatabase();

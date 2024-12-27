@@ -220,10 +220,10 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
                         }
                         diemSo = Double.valueOf(diemSoString);
                         if (diemSo > 10 || diemSo < 0) {
-                            Toast.makeText(QuanLyDiemvaInforSinhVien.this, "Điểm phải dưới 10 và lớn hơn 0", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuanLyDiemvaInforSinhVien.this, "Điểm phải dưới 10 và lớn hơn hoặc bằng 0", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if (diemSo == 0.0 || maLoaiDiem.isEmpty()) {
+                        if ( maLoaiDiem.isEmpty()) {
                             Toast.makeText(QuanLyDiemvaInforSinhVien.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -387,7 +387,8 @@ public class QuanLyDiemvaInforSinhVien extends AppCompatActivity {
         } else {
             txtThongBao.setText("Giáo viên chưa nhập điểm");
         }
-        lopSinhVienAdapter.setData(listDiem);
+        Boolean bool= Boolean.TRUE;
+        lopSinhVienAdapter.setData(listDiem,bool);
         recycleDiemSinhVien.setAdapter(lopSinhVienAdapter);
 
     }

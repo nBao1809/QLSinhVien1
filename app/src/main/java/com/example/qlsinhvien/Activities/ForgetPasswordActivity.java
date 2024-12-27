@@ -84,7 +84,7 @@ MaterialToolbar toolbar;
 
             // Lưu thời gian gửi OTP vào SharedPreferences
             otpEditor.putString("otp", otp);
-            otpEditor.putLong("otp_time", System.currentTimeMillis() + 30000);  // 5 phút
+            otpEditor.putLong("otp_time", System.currentTimeMillis() + 300000);
             otpEditor.apply();
 
             // Cập nhật nút gửi OTP thành "Gửi lại OTP"
@@ -92,7 +92,7 @@ MaterialToolbar toolbar;
             btnSendOTP.setEnabled(false);
 
             // Bắt đầu đếm ngược
-            startCountdown(30000);
+            startCountdown(300000);
         });
 
         // Khi nhấn nút xác thực OTP
@@ -108,6 +108,8 @@ MaterialToolbar toolbar;
                 newPass.setVisibility(View.VISIBLE);
                 cfPass.setVisibility(View.VISIBLE);
                 btnChangePassword.setVisibility(View.VISIBLE);
+                countDownTimer.cancel();
+                tvCountdown.setVisibility(View.GONE);
             } else {
                 Toast.makeText(ForgetPasswordActivity.this, "Mã OTP không đúng", Toast.LENGTH_SHORT).show();
             }

@@ -384,7 +384,7 @@ public class UserManager {
         return Bitmap.createScaledBitmap(originalBitmap, finalWidth, finalHeight, false);
     }
 
-    public byte[] getBitmapAsByteArray(Bitmap bitmap) {
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
         return outputStream.toByteArray();

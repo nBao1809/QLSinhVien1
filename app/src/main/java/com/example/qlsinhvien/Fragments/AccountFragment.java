@@ -143,4 +143,12 @@ public class AccountFragment extends Fragment {
                 });
         return view;
     }
+    public String dateFormat(double ngaySinhDouble) {
+        int nam = (int) ngaySinhDouble;
+        int thangNgay = (int) ((ngaySinhDouble - nam) * 10000);
+        int thang = thangNgay / 100;
+        int ngay = thangNgay % 100;
+        String formattedDate = String.format("%02d/%02d/%04d", ngay, thang, nam);
+        return formattedDate;
+    }
 }

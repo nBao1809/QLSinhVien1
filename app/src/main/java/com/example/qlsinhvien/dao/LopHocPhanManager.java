@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.qlsinhvien.Models.LopHocPhan;
+import com.example.qlsinhvien.Models.SinhVien;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,7 @@ public class LopHocPhanManager {
         }
         return null;
     }
+
 
     public LopHocPhan getLopHocPhan(String maLopHocPhan) {
         db = dbHelper.getReadableDatabase();

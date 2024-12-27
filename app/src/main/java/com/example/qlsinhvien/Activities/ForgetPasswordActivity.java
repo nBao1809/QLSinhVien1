@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.UserManager;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
     User user;
@@ -31,7 +32,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private String otp;
     private long remainingTime;
     LinearLayout isSendedOTP, newPass, cfPass;
-
+MaterialToolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,10 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         isSendedOTP = findViewById(R.id.isSendOTP);
         newPass = findViewById(R.id.newPass);
         cfPass = findViewById(R.id.cfPass);
+        toolbar=findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
         // Khi nhấn nút gửi OTP
         btnSendOTP.setOnClickListener(v -> {
             String username = edtUsername.getText().toString().trim();
@@ -79,7 +84,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
             // Lưu thời gian gửi OTP vào SharedPreferences
             otpEditor.putString("otp", otp);
-            otpEditor.putLong("otp_time", System.currentTimeMillis() + 30000);  // 5 phút
+            otpEditor.putLong("otp_time", System.currentTimeMillis() + 300000);
             otpEditor.apply();
 
             // Cập nhật nút gửi OTP thành "Gửi lại OTP"
@@ -87,7 +92,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             btnSendOTP.setEnabled(false);
 
             // Bắt đầu đếm ngược
-            startCountdown(30000);
+            startCountdown(300000);
         });
 
         // Khi nhấn nút xác thực OTP
@@ -103,6 +108,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 newPass.setVisibility(View.VISIBLE);
                 cfPass.setVisibility(View.VISIBLE);
                 btnChangePassword.setVisibility(View.VISIBLE);
+                countDownTimer.cancel();
+                tvCountdown.setVisibility(View.GONE);
             } else {
                 Toast.makeText(ForgetPasswordActivity.this, "Mã OTP không đúng", Toast.LENGTH_SHORT).show();
             }

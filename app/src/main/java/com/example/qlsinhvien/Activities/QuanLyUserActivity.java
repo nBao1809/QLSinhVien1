@@ -329,16 +329,13 @@ public class QuanLyUserActivity extends AppCompatActivity {
                             Log.d("test3", String.valueOf(userID));
                             for (User user : userListTemp) {
                                 int idInserted = (int) userManager.addUser(user);
-                                if (user.getRole().equals("admin")) {
-                                    userAdminList.add(userManager.getUserByID(idInserted));
-                                } else if (user.getRole().equals("mod")) {
-                                    userModList.add(userManager.getUserByID(idInserted));
-                                } else if (user.getRole().equals("gv")) {
-                                    userGVList.add(userManager.getUserByID(idInserted));
-                                } else if (user.getRole().equals("sv")) {
-                                    userSVList.add(userManager.getUserByID(idInserted));
-                                }
+                                User user1 = userManager.getUserByID(idInserted);
+                                if (user1.getRole().equals("admin")) {
 
+                                    userAdminList.add(user1);
+                                } else if (user1.getRole().equals("mod")) {
+                                    userModList.add(user1);
+                                }
                             }
                             adminAdapter.notifyDataSetChanged();
                             modAdapter.notifyDataSetChanged();

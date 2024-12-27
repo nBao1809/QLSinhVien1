@@ -84,7 +84,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Nhập mật khẩu"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -113,7 +113,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Xác nhận lại mật khẩu"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -152,7 +152,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView43"
+                android:id="@+id/txtVaitro"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

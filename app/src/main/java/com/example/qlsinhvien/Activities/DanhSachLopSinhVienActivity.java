@@ -61,6 +61,7 @@ public class DanhSachLopSinhVienActivity extends AppCompatActivity {
     List<SinhVien> sinhVienList;
     User currentUser;
     SharedPreferences userRefs;
+    Integer i=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +140,8 @@ public class DanhSachLopSinhVienActivity extends AppCompatActivity {
 
         });
 
-
         LopHocPhan lopHocPhan = (LopHocPhan) bundle.get("lopHocPhan");
+
         assert lopHocPhan != null;
         txtLop.setText(lopHocPhan.getTenLop());
         mssvList = lopSinhVienManager.getMSSVfromMalop(lopHocPhan.getMaLop());
@@ -151,21 +152,21 @@ public class DanhSachLopSinhVienActivity extends AppCompatActivity {
         sinhVienList = sinhVienManager.getSinhVienByMSSVList(mssvList);
         if (sinhVienList == null || sinhVienList.isEmpty()) {
             txtThongBao.setText("Danh sách sinh viên trống");
-
-            recycleLopSinhVien = findViewById(R.id.recycleSinhVien);
-            sinhVienAdapter = new SinhVienAdapter(this, lopHocPhan);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-            recycleLopSinhVien.setLayoutManager(linearLayoutManager);
-            Boolean bool = Boolean.FALSE;
-            sinhVienAdapter.setData(sinhVienList, bool);
-            recycleLopSinhVien.setAdapter(sinhVienAdapter);
-
-
         }
+        recycleLopSinhVien = findViewById(R.id.recycleSinhVien);
+        sinhVienAdapter = new SinhVienAdapter(this, lopHocPhan);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        recycleLopSinhVien.setLayoutManager(linearLayoutManager);
+        if(bundle.get("3")!=null){
+            i= (Integer) bundle.get("3");
+        }
+        sinhVienAdapter.setData(sinhVienList,i);
+        recycleLopSinhVien.setAdapter(sinhVienAdapter);
 
 
+    }
 
-    } public void setThongBaoVisibility( boolean isVisible){
+    public void setThongBaoVisibility(boolean isVisible) {
         if (isVisible) {
             txtThongBao.setText("Không tìm thấy sinh viên");
             txtThongBao.setVisibility(View.VISIBLE);

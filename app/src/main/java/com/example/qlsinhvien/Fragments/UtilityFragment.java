@@ -35,6 +35,7 @@ public class UtilityFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_CURRENTUSER = "user";
     private User currentUser;
+    Button btnUser;
     private UserManager userManager;
 
     public UtilityFragment() {
@@ -62,7 +63,7 @@ public class UtilityFragment extends Fragment {
 
     MaterialToolbar toolbar;
 
-    Button btnQuanLyLopHoc, btnQuanLyDanhSachSinhVien, btnQuanLyGiangVien, btnUser;
+    Button btnQuanLyLopHoc, btnQuanLyDanhSachSinhVien, btnQuanLyGiangVien;
 
 
     @Override

@@ -30,7 +30,9 @@ import com.example.qlsinhvien.Activities.SettingActivity;
 import com.example.qlsinhvien.Models.Role;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.R;
+import com.example.qlsinhvien.dao.GiangVienManager;
 import com.example.qlsinhvien.dao.RoleManager;
+import com.example.qlsinhvien.dao.SinhVienManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -45,6 +47,9 @@ public class AccountFragment extends Fragment {
     private ActivityResultLauncher<Intent> imagePicker;
     private UserManager userManager;
     private RoleManager roleManager;
+    private SinhVienManager sinhVienManager;
+    private GiangVienManager giangVienManager;
+    private String name;
     ImageView imageView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,11 +94,21 @@ public class AccountFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
 
         userManager = new UserManager(requireContext());
+        sinhVienManager = new SinhVienManager(requireContext());
+        giangVienManager = new GiangVienManager(requireContext());
 
         imageView.setImageBitmap(currentUser.getPhoto());
-        txtUsername.setText(currentUser.getUsername());
-        txtMail.setText(currentUser.getEmail());
         txtName.setText(currentUser.getUsername());
+        txtMail.setText(currentUser.getEmail());
+        if (currentUser.getRole().equals("sv")) {
+            name =sinhVienManager.getSinhVienFromUser(currentUser.getID()).getHoTen();
+            txtUsername.setText(name);
+        } else if (currentUser.getRole().equals("gv")) {
+            name =giangVienManager.getGiangVienFromUser(currentUser.getID()).getHoTen();
+            txtUsername.setText(name);
+        } else {
+            txtUsername.setText(currentUser.getUsername());
+        }
         txtRole.setText(roleManager.getRole(currentUser.getRole()).getTenRole());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menuaccount);
@@ -111,7 +126,7 @@ public class AccountFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         toolbar.setNavigationOnClickListener(v -> {
             Intent myIntent = new Intent(requireActivity(), SettingActivity.class);
-            myIntent.putExtra("ID",currentUser.getID());
+            myIntent.putExtra("ID", currentUser.getID());
             startActivity(myIntent);
         });
         ImageButton btn = view.findViewById(R.id.btnEdit);
@@ -142,5 +157,14 @@ public class AccountFragment extends Fragment {
                     }
                 });
         return view;
+    }
+
+    public String dateFormat(double ngaySinhDouble) {
+        int nam = (int) ngaySinhDouble;
+        int thangNgay = (int) ((ngaySinhDouble - nam) * 10000);
+        int thang = thangNgay / 100;
+        int ngay = thangNgay % 100;
+        String formattedDate = String.format("%02d/%02d/%04d", ngay, thang, nam);
+        return formattedDate;
     }
 }

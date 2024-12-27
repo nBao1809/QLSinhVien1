@@ -24,17 +24,25 @@ import android.widget.Toast;
 
 import com.example.qlsinhvien.Adapter.LopHocPhanAdapter;
 
+import com.example.qlsinhvien.Adapter.SinhVienMonHocAdapter;
+import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.LopHocPhan;
+import com.example.qlsinhvien.Models.LopSinhVien;
+import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.Models.User;
 import com.example.qlsinhvien.dao.GiangVienManager;
+import com.example.qlsinhvien.dao.LopSinhVienManager;
 import com.example.qlsinhvien.dao.MonHocManager;
 import com.example.qlsinhvien.dao.NganhManager;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.DatabaseHelper;
 import com.example.qlsinhvien.dao.LopHocPhanManager;
+import com.example.qlsinhvien.dao.RoleManager;
+import com.example.qlsinhvien.dao.SinhVienManager;
 import com.example.qlsinhvien.dao.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,9 +84,15 @@ public class HomeFragment extends Fragment {
     SearchView searchView;
     MaterialToolbar toolbar;
     LopHocPhanManager lopHocPhanManager;
+    RoleManager roleManager;
     MonHocManager monHocManager;
     GiangVienManager giangVienManager;
     NganhManager nganhManager;
+    SinhVienMonHocAdapter sinhVienMonHocAdapter;
+    SinhVienManager sinhVienManager;
+    LopSinhVienManager lopSinhVienManager;
+    List<LopHocPhan> lopHocPhanList;
+    Boolean bool = Boolean.FALSE;
 
 
     @Override
@@ -91,17 +105,21 @@ public class HomeFragment extends Fragment {
         lopHocPhanManager = new LopHocPhanManager(getContext());
         giangVienManager = new GiangVienManager(getContext());
         monHocManager = new MonHocManager(getContext());
+        roleManager = new RoleManager(getContext());
         nganhManager = new NganhManager(getContext());
+        sinhVienManager = new SinhVienManager(getContext());
+        lopSinhVienManager = new LopSinhVienManager(getContext());
         toolbar = view.findViewById(R.id.toolbar);
         OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
         onBackPressedDispatcher.addCallback(requireActivity(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(searchView!=null){
+                if (searchView != null) {
                     if (!searchView.isIconified()) {
                         searchView.setIconified(true);
                         return;
-                    }}
+                    }
+                }
                 new AlertDialog.Builder(requireActivity())
                         .setTitle("Xác nhận").setIcon(R.drawable.checkicon)
                         .setMessage("Bạn có muốn đăng xuất không?")
@@ -152,20 +170,42 @@ public class HomeFragment extends Fragment {
         });
         Menu menu = toolbar.getMenu();
 
-//        nganhManager.addNganh(new Nganh("N2", "Khoa Hoc May Tinh"));
-//        giangVienManager.addGiangVien(new GiangVien("GV2", "nguyen van a", "123456", 31, "CNTT", 8));
-//        monHocManager.addMonHoc(new MonHoc("ITEC101", "Data Structure", 2, "N2"));
-//        lopHocPhanManager.addLopHocPhan(new LopHocPhan("LOP2","DH22CS01",1,2,"ITEC101","GV2"));
-        lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recycleHocPhan.setLayoutManager(linearLayoutManager);
         List<LopHocPhan> lopHocPhan = lopHocPhanManager.getAllLopHocPhan();
         if (lopHocPhan == null || lopHocPhan.isEmpty()) {
             setThongBaoVisibility(true);
         }
-        Boolean bool = Boolean.FALSE;
-        lopHocPhanAdapter.setData(lopHocPhan,bool);
-        recycleHocPhan.setAdapter(lopHocPhanAdapter);
+
+        if (currentUser.getRole().equals("sv")) {
+            sinhVienMonHocAdapter = new SinhVienMonHocAdapter(getContext());
+            SinhVien sinhVien = sinhVienManager.getSinhVienFromUser(currentUser.getID());
+            List<String> maLopList =
+                    lopSinhVienManager.getMaLopFromMSSV(sinhVien.getMssv());
+            lopHocPhanList = new ArrayList<>();
+            for (String i : maLopList) {
+                lopHocPhanList.add(lopHocPhanManager.getLopHocPhan(i));
+            }
+            sinhVienMonHocAdapter.setData(lopHocPhanList, sinhVien,bool);
+            recycleHocPhan.setAdapter(sinhVienMonHocAdapter);
+        } else if (currentUser.getRole().equals("gv")) {
+            sinhVienMonHocAdapter = new SinhVienMonHocAdapter(getContext());
+            String maGV = giangVienManager.getGiangVienFromUser(currentUser.getID()).getMaGiangVien();
+            lopHocPhanList = new ArrayList<>();
+            if (lopHocPhanManager.getLopHocPhanByMaGiangVien(maGV) != null
+                    || !lopHocPhanManager.getLopHocPhanByMaGiangVien(maGV).isEmpty()) {
+                lopHocPhanList = lopHocPhanManager.getLopHocPhanByMaGiangVien(maGV);
+            }
+             bool = Boolean.TRUE;
+            sinhVienMonHocAdapter.setDataGV(lopHocPhanList, bool);
+            recycleHocPhan.setAdapter(sinhVienMonHocAdapter);
+        } else {
+            lopHocPhanAdapter = new LopHocPhanAdapter(getContext(), this);
+             bool = Boolean.FALSE;
+            lopHocPhanAdapter.setData(lopHocPhan, bool);
+            recycleHocPhan.setAdapter(lopHocPhanAdapter);
+        }
         return view;
     }
 

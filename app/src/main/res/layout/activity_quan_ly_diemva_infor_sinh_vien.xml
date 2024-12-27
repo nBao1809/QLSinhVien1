@@ -226,39 +226,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:orientation="horizontal">
-        <TextView
-            android:id="@+id/textView40"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:text=""
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:textSize="26sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView36"
-            android:paddingTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
+            android:gravity="center"
+            android:paddingTop="5dp"
             android:text="Điểm số"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="bold" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/green"
-            android:contentDescription="themDiem"
-            android:focusable="true"
-            app:fabCustomSize="25dp"
-            app:tint="@color/white"
-            android:layout_weight="1"
-            android:clickable="true"
-            app:srcCompat="@drawable/addicon" />
+        <ImageButton
+            android:id="@+id/ibtnThem"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/buttonthemshape"
+            android:contentDescription="Thêm"
+            android:scaleType="centerInside"
+            android:src="@drawable/addicon"
+
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 
@@ -405,6 +398,13 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="20dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/white"
+                android:contentDescription="buttondelete"
+                app:srcCompat="@null" />
         </TableRow>
 
     </TableLayout>
@@ -416,7 +416,6 @@
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
-
 
 
 </LinearLayout>

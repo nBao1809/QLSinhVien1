@@ -108,6 +108,7 @@ public class DanhSachSinhVienTamThoiAdapter extends RecyclerView.Adapter<DanhSac
                     sinhVienList.remove(positionTam);
                     userList.remove(positionTam);
                     updateSinhVienList(idBiXoa);
+                    ((QuanLyDanhSachSinhVienActivity)context).minusUserID();
                     notifyItemRemoved(positionTam);
                 }
             }

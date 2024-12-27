@@ -1,13 +1,19 @@
 package com.example.qlsinhvien.dao;
 
+import static com.example.qlsinhvien.dao.UserManager.getBitmapAsByteArray;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.BitmapFactory;
 
 import com.example.qlsinhvien.Activities.LoginActivity;
+import com.example.qlsinhvien.Models.User;
+import com.example.qlsinhvien.R;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private Context context;
     //region tên cột
     public static final String DATABASE_NAME = "ql_sinhvien.db";
     public static final int DATABASE_VERSION = 37;
@@ -39,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TB_HOCKY = "HOCKY";
     public static final String MA_HOCKY = "MA_HOCKY";
     public static final String TENHOCKY = "TENHOCKY";
-    public static final String NAMHOC = "NAMHOC";
+
 
     public static final String TB_LOPSINHVIEN = "LOP_SINHVIEN";
     public static final String MA_LOPSINHVIEN = "MA_LOPSINHVIEN";
@@ -86,10 +92,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             MA_NGANH + " TEXT PRIMARY KEY, " +
             TEN_NGANH + " TEXT )";
     public static final String CREATE_LOPHANHCHINH = "CREATE TABLE " + TB_LOPHANHCHINH + " (" +
-            MA_LOPHANHCHINH + " TEXT PRIMARY KEY, " +
+            MA_LOPHANHCHINH +" TEXT PRIMARY KEY, " +
             TEN_LOPHANHCHINH + " TEXT NOT NULL)";
     public static final String CREATE_USERS = "CREATE TABLE " + TB_USERS + " (" +
-            ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
             USERNAME + " TEXT , " +
             PASSWORD + " TEXT, " +
             PHOTO + " BLOB, " +
@@ -117,8 +123,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "FOREIGN KEY(" + MA_NGANH + ") REFERENCES " + TB_NGANH + "(" + MA_NGANH + "))";
     public static final String CREATE_HOCKY = "CREATE TABLE " + TB_HOCKY + " (" +
             MA_HOCKY + " TEXT PRIMARY KEY, " +
-            TENHOCKY + " TEXT NOT NULL, " +
-            NAMHOC + " TEXT )";
+            TENHOCKY + " TEXT NOT NULL)";
+
+
     public static final String CREATE_ROLE = "CREATE TABLE " + TB_ROLE + " (" +
             MA_ROLE + " TEXT PRIMARY KEY, " +
             TEN_ROLE + " TEXT NOT NULL )";
@@ -159,6 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
     }
 
     @Override
@@ -175,7 +183,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOAIDIEM);
         db.execSQL(CREATE_DIEM);
         db.execSQL(CREATE_LOPHOCPHAN);
-        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES ('admin', 'Quản trị viên')," +
+        db.execSQL("INSERT INTO " + TB_ROLE + " (" + MA_ROLE + ", " + TEN_ROLE + ") VALUES" +
+                "('superadmin', 'Quản trị viên tối cao'), ('admin', 'Quản trị viên')," +
                 "('mod', 'Chuyên viên')," +
                 "('gv', 'Giảng viên')," +
                 "('sv', 'Sinh viên')");
@@ -207,6 +216,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "VALUES ('MH007', 'Môi trường học', 3.0, 'MT')");
         db.execSQL("INSERT INTO " + TB_MONHOC + " (" + MA_MONHOC + ", " + TENMONHOC + ", " + TINCHI + ", " + MA_NGANH + ") " +
                 "VALUES ('MH008', 'Hệ thống thông tin', 3.0, 'HTTT')");
+
+
+        db.execSQL("INSERT INTO " + TB_HOCKY + " (" + MA_HOCKY + ", " + TENHOCKY + ") " +
+                "VALUES ('HK1', 'Học kỳ 1')");
+        db.execSQL("INSERT INTO " + TB_HOCKY + " (" + MA_HOCKY + ", " + TENHOCKY + ") " +
+                "VALUES ('HK2', 'Học kỳ 2')");
+        db.execSQL("INSERT INTO " + TB_HOCKY + " (" + MA_HOCKY + ", " + TENHOCKY + ") " +
+                "VALUES ('HK3', 'Học kỳ 3')");
+        db.execSQL("INSERT INTO " + TB_HOCKY + " (" + MA_HOCKY + ", " + TENHOCKY + ") " +
+                "VALUES ('Unknown', 'Học kỳ hè')");
+
+        db.execSQL("INSERT INTO " + TB_LOAIDIEM + " (" + MA_LOAIDIEM + ", " + TEN_LOAIDIEM + ", " + TRONGSO + ") " +
+                "VALUES ('L01', 'Cuối kỳ', 0.5)");
+        db.execSQL("INSERT INTO " + TB_LOAIDIEM + " (" + MA_LOAIDIEM + ", " + TEN_LOAIDIEM + ", " + TRONGSO + ") " +
+                "VALUES ('L02', 'Giữa kỳ', 0.4)");
+        db.execSQL("INSERT INTO " + TB_LOAIDIEM + " (" + MA_LOAIDIEM + ", " + TEN_LOAIDIEM + ", " + TRONGSO + ") " +
+                "VALUES ('L03', 'Thường xuyên', 0.1)");
+
     }
 
     @Override
@@ -224,7 +251,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_NGANH);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOPHANHCHINH);
         db.execSQL("DROP TABLE IF EXISTS " + TB_ROLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_LOAIDIEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_USERS);
         onCreate(db);
+
 
 
     }

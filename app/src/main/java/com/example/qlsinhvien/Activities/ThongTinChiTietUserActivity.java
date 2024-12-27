@@ -10,6 +10,7 @@ import com.example.qlsinhvien.Models.GiangVien;
 import com.example.qlsinhvien.Models.SinhVien;
 import com.example.qlsinhvien.R;
 import com.example.qlsinhvien.dao.GiangVienManager;
+import com.example.qlsinhvien.dao.RoleManager;
 import com.example.qlsinhvien.dao.SinhVienManager;
 import com.example.qlsinhvien.dao.UserManager;
 
@@ -29,6 +30,7 @@ public class ThongTinChiTietUserActivity extends AppCompatActivity {
     private UserManager userManager;
     private GiangVienManager giangVienManager;
     private SinhVienManager sinhVienManager;
+    private RoleManager roleManager;
     MaterialToolbar toolbar;
     TextView txtID, txtUsername, txtRole, txtEmail, txtTenSinhVien, txtMSSV, txtNgaySinh, txtCCCD, txtLopHanhChinh, txtNganh, txtGiangVien, txtMaGiangVien, txtNgaySinhGv, txtCCCDGv, txtKhoa;
     LinearLayout layoutGiangVien, layoutSinhVien;
@@ -52,6 +54,7 @@ public class ThongTinChiTietUserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userManager = new UserManager(this);
         giangVienManager = new GiangVienManager(this);
+        roleManager = new RoleManager(this);
         sinhVienManager = new SinhVienManager(this);
         user = userManager.getUserByID(intent.getIntExtra("userID", -1));
         layoutGiangVien = findViewById(R.id.isGiangVien);
@@ -63,7 +66,7 @@ public class ThongTinChiTietUserActivity extends AppCompatActivity {
         txtID.setText(String.valueOf(user.getID()));
         txtUsername.setText(user.getUsername());
         txtEmail.setText(user.getEmail());
-        txtRole.setText(user.getRole());
+        txtRole.setText(roleManager.getRole(user.getRole()).getTenRole());
         if (user.getRole().equals("gv")) {
             layoutGiangVien.setVisibility(View.VISIBLE);
             giangVien = giangVienManager.getGiangVienFromUser(user.getID());

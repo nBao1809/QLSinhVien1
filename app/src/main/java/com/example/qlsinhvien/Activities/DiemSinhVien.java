@@ -63,6 +63,7 @@ public class DiemSinhVien extends AppCompatActivity {
             return insets;
         });
         sinhVienManager = new SinhVienManager(this);
+        userManager= new UserManager(this);
         lopSinhVienManager = new LopSinhVienManager(this);
         lopHanhChinhManager = new LopHanhChinhManager(this);
         nganhManager = new NganhManager(this);
@@ -122,7 +123,8 @@ public class DiemSinhVien extends AppCompatActivity {
 
         }
         txtThongBao.setVisibility(View.GONE);
-        lopSinhVienAdapter.setData(listDiem);
+        Boolean bool = Boolean.FALSE;
+        lopSinhVienAdapter.setData(listDiem,bool);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recycleDiemSinhVien.setLayoutManager(linearLayoutManager);
         recycleDiemSinhVien.setAdapter(lopSinhVienAdapter);
